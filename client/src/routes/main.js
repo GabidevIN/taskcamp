@@ -18,11 +18,11 @@ const testing =() =>{
   return (
     // ----- LOGIN GUI
     <>
-            <h1>LOGIN SYSTEM</h1>
-            <input value={User} placeholder='Enter Username' onChange={e => Setuser(e.target.value)}/>
-            <input value={Pass} placeholder='Enter Password' onChange={e => SetPass(e.target.value)}/>
-            <button onClick={testing}>LOGIN</button>
-            <h1>MESSAGE:{result} </h1>
+      <h1>LOGIN SYSTEM</h1>
+      <input value={User} placeholder='Enter Username' onChange={e => Setuser(e.target.value)}/>
+      <input value={Pass} placeholder='Enter Password' onChange={e => SetPass(e.target.value)}/>
+      <button onClick={testing}>LOGIN</button>
+      <h1>MESSAGE:{result} </h1>
     </>
   )
 }
