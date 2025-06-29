@@ -1,8 +1,17 @@
+// IMPORTED IDE
 import React from 'react'
-import MAIN from './routes/main'
+import Login from './routes/login'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
+// ROUTE SYSTEM
 function App() {
-  return <MAIN/>
+  return (
+  <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Login/>}/> 
+    </Routes>
+  </BrowserRouter>
+  )
 }
 
 export default App
