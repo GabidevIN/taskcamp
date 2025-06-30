@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 
 function Main() {
-// USER INPUT 
+// ----- USER INPUT 
 const [User, Setuser] = useState('');
 const [Pass, SetPass] = useState('');
 const [result, Setresult] = useState('')
-// USER INPUT 
+// ----- USER INPUT 
 
 const testing =() =>{
   const testt = String(Pass) + String(User)
