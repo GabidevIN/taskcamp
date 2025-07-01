@@ -20,6 +20,15 @@ const db = mysql.createConnection({
     database: ""
 })
 
+// ----- REGISTRATION 
+app.post('/register', (req,res) => {
+    const sql = "INSERT INTO login ('name','email','pass') VALUES (?)";
+})
+
+
+
+
+
 // ----- CHECKING DB CONNECTION 
 app.listen(8081, () => {
     console.log("Database Connected...") 
