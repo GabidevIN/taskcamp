@@ -26,8 +26,8 @@ app.post('/register', (req,res) => {
     // ----- INSERTING INFORMATION
     const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
     // ----- HASHING PASSWORD
-    bcrypt.hash(req.body.pass.toString(), salt, (err, hash) =>{
-        if(err) return res.json({Error: "Error for Hashing password"})
+    bcrypt.hash(req.body.password.toString(), salt, (err, hash) =>{
+        if(err) return res.json({Error: "Error for Hashing password"});
         const values = [
         req.body.name,
         req.body.email,
@@ -36,7 +36,7 @@ app.post('/register', (req,res) => {
     // ----- INSERTING ERROR
     db.query(sql, [values], (err,result) =>{
         if(err) return res.json({Error: "Inserting Data Error in server"});
-        return res.json({Status: "Success"})
+        return res.json({Status: "Success"});
     })
     })
 })
