@@ -5,6 +5,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+const salt = 10;
 
 // ----- DB SETUP
 const app = express();
@@ -17,12 +18,27 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "131418",
-    database: ""
+    database: "taskcamp"
 })
 
 // ----- REGISTRATION 
 app.post('/register', (req,res) => {
-    const sql = "INSERT INTO login ('name','email','pass') VALUES (?)";
+    // ----- INSERTING INFORMATION
+    const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
+    // ----- HASHING PASSWORD
+    bcrypt.hash(req.body.pass.toString(), salt, (err, hash) =>{
+        if(err) return res.json({Error: "Error for Hashing password"})
+        const values = [
+        req.body.name,
+        req.body.email,
+        hash
+    ]
+    // ----- INSERTING ERROR
+    db.query(sql, [values], (err,result) =>{
+        if(err) return res.json({Error: "Inserting Data Error in server"});
+        return res.json({Status: "Success"})
+    })
+    })
 })
 
 
