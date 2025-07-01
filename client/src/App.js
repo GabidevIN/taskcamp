@@ -1,5 +1,7 @@
 // IMPORTED IDE
 import React from 'react'
+import Home from './routes/home'
+import Register from './routes/register'
 import Login from './routes/login'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
@@ -8,8 +10,9 @@ function App() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={<Login/>}/> 
-      <Route path='/registration' element={<Login/>}/>
+      <Route path='/' element={<Home/>}/> 
+      <Route path='/Register' element={<Register/>}/>
+      <Route path='/Login' element={<Login/>}/>
     </Routes>
   </BrowserRouter>
   )

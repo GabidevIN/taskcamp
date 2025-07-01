@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react'
+import register from './register';
+import { Link } from 'react-router-dom';
+
 
 function Main() {
 // ----- USER INPUT 
@@ -23,6 +26,7 @@ const testing =() =>{
       <input value={Pass} placeholder='Enter Password' onChange={e => SetPass(e.target.value)}/>
       <button onClick={testing}>LOGIN</button>
       <h1>MESSAGE:{result} </h1>
+      <Link to = "/register">Register</Link>
     </>
   )
 }
