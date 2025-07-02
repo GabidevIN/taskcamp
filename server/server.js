@@ -1,6 +1,6 @@
 // ----- INSTALL ALL OF THIS 
 import express from 'express';
-import mysql from 'mysql';
+import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -31,14 +31,17 @@ app.post('/register', (req, res) => {
             req.body.email,
             hash
         ]
-        // ----- ERROR DITO 
-
+        // ----- ERROR FIXED 
         db.query(sql, [values], (err, result) =>{
-            if(err) return res.json({Error: "Inserting data error in server"});
-            return res.json({Status: "Success"})
+            if (err) {
+                console.error("MySQL Insert Error:", err);
+                return res.json({ Error: "INSERTING DATA TO SERVER ERRORR" });
+            }
+            return res.json({ Status: "Success" });
         })
     })
 })
+
 
 
 
