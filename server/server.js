@@ -24,13 +24,15 @@ const db = mysql.createConnection({
 // ----- REGISTRATION 
 app.post('/register', (req, res) => {
     const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
-    bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+    bcrypt.hash(req.body.pass.toString(), salt, (err, hash) => {
         if(err) return res.json({Error: "Error for hashing password"});
         const values = [
             req.body.name,
             req.body.email,
             hash
         ]
+        // ----- ERROR DITO 
+
         db.query(sql, [values], (err, result) =>{
             if(err) return res.json({Error: "Inserting data error in server"});
             return res.json({Status: "Success"})

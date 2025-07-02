@@ -8,11 +8,11 @@ function Register() {
   const [values, setValues] = useState({
     name: '',
     email: '',
-    password: ''
+    pass: ''
   })
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('https//localhost:8081/register', values)
+    axios.post('http://localhost:8081/register', values)
     .then(res => console.log(res))
     .then(err => console.log(err));
   }
@@ -32,7 +32,7 @@ function Register() {
       className="border px-4 py-2 w-full rounded"/>
 
       <input placeholder='Enter Password' 
-      onChange={e => setValues({...values, password: e.target.value})} 
+      onChange={e => setValues({...values, pass: e.target.value})} 
       className="border px-4 py-2 w-full rounded"/>
       
       <button type="submit" className="bg-green-600 text-white px-4 py-2 w-full rounded-none hover:bg-green-700">SIGN UP</button>
