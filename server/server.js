@@ -22,22 +22,19 @@ const db = mysql.createConnection({
 })
 
 // ----- REGISTRATION 
-app.post('/register', (req,res) => {
-    // ----- INSERTING INFORMATION
+app.post('/register', (req, res) => {
     const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
-    // ----- HASHING PASSWORD
     bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-        if(err) return res.json({Error: "Error for Hashing password"});
+        if(err) return res.json({Error: "Error for hashing password"});
         const values = [
-        req.body.name,
-        req.body.email,
-        hash
-    ]
-    // ----- INSERTING ERROR
-    db.query(sql, [values], (err,result) =>{
-        if(err) return res.json({Error: "Inserting Data Error in server"});
-        return res.json({Status: "Success"});
-    })
+            req.body.name,
+            req.body.email,
+            hash
+        ]
+        db.query(sql, [values], (err, result) =>{
+            if(err) return res.json({Error: "Inserting data error in server"});
+            return res.json({Status: "Success"})
+        })
     })
 })
 

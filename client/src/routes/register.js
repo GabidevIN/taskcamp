@@ -9,20 +9,19 @@ function Register() {
     name: '',
     email: '',
     password: ''
-  });
-  
-  // ----- ERROR PA TO GAB
+  })
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8081/register', values)
-      .then(res => console.log(res))
-      .then(err => console.log(err));
+    axios.post('https//localhost:8081/register', values)
+    .then(res => console.log(res))
+    .then(err => console.log(err));
   }
 
 
 
   return (
     <>
+    <h1 className='text-center'>REGISTER</h1>
     <form onSubmit={handleSubmit} className="space-y-3 max-w-md mx-auto mt-10"> 
       <input placeholder='Enter Name' 
       onChange={e => setValues({...values, name: e.target.value})} 
