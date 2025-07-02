@@ -31,7 +31,6 @@ app.post('/register', (req, res) => {
             req.body.email,
             hash
         ]
-        // ----- ERROR FIXED 
         db.query(sql, [values], (err, result) =>{
             if (err) {
                 console.error("MySQL Insert Error:", err);
