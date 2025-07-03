@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Login from './login'
 import axios from 'axios';
 
-
+// ----- REGISTRATION BUTTON 
 function Register() {
   const [values, setValues] = useState({
     name: '',
@@ -15,7 +15,10 @@ function Register() {
     axios.post('http://localhost:8081/register', values)
     .then(res => console.log(res))
     .then(err => console.log(err));
+      // ----- GAWA KA DITO NG ERROR NOTE IF DUPLICATED
+
   }
+
 
 
 
