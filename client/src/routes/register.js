@@ -15,7 +15,7 @@ function Register() {
     axios.post('http://localhost:8081/register', values)
     .then(res => console.log(res))
     .then(err => console.log(err));
-      // ----- GAWA KA DITO NG ERROR NOTE IF DUPLICATEDD
+      // ----- GAWA KA DITO NG ERROR NOTE IF DUPLICATED
 
   }
 
