@@ -41,7 +41,7 @@ app.post('/register', (req, res) => {
     })
 })
 
-// ----- LOGIN // SESSION
+// ----- LOGIN // SESSION SYSTEM
 
 
 

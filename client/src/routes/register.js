@@ -19,7 +19,15 @@ function Register() {
 
   }
 
-// ----- EWAN KO
+// ----- SIGN UP SYSTEM DITO:
+
+
+
+
+
+// ----- VISIBILE SYSTEM USING UseEffects
+
+
 
 
 
