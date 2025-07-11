@@ -26,6 +26,7 @@ const closebtn = () => {
 
 return (
   <>
+  <title>TASKCAMP</title>
     <div className='bg-white w-screen h-screen text-center p-4 space-y-4'>
       <nav className='flex justify-center gap-4'>
         <a href="#" className='text-black bg-white rounded-e-md border border-black p-2' onClick={handleAuthClick("login") }>Login</a>
