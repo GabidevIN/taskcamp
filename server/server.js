@@ -23,6 +23,14 @@ const db = mysql.createConnection({
 
 // ----- REGISTRATION 
 app.post('/register', (req, res) => {
+    const checking = "SELECT * FROM login WHERE email = (?)";
+    db.query(checking, [req.body.email], (err, result) => {
+        if (err) return res.json({ Status: "Error", Error: err });
+
+        if (result.length > 0) {
+        return res.json({ Status: "Duplicate" });
+        }
+
     const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
     bcrypt.hash(req.body.pass.toString(), salt, (err, hash) => {
         if(err) return res.json({Error: "Error for hashing password"});
@@ -37,6 +45,7 @@ app.post('/register', (req, res) => {
                 return res.json({ Error: "INSERTING DATA TO SERVER ERRORR" });
             }
             return res.json({ Status: "Success" });
+            });
         })
     })
 })

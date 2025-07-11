@@ -22,13 +22,18 @@ function Register() {
       if (res.data.Status === "Success") {
         alert("ACCOUNT CREATED");
         navigate('/login')
-      } else {
+      } 
+
+      // ERROR DITO GAB
+      else if (res.data.Status === "Duplicate") {
+        alert("ACCOUNT EXISTED");
+      } 
+      else {
         alert("ERROR CREATING ACCOUNT");
       }
     })
     .then(err => console.log(err));
 
-// ----- GAWA KA DITO NG ERROR NOTE IF DUPLICATED
 
   }
 
