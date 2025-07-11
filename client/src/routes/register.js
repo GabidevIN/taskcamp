@@ -2,19 +2,31 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import Login from './login'
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 // ----- REGISTRATION BUTTON 
 function Register() {
-  const [values, setValues] = useState({
-    name: '',
-    email: '',
-    pass: ''
-  })
+  const [values, setValues] = useState({ name: '', email: '', pass: ''})
+  
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if(!values.name || !values.email || !values.pass) {
+      alert("Please fill all fields");
+      return;
+    }   
+
     axios.post('http://localhost:8081/register', values)
-    .then(res => console.log(res))
+    .then(res => {
+      if (res.data.Status === "Success") {
+        Navigate('/login')
+      } else {
+        alert("Error");
+      }
+    })
     .then(err => console.log(err));
+
+    
       // ----- GAWA KA DITO NG ERROR NOTE IF DUPLICATED
 
   }
