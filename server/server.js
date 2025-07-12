@@ -27,6 +27,7 @@ app.post('/register', (req, res) => {
     db.query(checking, [req.body.email], (err, result) => {
         if (err) return res.json({ Status: "Error", Error: err });
 
+        // ERROR DITO GAB -- di madetect ng system kapag may duplicate email 
         if (result.length > 0) {
         return res.json({ Status: "Duplicate" });
         }
@@ -51,6 +52,10 @@ app.post('/register', (req, res) => {
 })
 
 // ----- LOGIN // SESSION SYSTEM
+app.post('/login', (req, res) => {
+    const checking = "SELECT * FROM login WHERE email = (?)";
+
+})
 
 
 
@@ -58,10 +63,7 @@ app.post('/register', (req, res) => {
 // ----- USER SESSION AND DATABASE CONNECTION
 
 
-
 // ----- SESSION FOR INPUTING TASK AND VIEWING
-
-
 
 
 // ----- CHECKING DB CONNECTION 

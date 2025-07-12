@@ -24,7 +24,6 @@ function Register() {
         navigate('/login')
       } 
 
-      // ERROR DITO GAB
       else if (res.data.Status === "Duplicate") {
         alert("ACCOUNT EXISTED");
       } 
@@ -58,6 +57,7 @@ function Register() {
       className="border px-4 py-2 w-full rounded"/>
 
       <input placeholder='Enter Email' 
+      required type="email"
       onChange={e => setValues({...values, email: e.target.value})} 
       className="border px-4 py-2 w-full rounded"/>
 
