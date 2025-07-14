@@ -43,7 +43,7 @@ return (
 {showLogin && (
   <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
     <div>
-      <h2>LOGIN</h2>
+      <h2 className='text-center font-bold '>LOGIN</h2>
         <form>
           <input type="text" placeholder="Username" />
           <input type="password" placeholder="Password" />
