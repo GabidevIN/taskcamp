@@ -14,7 +14,6 @@ function Login() {
     event.preventDefault();
     axios.post('http://localhost:8081/login', values)
     .then(res => {
-      // ----- ERROR DITO GAB
       if (res.data.Status === "Success") {
         navigate('/home')
       } else {
