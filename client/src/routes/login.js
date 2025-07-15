@@ -6,24 +6,18 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-function Main() {
+function Login() {
 // ----- USER INPUT 
   const [values, setValues] = useState({email: '', pass: ''})
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-      axios.post('http://localhost:8081/login', values)
+    axios.post('http://localhost:8081/login', values)
     .then(res => {
       if (res.data.Status === "Success") {
-        alert("ACCOUNT CREATED");
         navigate('/')
-      } 
-
-      else if (res.data.Status === "Duplicate") {
-        alert("ACCOUNT EXISTED");
-      } 
-      else {
-        alert("ERROR CREATING ACCOUNT");
+      } else {
+        alert("Incorrect Email or Password // ERROR ");
       }
     })
     .then(err => console.log(err));
@@ -44,4 +38,4 @@ function Main() {
   )
 }
 
-export default Main 
+export default Login 
