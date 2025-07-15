@@ -32,8 +32,6 @@ function Register() {
       }
     })
     .then(err => console.log(err));
-
-
   }
 
 // ----- SIGN UP SYSTEM DITO:
