@@ -14,15 +14,19 @@ function Login() {
     event.preventDefault();
     axios.post('http://localhost:8081/login', values)
     .then(res => {
+      // ----- ERROR DITO GAB
       if (res.data.Status === "Success") {
-        navigate('/')
+        navigate('/home')
       } else {
         alert("Incorrect Email or Password // ERROR ");
+      
       }
     })
-    .then(err => console.log(err));
-  }
-
+    .catch(err => {
+      console.log("Axios error:", err);
+      alert("Something went wrong with the server.");
+    });
+}
   return (
     // ----- LOGIN GUI
     <>

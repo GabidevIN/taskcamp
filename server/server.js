@@ -23,7 +23,7 @@ const db = mysql.createConnection({
 
 // ----- REGISTRATION 
 app.post('/register', (req, res) => {
-    const checking = "SELECT * FROM login WHERE email = (?)";
+    const checking = 'SELECT * FROM login WHERE email = (?)';
     db.query(checking, [req.body.email], (err, result) => {
         if (err) return res.json({ Status: "Error", Error: err });
 
@@ -54,7 +54,7 @@ app.post('/register', (req, res) => {
 // ----- LOGIN // SESSION SYSTEM
 
 app.post('/login', (req, res) => {
-    const checking = "SELECT * FROM login WHERE email = ?";
+    const checking = 'SELECT * FROM login WHERE email = ?';
     db.query(checking, [req.body.email], (err, data) => {
         if (err) return res.json({Error: "Error checking email"});
                 if (data.length > 0) {
@@ -62,7 +62,7 @@ app.post('/login', (req, res) => {
                 if(err) return res.json({Error: "Password Error"});
                 
                 if(result) {
-                    return res.json({Status: "Success"});
+                    return res.json({ Status: "Success"});
                 } else {
                     return res.json({Status: "Password not match"});
                 }
