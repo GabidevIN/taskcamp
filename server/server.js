@@ -1,5 +1,5 @@
 // ----- INSTALL ALL OF THIS 
-import express from 'express';
+import express, { response } from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
@@ -54,8 +54,23 @@ app.post('/register', (req, res) => {
 // ----- LOGIN // SESSION SYSTEM
 app.post('/login', (req, res) => {
     const checking = "SELECT * FROM login WHERE email = (?)";
+    db.query(checking, [req.body.email], (err, data) => {
+        if (err) return res.json({Error: "Error checking email"});
+        if (data.length === 0) {
+            bcrypt.compare(req.body.pass.tostring(), data[0].pass, (err, result) =>{
+                if(err) return res.json({Error: "Password Error"});
+                if(response) {
+                    return res.json({Status: "Success"});
+                } else {
+                    return res.json({Status: "Password not match"});
+                }
+            })
+        } else {
+            return res.json({Status: "Email not found"}); 
+        }
+    })
+ })
 
-})
 
 
 
