@@ -52,7 +52,6 @@ app.post('/register', (req, res) => {
 })
 
 // ----- LOGIN // SESSION SYSTEM
-
 app.post('/login', (req, res) => {
     const checking = 'SELECT * FROM login WHERE email = ?';
     db.query(checking, [req.body.email], (err, data) => {
@@ -73,15 +72,24 @@ app.post('/login', (req, res) => {
     });
 });
 
-
-
-
 // ----- USER SESSION AND DATABASE CONNECTION
+
+
+
+
+
+
+
 
 
 
 // ----- SESSION FOR INPUTING TASK AND VIEWING
 
+
+
+
+
+// ----- SESSION FOR INPUTING TASK AND VIEWING
 
 
 
