@@ -2,6 +2,7 @@
 import React from 'react'
 import Home from './routes/home'
 import Register from './routes/register'
+import Main from './routes/main'
 import Login from './routes/login'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
@@ -19,6 +20,8 @@ function App() {
       <Route path='/' element={<Home/>}/> 
       <Route path='/Register' element={<Register/>}/>
       <Route path='/Login' element={<Login/>}/>
+      <Route path='/Main' element={<Main/>}/>
+
     </Routes>
   </BrowserRouter>
   )
