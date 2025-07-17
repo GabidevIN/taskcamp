@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import register from './register';
-import Home from './home';
+import main from './main';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ function Login() {
     axios.post('http://localhost:8081/login', values)
     .then(res => {
       if (res.data.Status === "Success") {
-        navigate('/home')
+        navigate('/main')
       } else {
         alert("Incorrect Email or Password // ERROR ");
       
