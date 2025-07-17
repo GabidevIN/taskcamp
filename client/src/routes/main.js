@@ -13,6 +13,7 @@ function main() {
   return (
     <>
     <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
+      <h1 className='text-center font-bold'>MAIN PAGE</h1>
 
 
 
