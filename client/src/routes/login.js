@@ -10,18 +10,15 @@ function Login() {
 // ----- USER INPUT 
   const [values, setValues] = useState({email: '', pass: ''})
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.post('http://localhost:8081/login', values)
     .then(res => {
       if (res.data.Status === "Success") {
         navigate('/main')
-      }
-      else if (res.data.Status === "Error_password") {
-        alert("Incorrect Password");  
       } else {
-        alert("Incorrect Email or Password // ERROR ");
-      
+        alert("Incorrect Email or Password");
       }
     })
     .catch(err => {

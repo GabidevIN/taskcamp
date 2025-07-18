@@ -10,7 +10,11 @@ const salt = 10;
 // ----- DB SETUP
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 app.use(cookieParser());
 
 // ----- DB CONNECTION
@@ -59,11 +63,18 @@ app.post('/login', (req, res) => {
                 if (data.length > 0) {
             bcrypt.compare(req.body.pass.toString(), data[0].pass, (err, result) => {
                 if(err) return res.json({Error: "Password Error"});
-                
+                if (response) {
+                    const name = data[0].name;
+                    const token = jwt.sign({name}, "jwt-ecret-key", {expiresIn: '1d'});
+                    res.cookie("token", token);
+
+
+                }
+
                 if(result) {
                     return res.json({ Status: "Success"});
                 } else {
-                    return res.json({Status: "Error_password"});
+                    return res.json({Status: "Password not match"});
                 }
             });
         } else {
