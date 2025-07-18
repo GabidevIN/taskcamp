@@ -11,8 +11,7 @@ function Main() {
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
-/// ERROR DITO GABO
-    axios.get('http://localhost:3000')
+    axios.get('http://localhost:8081')
     .then(res => {
       if (res.data.Status === "Success") {
         setAuth(true);

@@ -25,6 +25,27 @@ const db = mysql.createConnection({
     database: "taskcamp"
 })
 
+// ----- SESSION AND DATABASE CONNECTION
+const verifyUser = (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json({ Error: "You are not logged" });
+    } else {
+        jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+            if (err) {
+                return res.json({ Error: "Invalid token" });
+            } else {
+                req.name = decoded.name;
+                next();
+            }
+        })
+    }
+}
+
+app.get('/', verifyUser, (req, res) => {
+    return res.json({Status: "Success", name: req.name});
+})
+
 // ----- REGISTRATION 
 app.post('/register', (req, res) => {
     const checking = 'SELECT * FROM login WHERE email = (?)';
@@ -65,7 +86,7 @@ app.post('/login', (req, res) => {
                 if(err) return res.json({Error: "Password Error"});
                 if (response) {
                     const name = data[0].name;
-                    const token = jwt.sign({name}, "jwt-ecret-key", {expiresIn: '1d'});
+                    const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: '1d'});
                     res.cookie("token", token);
 
 
@@ -82,32 +103,6 @@ app.post('/login', (req, res) => {
         }
     });
 });
-
-// ----- SESSION AND DATABASE CONNECTION
-const verifyUser = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.json({ Error: "You are not logged" });
-    } else {
-        jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-            if (err) {
-                return res.json({ Error: "Invalid token" });
-            } else {
-                req.name = decoded.name;
-                next();
-            }
-        })
-    }
-}
-
-app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", name: req.name});
-})
-
-
-
-
-
 
 
 // ----- SESSION FOR INPUTING TASK AND VIEWING
