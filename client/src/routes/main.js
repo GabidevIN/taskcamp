@@ -1,39 +1,29 @@
 import {useState, useEffect} from 'react'
 import Login from './login'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Main() {
 // ----- SESSION SYSTEM
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
-  const navigate = useNavigate();
 
+  axios.defaults.withCredentials = true;
   useEffect(() => {
-  
 /// ERROR DITO GABO
-
     axios.get('http://localhost:3000')
     .then(res => {
       if (res.data.Status === "Success") {
         setAuth(true);
         setName(res.data.name);
-        navigate('/login')
       } else {
         setAuth(false);
         setMessage(res.data.Error);
       }
-
     })
   .then(err => console.log(err));
   }, [])
-
-
-
-
-
-// ----- USER INTERFACE FOR MAIN PAGE
 
 return (
   <>   
