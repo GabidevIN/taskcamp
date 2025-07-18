@@ -101,8 +101,7 @@ const verifyUser = (res, req, next) => {
 }
 
 app.get('/', verifyUser ,(req, res) => {
-
-
+    return res.json({Status: "Success", name: req.name});
 })
 
 

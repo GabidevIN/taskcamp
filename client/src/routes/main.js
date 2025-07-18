@@ -3,7 +3,7 @@ import Login from './login'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
-function main() {
+function Main() {
 // ----- SESSION SYSTEM
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
@@ -51,4 +51,4 @@ return (
   )
 }
 
-export default main
+export default Main
