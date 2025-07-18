@@ -1,7 +1,27 @@
-import React from 'react'
+import {useState, useEffect} from 'react'
+import Login from './login'
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function main() {
 // ----- SESSION SYSTEM
+  const [auth, setAuth] = useState(false);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    axios.get('/').then(res => {
+      if (res.data.Status === "Success") {
+        setAuth(true);
+        navigate('/login')
+      } else {
+        setAuth(false);
+        setMessage(res.data.Error);
+      }
+
+    })
+  .then(err => console.log(err));
+  }, [])
+
 
 
 
@@ -9,21 +29,22 @@ function main() {
 // ----- USER INTERFACE FOR MAIN PAGE
 
 return (
-  <>  
-{   
+  <>   
     <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
-    <h1 className='text-center font-bold'>MAIN PAGE</h1>
-    <button onClick={handleLogout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
-
-
-
-
-
-
-
-
-    
-    </div>}
+    {    
+      auth ?
+      <>
+        <h3 className="text-center text-2xl mb-4">Welcome, {}!</h3>
+        <button  className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
+      </>
+        :
+      <>
+        <h3>{message}</h3>
+        <h3>Login Now</h3>
+        <Link to = "/login" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</Link>
+      </>
+    }
+    </div>
   </>
   )
 }
