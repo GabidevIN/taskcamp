@@ -12,6 +12,8 @@ function Main() {
 
   useEffect(() => {
   
+/// ERROR DITO GABO
+
     axios.get('http://localhost:3000')
     .then(res => {
       if (res.data.Status === "Success") {
