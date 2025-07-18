@@ -24,6 +24,13 @@ function Main() {
   .then(err => console.log(err));
   }, [])
 
+  const logout = () => {
+    axios.get('http://localhost:8081/logout')
+    .then(res => {
+      window.location.reload(true);
+    }).catch(err => console.log(err));
+  }
+
 return (
   <>   
     <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
@@ -31,7 +38,7 @@ return (
       auth ?
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-        <button  className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
+        <button onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</button>
       </>
         :
       <>

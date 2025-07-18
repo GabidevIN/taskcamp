@@ -46,6 +46,11 @@ app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", name: req.name});
 })
 
+app.get('/logout', (req, res) => {
+    res.clearCookie("token");
+    return res.json({Status: "Success"});
+})
+
 // ----- REGISTRATION 
 app.post('/register', (req, res) => {
     const checking = 'SELECT * FROM login WHERE email = (?)';
@@ -88,10 +93,7 @@ app.post('/login', (req, res) => {
                     const name = data[0].name;
                     const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: '1d'});
                     res.cookie("token", token);
-
-
                 }
-
                 if(result) {
                     return res.json({ Status: "Success"});
                 } else {
