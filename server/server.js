@@ -3,7 +3,7 @@ import express, { response } from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { verify } from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 const salt = 10;
 
@@ -84,8 +84,26 @@ app.post('/login', (req, res) => {
 });
 
 // ----- USER SESSION AND DATABASE CONNECTION
+const verifyUser = (res, req, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json({ Error: "You are not logged" });
+    } else {
+        jwt.verify(token, "jwt-ecret-key", (err, decoded) => {
+            if (err) {
+                return res.json({ Error: "Invalid token" });
+            } else {
+                req.name = decoded.name;
+                next();
+            }
+        })
+    }
+}
+
+app.get('/', verifyUser ,(req, res) => {
 
 
+})
 
 
 

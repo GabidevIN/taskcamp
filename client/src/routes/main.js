@@ -7,11 +7,13 @@ function main() {
 // ----- SESSION SYSTEM
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     axios.get('/').then(res => {
       if (res.data.Status === "Success") {
         setAuth(true);
+        setName(res.data.name);
         navigate('/login')
       } else {
         setAuth(false);
@@ -34,7 +36,7 @@ return (
     {    
       auth ?
       <>
-        <h3 className="text-center text-2xl mb-4">Welcome, {}!</h3>
+        <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
         <button  className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
       </>
         :
