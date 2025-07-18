@@ -8,9 +8,12 @@ function Main() {
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/').then(res => {
+  
+    axios.get('http://localhost:3000')
+    .then(res => {
       if (res.data.Status === "Success") {
         setAuth(true);
         setName(res.data.name);
