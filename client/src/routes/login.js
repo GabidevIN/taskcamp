@@ -16,6 +16,9 @@ function Login() {
     .then(res => {
       if (res.data.Status === "Success") {
         navigate('/main')
+      }
+      else if (res.data.Status === "Error_password") {
+        alert("Incorrect Password");  
       } else {
         alert("Incorrect Email or Password // ERROR ");
       

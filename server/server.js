@@ -63,7 +63,7 @@ app.post('/login', (req, res) => {
                 if(result) {
                     return res.json({ Status: "Success"});
                 } else {
-                    return res.json({Status: "Password not match"});
+                    return res.json({Status: "Error_password"});
                 }
             });
         } else {
