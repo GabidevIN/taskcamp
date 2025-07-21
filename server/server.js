@@ -20,7 +20,7 @@ app.use(cookieParser());
 // ----- DB CONNECTION
 const db = mysql.createConnection({
     host: "localhost",
-        user: "root",
+    user: "root",
     password: "131418",
     database: "taskcamp"
 })
