@@ -23,7 +23,14 @@ function App() {
       <Route path='/Login' element={<Login/>}/>
       <Route path='/Main' element={<Main/>}/>
     </Routes>
+
+
+     <Routes>
+      <Route path='./admin/main'element={<Main/>}/>
+    </Routes>
   </BrowserRouter>
+
+  
   )
 }
 
