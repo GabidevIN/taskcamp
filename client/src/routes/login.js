@@ -19,7 +19,7 @@ function Login() {
       if (res.data.Status === "User_Success") {
         navigate('/main')
       } else if (res.data.Status === "Admin_Success") {
-        navigate('/admin/main')
+        navigate('/admin/adminMain')
       } else {
         alert("Incorrect Email or Password");
       }
