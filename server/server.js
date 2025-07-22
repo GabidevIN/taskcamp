@@ -91,19 +91,20 @@ app.post('/login', (req, res) => {
             bcrypt.compare(req.body.pass.toString(), data[0].pass, (err, result) => {
                 if(err) return res.json({Error: "Password Error"});
                 
-                if (response) {
+                if (result) {
                     const name = data[0].name;
                     const isadmin = !!data[0].isadmin; 
                     const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: '1d'});
 
-
                     res.cookie("token", token);
-                }
 
-                if(result) {
-                    return res.json({ Status: "Success"});
+                    if(isadmin) {
+                        return res.json({ Status: "Admin Success" });
+                    } else {
+                        return res.json({ Status: "User Success" });
+                    }   
                 } else {
-                    return res.json({Status: "Password not match"});
+                    return res.json({ Status: "Password not match" });
                 }
             });
         } else {
