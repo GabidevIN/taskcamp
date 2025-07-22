@@ -25,9 +25,8 @@ function App() {
     </Routes>
 
 
-     <Routes>\
-      
-      <Route path='./admin/adminMain'element={<AdminMain/>}/>
+     <Routes>
+      <Route path='/admin/adminMain'element={<AdminMain/>}/>
     </Routes>
   </BrowserRouter>
 
