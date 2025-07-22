@@ -39,20 +39,13 @@ function Main() {
 
 // ----- function button
 
-
-
-
-
-
-
-
 return (
   <>   
     <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
     {    
       auth ?
       <>
-        <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
+        <h3 className="text-center text-2xl mb-4">Welcome admin, {name}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
       </>
         :
