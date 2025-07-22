@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import register from './register';
-import main from './main';
-import adminmain from '../admin/main';
+import main from './users/main';
+import AdminMain from './admin/adminMain';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

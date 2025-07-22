@@ -2,9 +2,9 @@
 import React from 'react'
 import Home from './routes/home'
 import Register from './routes/register'
-import Main from './routes/main'
+import UserMain from './routes/users/main'
 import Login from './routes/login'
-import AdminMain from './admin/main'
+import AdminMain from './routes/admin/adminMain';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 // ROUTE SYSTEM
@@ -21,12 +21,12 @@ function App() {
       <Route path='/' element={<Home/>}/> 
       <Route path='/Register' element={<Register/>}/>
       <Route path='/Login' element={<Login/>}/>
-      <Route path='/Main' element={<Main/>}/>
+      <Route path='/Main' element={<UserMain/>}/>
     </Routes>
 
 
      <Routes>
-      <Route path='./admin/main'element={<Main/>}/>
+      <Route path='./admin/main'element={<AdminMain/>}/>
     </Routes>
   </BrowserRouter>
 
