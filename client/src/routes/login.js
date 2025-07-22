@@ -15,9 +15,9 @@ function Login() {
     event.preventDefault();
     axios.post('http://localhost:8081/login', values)
     .then(res => {
-      if (res.data.Status === "User Success") {
+      if (res.data.Status === "User_Success") {
         navigate('/main')
-      } else if (res.data.Status === "Admin Success") {
+      } else if (res.data.Status === "Admin_Success") {
         navigate('/admin/main')
       } else {
         alert("Incorrect Email or Password");

@@ -99,9 +99,9 @@ app.post('/login', (req, res) => {
                     res.cookie("token", token);
 
                     if(isadmin) {
-                        return res.json({ Status: "Admin Success" });
+                        return res.json({ Status: "Admin_Success" });
                     } else {
-                        return res.json({ Status: "User Success" });
+                        return res.json({ Status: "User_Success" });
                     }   
                 } else {
                     return res.json({ Status: "Password not match" });
