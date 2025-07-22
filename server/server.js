@@ -83,23 +83,24 @@ app.post('/register', (req, res) => {
 
 // ----- LOGIN // SESSION SYSTEM
 app.post('/login', (req, res) => {
-    const checking = 'SELECT * FROM login WHERE email = ?';
+    const checking = 'SELECT * FROM login WHERE email = ?'; 
     db.query(checking, [req.body.email], (err, data) => {
         if (err) return res.json({Error: "Error checking email"});
-                if (data.length > 0) {
+
+        if (data.length > 0) {
             bcrypt.compare(req.body.pass.toString(), data[0].pass, (err, result) => {
                 if(err) return res.json({Error: "Password Error"});
+                
                 if (response) {
                     const name = data[0].name;
+                    const isadmin = !!data[0].isadmin; 
                     const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: '1d'});
+
+
                     res.cookie("token", token);
                 }
+
                 if(result) {
-
-
-
-
-                    
                     return res.json({ Status: "Success"});
                 } else {
                     return res.json({Status: "Password not match"});
