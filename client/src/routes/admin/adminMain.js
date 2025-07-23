@@ -14,18 +14,18 @@ function Main() {
   useEffect(() => {
     axios.get('http://localhost:8081')
     .then(res => {
+      console.log(res.data);
       if (res.data.Status === "Success") {
         setName(res.data.name);
         setStatus(res.data.admin);
-            // error dito
-            
-        if (res.data.admin === 1)  {
+
+        if (Number(res.data.admin) === 1) {
           setMessage('You are logged in as an Admin');
           setAuth(true);
         } else {
           setMessage('You are logged in as a User');
           setAuth(false);
-        }
+        } 
         
       } else {
         setAuth(false);

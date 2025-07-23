@@ -94,12 +94,12 @@ app.post('/login', (req, res) => {
                 
                 if (result) {
                     const name = data[0].name;
-                    const isadmin = !!data[0].admin; 
-                    const token = jwt.sign({name}, "jwt-secret-key", {expiresIn: '1d'});
+                    const admin = !!data[0].admin; 
+                    const token = jwt.sign({name,admin}, "jwt-secret-key", {expiresIn: '1d'});
 
                     res.cookie("token", token);
 
-                    if(isadmin) {
+                    if(admin) {
                         return res.json({ Status: "Admin_Success" });
                     } else {
                         return res.json({ Status: "User_Success" });
