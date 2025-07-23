@@ -8,14 +8,23 @@ function Main() {
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
+  const [status, setStatus] = useState(false);
+
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
     .then(res => {
       if (res.data.Status === "Success") {
-        setAuth(true);
         setName(res.data.name);
+        setStatus(res.data.admin);
+        if (res.data.admin === 1) {
+          setMessage("You are logged in as an Admin");
+          setAuth(true);
+        } else {
+          setMessage("You are logged in as a User");
+          setAuth(false);
+        }
       } else {
         setAuth(false);
         setMessage(res.data.Error);
