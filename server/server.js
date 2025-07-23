@@ -36,6 +36,7 @@ const verifyUser = (req, res, next) => {
                 return res.json({ Error: "Invalid token" });
             } else {
                 req.name = decoded.name;
+                req.admin = decoded.admin;
                 next();
             }
         })
@@ -43,7 +44,7 @@ const verifyUser = (req, res, next) => {
 }
 
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", name: req.name});
+    return res.json({Status: "Success", name: req.name, admin: req.admin});
 })
 
 app.get('/logout', (req, res) => {

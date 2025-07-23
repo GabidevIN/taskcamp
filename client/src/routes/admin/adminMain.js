@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react'
-import Login from '../login';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -18,13 +17,16 @@ function Main() {
       if (res.data.Status === "Success") {
         setName(res.data.name);
         setStatus(res.data.admin);
-        if (res.data.admin === 1) {
-          setMessage("You are logged in as an Admin");
+            // error dito
+            
+        if (res.data.admin) {
+          setMessage('You are logged in as an Admin');
           setAuth(true);
         } else {
-          setMessage("You are logged in as a User");
+          setMessage('You are logged in as a User');
           setAuth(false);
         }
+        
       } else {
         setAuth(false);
         setMessage(res.data.Error);
@@ -54,7 +56,7 @@ return (
     {    
       auth ?
       <>
-        <h3 className="text-center text-2xl mb-4">Welcome Admin, {name}!</h3>
+        <h3 className="text-center text-2xl mb-4">Welcome Admin, {name} {status}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
       </>
         :
