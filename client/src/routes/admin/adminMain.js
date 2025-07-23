@@ -19,7 +19,7 @@ function Main() {
         setStatus(res.data.admin);
             // error dito
             
-        if (res.data.admin) {
+        if (res.data.admin === 1)  {
           setMessage('You are logged in as an Admin');
           setAuth(true);
         } else {
