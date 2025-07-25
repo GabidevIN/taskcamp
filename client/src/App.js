@@ -6,31 +6,39 @@ import UserMain from './routes/users/main'
 import Login from './routes/login'
 import AdminMain from './routes/admin/adminMain';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Schedule from './routes/users/schedule';
+import Notes from './routes/users/notes';
+import Profile from './routes/users/profile';
+import CreateTask from './routes/users/createtask';
 
 // ROUTE SYSTEM
 function App() {
 
-// ----- GAWA KA DITO NG IN SESSION 
-
-
-
-
   return (
   <BrowserRouter>
+
+    {/* APPLICATION ROUTES */}
     <Routes>
       <Route path='/' element={<Home/>}/> 
       <Route path='/Register' element={<Register/>}/>
       <Route path='/Login' element={<Login/>}/>
-      <Route path='/Main' element={<UserMain/>}/>
     </Routes>
 
-
+    {/* ADMIN ROUTES */}
      <Routes>
       <Route path='/admin/adminMain'element={<AdminMain/>}/>
     </Routes>
-  </BrowserRouter>
 
-  
+    {/* USER ROUTES */}
+     <Routes>
+      <Route path='/Main' element={<UserMain/>}/>
+      <Route path='/Schedule' element={<Schedule/>}/>
+      <Route path='/Notes' element={<Notes/>}/>
+      <Route path='/Profile' element={<Profile/>}/>
+      <Route path='/CreateTask' element={<CreateTask/>}/>
+    </Routes>
+
+  </BrowserRouter>
   )
 }
 
