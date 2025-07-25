@@ -57,6 +57,19 @@ return (
         <h3 className="text-center text-2xl mb-4">Welcome Admin, {name} {status}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
       </>
+              
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /* USER IS NOT AUTHENTICATED*/
         :
       <>
         <h3>{message}</h3>
