@@ -59,6 +59,10 @@ return (
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
+         <Link to ="/Schedule" >SCHEDULE</Link>
+        <Link to ="/Notes" >NOTES</Link>
+        <Link to ="/Main" >MAIN</Link>
+        <Link to ="/CreateTask" >CREATE TASK</Link>  
       </>
         
         
