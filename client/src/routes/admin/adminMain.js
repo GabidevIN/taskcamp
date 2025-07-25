@@ -20,7 +20,6 @@ function Main() {
         setStatus(res.data.admin);
 
         if (Number(res.data.admin) === 1) {
-          setMessage('You are logged in as an Admin');
           setAuth(true);
         } else {
           setMessage('You are logged in as a User');
@@ -44,7 +43,6 @@ function Main() {
 
 // ----- System displays
 
-yes
 
 
 
