@@ -43,10 +43,12 @@ const verifyUser = (req, res, next) => {
     }
 }
 
+// ----- SESSION VERIFICATION
 app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", name: req.name, admin: req.admin});
 })
 
+// ----- SESSION LOGOUT
 app.get('/logout', (req, res) => {
     res.clearCookie("token");
     return res.json({Status: "Success"});
@@ -57,8 +59,6 @@ app.post('/register', (req, res) => {
     const checking = 'SELECT * FROM login WHERE email = (?)';
     db.query(checking, [req.body.email], (err, result) => {
         if (err) return res.json({ Status: "Error", Error: err });
-
-        // ERROR DITO GAB -- di madetect ng system kapag may duplicate email 
         if (result.length > 0) {
         return res.json({ Status: "Duplicate" });
         }
@@ -115,13 +115,20 @@ app.post('/login', (req, res) => {
 });
 
 
-// ----- SESSION FOR INPUTING TASK AND VIEWING
+// ----- SESSION FOR CREATING TASK
 
 
 
 
 
-// ----- SESSION FOR INPUTING TASK AND VIEWING
+// ----- SESSION FOR SCHEDULING
+
+
+
+// ----- SESSION FOR NOTES
+
+
+// ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
 
 
 

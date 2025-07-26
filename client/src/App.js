@@ -1,5 +1,4 @@
 // IMPORTED IDE
-import React from 'react'
 import Home from './routes/home'
 import Register from './routes/register'
 import UserMain from './routes/users/main'
