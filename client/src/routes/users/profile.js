@@ -25,6 +25,7 @@ function Main() {
       console.log(res.data);
       if (res.data.Status === "Success") {
         setName(res.data.name);
+        
         setStatus(res.data.admin);
         setDelay(res.data.delay);
         setCompleted(res.data.completed);

@@ -134,11 +134,11 @@ app.post('/login', (req, res) => {
 app.get('/profile', verifyUser, (req, res) => {
     const sql = 'SELECT * FROM login WHERE name = ?';
     db.query(sql, [req.name], (err, result) => {
-        if (err) return res.json({Error: "Error fetching profile"});
+        if (err) return res.json({ Error: "Error fetching profile" });
         if (result.length > 0) {
-            return res.json({Status: "Success", data: result[0]});
+            return res.json({ Status: "Success", data: result[0] });
         } else {
-            return res.json({Status: "No profile found"});
+            return res.json({ Status: "No profile found" });
         }
     });
 });
