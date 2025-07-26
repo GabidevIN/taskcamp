@@ -49,7 +49,7 @@ const verifyUser = (req, res, next) => {
 
 // ----- SESSION VERIFICATION
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", name: req.name, admin: req.admin});
+    return res.json({Status: "Success", name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
 })
 
 // ----- SESSION LOGOUT
