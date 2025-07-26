@@ -37,6 +37,10 @@ const verifyUser = (req, res, next) => {
             } else {
                 req.name = decoded.name;
                 req.admin = decoded.admin;
+                req.delay = decoded.delay;
+                req.completed = decoded.completed;
+                req.late = decoded.late;
+                req.shared = decoded.shared;
                 next();
             }
         })
@@ -95,7 +99,12 @@ app.post('/login', (req, res) => {
                 if (result) {
                     const name = data[0].name;
                     const admin = !!data[0].admin; 
-                    const token = jwt.sign({name,admin}, "jwt-secret-key", {expiresIn: '1d'});
+                    const delay = data[0].delay;
+                    const completed = data[0].completed;
+                    const late = data[0].late;
+                    const shared = data[0].shared;
+
+                    const token = jwt.sign({name,admin,delay,completed,late,shared}, "jwt-secret-key", {expiresIn: '1d'});
 
                     res.cookie("token", token);
 
@@ -117,18 +126,22 @@ app.post('/login', (req, res) => {
 
 // ----- SESSION FOR CREATING TASK
 
-
-
-
-
 // ----- SESSION FOR SCHEDULING
-
-
 
 // ----- SESSION FOR NOTES
 
-
 // ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
+app.get('/profile', verifyUser, (req, res) => {
+    const sql = 'SELECT * FROM login WHERE name = ?';
+    db.query(sql, [req.name], (err, result) => {
+        if (err) return res.json({Error: "Error fetching profile"});
+        if (result.length > 0) {
+            return res.json({Status: "Success", data: result[0]});
+        } else {
+            return res.json({Status: "No profile found"});
+        }
+    });
+});
 
 
 

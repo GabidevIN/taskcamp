@@ -9,6 +9,13 @@ function Main() {
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
+  const [delay, setDelay] = useState('');
+  const [completed, setCompleted] = useState('');
+  const [late, setlate] = useState('');
+  const [shared, setShared] = useState('');
+
+
+
 
 
   axios.defaults.withCredentials = true;
@@ -19,7 +26,11 @@ function Main() {
       if (res.data.Status === "Success") {
         setName(res.data.name);
         setStatus(res.data.admin);
-
+        setDelay(res.data.delay);
+        setCompleted(res.data.completed);
+        setlate(res.data.late);
+        setShared(res.data.shared);
+        
         if (Number(res.data.admin) === 1) {
           setMessage('You are logged in as an Admin');
           setAuth(false);
@@ -59,10 +70,17 @@ return (
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
-         <Link to ="/Schedule" >SCHEDULE</Link>
-        <Link to ="/Notes" >NOTES</Link>
-        <Link to ="/Main" >MAIN</Link>
-        <Link to ="/CreateTask" >CREATE TASK</Link>  
+        <h1>user status: DELAYED{delay} </h1>
+        <h1>user status: COMPLETED{completed} </h1>
+        <h1>user status: LATE{late} </h1>
+        <h1>user status: SHARED{shared} </h1>
+        
+        
+        
+        <Link to ="/schedule" >SCHEDULE</Link>
+        <Link to ="/notes" >NOTES</Link>
+        <Link to ="/main" >MAIN</Link>
+        <Link to ="/createTask" >CREATE TASK</Link>  
       </>
         
         
