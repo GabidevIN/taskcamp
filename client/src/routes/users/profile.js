@@ -70,10 +70,10 @@ return (
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
         <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
-        <h1>user status: DELAYED{delay} </h1>
-        <h1>user status: COMPLETED{completed} </h1>
-        <h1>user status: LATE{late} </h1>
-        <h1>user status: SHARED{shared} </h1>
+        <h1>Delayed: {delay} </h1>
+        <h1>Completed: {completed} </h1>
+        <h1>Late: {late} </h1>
+        <h1>Shared: {shared} </h1>
         
         
         
