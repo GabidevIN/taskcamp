@@ -136,12 +136,25 @@ app.post('/login', (req, res) => {
 // ----- SESSION FOR NOTES
 app.post('/notes', verifyUser, (req, res) => {
     const { title, content } = req.body;
-    const user_id = req.login.name;
-    
+    const login_id = req.id;    
 
+    db.query(
+        'INSERT INTO notes (login_id, title, content) VALUES (?, ?, ?)',
+        [login_id, title, content],
+        (err, result) => {
+        if (err) return res.json({ Error: err });
+        res.json({ id: result.insertId, title, content, login_id });
+        }
+    );
+});
 
-
-
+// ----- SESSION FOR NOTES PROTECTION
+app.get('/notes', verifyUser, (req, res) => {
+  const login_id = req.id;
+  db.query('SELECT * FROM notes WHERE login_id = ?', [login_id], (err, result) => {
+    if (err) return res.json({ Error: err });
+    res.json(result);
+  });
 });
 
 
