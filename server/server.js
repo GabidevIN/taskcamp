@@ -3,7 +3,7 @@ import express, { response } from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 const salt = 10;
 
@@ -35,6 +35,7 @@ const verifyUser = (req, res, next) => {
             if (err) {
                 return res.json({ Error: "Invalid token" });
             } else {
+                req.user = decoded;
                 req.id = decoded.id;
                 req.name = decoded.name;
                 req.delay = decoded.delay;
@@ -52,7 +53,7 @@ const verifyUser = (req, res, next) => {
 
 // ----- SESSION VERIFICATIONs
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", id: req.id, name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
+    return res.json({Status: "Success", id: req.user.id, name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
 })
 
 // ----- SESSION LOGOUT
@@ -70,7 +71,7 @@ app.post('/register', (req, res) => {
         return res.json({ Status: "Duplicate" });
         }
 
-    const sql = "INSERT INTO login (`name`,`email`,`pass`) VALUES (?)";
+    const sql = "INSERT INTO login (name,`email`,`pass`) VALUES (?)";
     bcrypt.hash(req.body.pass.toString(), salt, (err, hash) => {
         if(err) return res.json({Error: "Error for hashing password"});
         const values = [
@@ -100,15 +101,7 @@ app.post('/login', (req, res) => {
                 if(err) return res.json({Error: "Password Error"});
                 
                 if (result) {
-                    const name = data[0].name;
-                    const admin = !!data[0].admin; 
-                    const delay = data[0].delay;
-                    const completed = data[0].completed;
-                    const late = data[0].late;
-                    const shared = data[0].shared;
-                    const id = data[0].id;
-
-
+                    const { id, name, admin, delay, completed, late, shared } = data[0];
                     const token = jwt.sign({id,name,admin,delay,completed,late,shared}, "jwt-secret-key", {expiresIn: '1d'});
 
                     res.cookie("token", token);
@@ -136,32 +129,28 @@ app.post('/login', (req, res) => {
 // ----- SESSION FOR NOTES
 app.post('/notes', verifyUser, (req, res) => {
     const { title, content } = req.body;
-    const login_id = req.id;    
+    const login_id = req.user.id;
 
     db.query(
         'INSERT INTO notes (login_id, title, content) VALUES (?, ?, ?)',
         [login_id, title, content],
         (err, result) => {
-        if (err) return res.json({ Error: err });
-        res.json({ id: result.insertId, title, content, login_id });
+            if (err) return res.json({ Error: err });
+            res.json({ id: result.insertId, title, content, login_id });
         }
     );
 });
 
 // ----- SESSION FOR NOTES PROTECTION
 app.get('/notes', verifyUser, (req, res) => {
-  const login_id = req.id;
-  db.query('SELECT * FROM notes WHERE login_id = ?', [login_id], (err, result) => {
-    if (err) return res.json({ Error: err });
-    res.json(result);
-  });
+    const login_id = req.user.id;
+    console.log("Fetching notes for user:", login_id);
+    db.query('SELECT * FROM notes WHERE login_id = ?', [login_id], (err, result) => {
+        if (err) return res.json({ Error: err });
+        console.log("Notes result: Fetched");
+        res.json(result);
+    });
 });
-
-
-
-
-
-
 
 
 // ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
