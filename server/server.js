@@ -36,18 +36,20 @@ const verifyUser = (req, res, next) => {
                 return res.json({ Error: "Invalid token" });
             } else {
                 req.name = decoded.name;
-                req.admin = decoded.admin;
                 req.delay = decoded.delay;
                 req.completed = decoded.completed;
                 req.late = decoded.late;
                 req.shared = decoded.shared;
+                req.admin = decoded.admin;
+                req.login = decoded;
+
                 next();
             }
         })
     }
 }
 
-// ----- SESSION VERIFICATION
+// ----- SESSION VERIFICATIONs
 app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
 })
@@ -129,6 +131,22 @@ app.post('/login', (req, res) => {
 // ----- SESSION FOR SCHEDULING
 
 // ----- SESSION FOR NOTES
+app.post('/notes', verifyUser, (req, res) => {
+    const { title, content } = req.body;
+    const user_id = req.login.name;
+    
+
+
+
+
+});
+
+
+
+
+
+
+
 
 // ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
 app.get('/profile', verifyUser, (req, res) => {

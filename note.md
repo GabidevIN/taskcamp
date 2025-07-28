@@ -34,12 +34,12 @@
     title VARCHAR(255),
     content TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)
+);
 
-- CREATE TABLE schedule (
+- CREATE TABLE sched (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    agenda VARCHAR(255),
-    context TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)
+    title VARCHAR(255),
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES login(id) ON DELETE CASCADE
+);

@@ -10,7 +10,6 @@ function Main() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
 
-
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
@@ -35,7 +34,7 @@ function Main() {
   .then(err => console.log(err));
   }, [])
 
-
+// ----- Logout function
   const logout = () => {
     axios.get('http://localhost:8081/logout')
     .then(res => {
@@ -43,10 +42,11 @@ function Main() {
     }).catch(err => console.log(err));
   }
 
+// ----- System noting
+
+
+
 // ----- System displays
-
-
-
 
 
 // ----- function button
