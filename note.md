@@ -20,5 +20,26 @@
     email VARCHAR(225) not null unique, 
     pass VACHAR(225) not null, 
     name VARCHAR(225) not null unique, 
-     admin BOOLEAN DEFAULT FALSE;
+    admin BOOLEAN DEFAULT FALSE;
+    completed INT;
+    delay INT;
+    late INT;
+    created INT; 
+    shared INT;
  )
+
+- CREATE TABLE notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255),
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+
+- CREATE TABLE schedule (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    agenda VARCHAR(255),
+    context TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
