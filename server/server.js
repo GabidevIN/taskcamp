@@ -35,6 +35,7 @@ const verifyUser = (req, res, next) => {
             if (err) {
                 return res.json({ Error: "Invalid token" });
             } else {
+                req.id = decoded.id;
                 req.name = decoded.name;
                 req.delay = decoded.delay;
                 req.completed = decoded.completed;
@@ -51,7 +52,7 @@ const verifyUser = (req, res, next) => {
 
 // ----- SESSION VERIFICATIONs
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
+    return res.json({Status: "Success", id: req.id, name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
 })
 
 // ----- SESSION LOGOUT
@@ -105,8 +106,10 @@ app.post('/login', (req, res) => {
                     const completed = data[0].completed;
                     const late = data[0].late;
                     const shared = data[0].shared;
+                    const id = data[0].id;
 
-                    const token = jwt.sign({name,admin,delay,completed,late,shared}, "jwt-secret-key", {expiresIn: '1d'});
+
+                    const token = jwt.sign({id,name,admin,delay,completed,late,shared}, "jwt-secret-key", {expiresIn: '1d'});
 
                     res.cookie("token", token);
 

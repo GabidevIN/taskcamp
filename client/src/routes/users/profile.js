@@ -13,6 +13,7 @@ function Main() {
   const [completed, setCompleted] = useState('');
   const [late, setlate] = useState('');
   const [shared, setShared] = useState('');
+  const [id, setId] = useState('');
 
 
 
@@ -30,7 +31,8 @@ function Main() {
         setCompleted(res.data.completed);
         setlate(res.data.late);
         setShared(res.data.shared);
-        
+        setId(res.data.id);
+
         if (Number(res.data.admin) === 1) {
           setMessage('You are logged in as an Admin');
           setAuth(false);
