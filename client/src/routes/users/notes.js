@@ -79,6 +79,10 @@ useEffect(() => {
     }
   };
 
+// ----- Deleting Notes
+
+
+
 // ----- LOGOUT SESSION
   const logout = () => {
     axios.get('http://localhost:8081/logout')
@@ -120,17 +124,19 @@ useEffect(() => {
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
             </form>
 
-            {notes.length > 0 ? (
-              [...notes] // create a copy so we don't mutate state directly
-                .sort((a, b) => b.id - a.id) // sort by ID descending (newest first)
+            {notes.length > 0 ? ( // Display notes
+              [...notes]
+                .sort((a, b) => b.id - a.id)
                 .map(note => (
                   <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded">
                     <h3 className="font-bold">{note.title}</h3>
                     <p>{note.content}</p>
                   </div>
                 ))
+
             ) : (
               <p>No notes found. Create one above!</p>
+
             )}
 
 

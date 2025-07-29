@@ -166,6 +166,22 @@ app.get('/profile', verifyUser, (req, res) => {
     });
 });
 
+// ----- SESSION FOR PROFILE (Deleting notes) 
+app.delete('/notes/:id', verifyUser, (req, res) => {
+    const noteId = req.params.id;
+    const login_id = req.user.id;
+
+    db.query('DELETE FROM notes WHERE id = ? AND login_id = ?', [noteId, login_id], (err, result) => {
+        if (err) return res.json({ Error: err });
+        if (result.affectedRows > 0) {
+            return res.json({ Status: "Note deleted successfully" });
+        } else {
+            return res.json({ Status: "Note not found or not authorized" });
+        }
+    });
+}); 
+
+
 
 
 // ----- CHECKING DB CONNECTION 
