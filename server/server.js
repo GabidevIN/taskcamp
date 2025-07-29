@@ -164,7 +164,9 @@ app.delete('/notes/:id', verifyUser, (req, res) => {
             if (err) return res.status(500).json({ Error: "Database error", Details: err });
 
             if (result.affectedRows > 0) {
-                return res.status(200).json({ Status: "Note deleted successfully" });
+                console.log("Note deleted successfully");
+                return res.status(200).json({ Status: "Deleted" });
+                
             } else {
                 return res.status(404).json({ Status: "Note not found or not authorized" });
             }

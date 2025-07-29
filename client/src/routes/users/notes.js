@@ -86,8 +86,8 @@ const handleDelete = async (id) => {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    if (res.data.Status === "Note deleted successfully") {
-      setNotes(prev => prev.filter(note => note.id !== id));
+    if (res.data.Status === "Deleted") {
+      setNotes(prev => prev.filter(note => note.id !== id));      
     } else {
       console.warn(res.data.Status);
     }
@@ -102,7 +102,6 @@ const handleDelete = async (id) => {
     axios.get('http://localhost:8081/logout')
       .then(() => {
         localStorage.removeItem('token');
-        window.location.reload();
       })
       .catch(err => console.log(err));
   };
