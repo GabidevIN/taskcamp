@@ -120,7 +120,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// ----- SESSION FOR NOTES
+// ----- SESSION FOR NOTES (ADD MO NG HASHING)
 app.post('/notes', verifyUser, (req, res) => {
     const { title, content } = req.body;
     const login_id = req.user.id;
@@ -135,7 +135,7 @@ app.post('/notes', verifyUser, (req, res) => {
     );
 });
 
-// ----- SESSION FOR NOTES PROTECTION
+// ----- SESSION FOR NOTES PROTECTION 
 app.get('/notes', verifyUser, (req, res) => {
     const login_id = req.user.id;
     console.log("Fetching notes for user:", login_id);
@@ -146,7 +146,7 @@ app.get('/notes', verifyUser, (req, res) => {
     });
 });
 
-// ----- SESSION FOR PROFILE (Deleting notes) 
+// ----- SESSION FOR NOTES (Deleting notes) // ADD KA NG MULTIPLE DELETE
 app.delete('/notes/:id', verifyUser, (req, res) => {
     const noteId = req.params.id;
     const login_id = req.user.id;
@@ -168,7 +168,6 @@ app.delete('/notes/:id', verifyUser, (req, res) => {
     );
 });
 
-
 // ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
 app.get('/profile', verifyUser, (req, res) => {
     const sql = 'SELECT * FROM login WHERE name = ?';
@@ -182,7 +181,12 @@ app.get('/profile', verifyUser, (req, res) => {
     });
 });
 
-// ----- SESSION FOR CREATING TASK
+// ----- SESSION FOR CREATING TASK -- WITH TIME, DATE, DURATION, AND SHARING
+
+
+
+
+
 
 // ----- SESSION FOR SCHEDULING
 
