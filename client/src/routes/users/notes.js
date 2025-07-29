@@ -80,7 +80,21 @@ useEffect(() => {
   };
 
 // ----- Deleting Notes
+const handleDelete = async (id) => {
+  try {
+    const res = await axios.delete(`http://localhost:8081/notes/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
+    if (res.data.Status === "Note deleted successfully") {
+      setNotes(prev => prev.filter(note => note.id !== id));
+    } else {
+      console.warn(res.data.Status);
+    }
+  } catch (err) {
+    console.error("Error deleting note:", err);
+  }
+};
 
 
 // ----- LOGOUT SESSION
@@ -131,6 +145,7 @@ useEffect(() => {
                   <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded">
                     <h3 className="font-bold">{note.title}</h3>
                     <p>{note.content}</p>
+                    <button onClick={handleDelete}>nah</button>
                   </div>
                 ))
 

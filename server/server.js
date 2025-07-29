@@ -152,6 +152,26 @@ app.get('/notes', verifyUser, (req, res) => {
     });
 });
 
+// ----- SESSION FOR PROFILE (Deleting notes) 
+app.delete('/notes/:id', verifyUser, (req, res) => {
+    const noteId = req.params.id;
+    const login_id = req.user.id;
+
+    db.query(
+        'DELETE FROM notes WHERE id = ? AND login_id = ?',
+        [noteId, login_id],
+        (err, result) => {
+            if (err) return res.status(500).json({ Error: "Database error", Details: err });
+
+            if (result.affectedRows > 0) {
+                return res.status(200).json({ Status: "Note deleted successfully" });
+            } else {
+                return res.status(404).json({ Status: "Note not found or not authorized" });
+            }
+        }
+    );
+});
+
 
 // ----- SESSION FOR PROFILE ( WITH GRADE DISPALY )
 app.get('/profile', verifyUser, (req, res) => {
@@ -165,24 +185,6 @@ app.get('/profile', verifyUser, (req, res) => {
         }
     });
 });
-
-// ----- SESSION FOR PROFILE (Deleting notes) 
-app.delete('/notes/:id', verifyUser, (req, res) => {
-    const noteId = req.params.id;
-    const login_id = req.user.id;
-
-    db.query('DELETE FROM notes WHERE id = ? AND login_id = ?', [noteId, login_id], (err, result) => {
-        if (err) return res.json({ Error: err });
-        if (result.affectedRows > 0) {
-            return res.json({ Status: "Note deleted successfully" });
-        } else {
-            return res.json({ Status: "Note not found or not authorized" });
-        }
-    });
-}); 
-
-
-
 
 // ----- CHECKING DB CONNECTION 
 app.listen(8081, () => {
