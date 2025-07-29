@@ -44,7 +44,6 @@ const verifyUser = (req, res, next) => {
                 req.shared = decoded.shared;
                 req.admin = decoded.admin;
                 req.login = decoded;
-
                 next();
             }
         })
@@ -121,11 +120,6 @@ app.post('/login', (req, res) => {
     });
 });
 
-
-// ----- SESSION FOR CREATING TASK
-
-// ----- SESSION FOR SCHEDULING
-
 // ----- SESSION FOR NOTES
 app.post('/notes', verifyUser, (req, res) => {
     const { title, content } = req.body;
@@ -187,6 +181,12 @@ app.get('/profile', verifyUser, (req, res) => {
         }
     });
 });
+
+// ----- SESSION FOR CREATING TASK
+
+// ----- SESSION FOR SCHEDULING
+
+
 
 // ----- CHECKING DB CONNECTION 
 app.listen(8081, () => {
