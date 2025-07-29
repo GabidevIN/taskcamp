@@ -145,7 +145,7 @@ const handleDelete = async (id) => {
                   <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded">
                     <h3 className="font-bold">{note.title}</h3>
                     <p>{note.content}</p>
-                    <button onClick={handleDelete}>nah</button>
+                    <button onClick={() => handleDelete(note.id)}>Delete</button>
                   </div>
                 ))
 
