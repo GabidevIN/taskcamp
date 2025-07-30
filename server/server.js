@@ -188,7 +188,18 @@ app.get('/profile', verifyUser, (req, res) => {
 
 
 
+
 // ----- SESSION FOR SCHEDULING
+
+// ----- SESSION SCHDULE FETCHING
+
+// ----- SESSION SCHDULE DELETING
+
+// ----- SESSION SCHDULE PRIORITIZING
+
+
+
+
 
 
 
