@@ -50,7 +50,7 @@ const verifyUser = (req, res, next) => {
     }
 }
 
-// ----- SESSION VERIFICATIONs
+// ----- SESSION VERIFICATIONS
 app.get('/', verifyUser, (req, res) => {
     return res.json({Status: "Success", id: req.user.id, name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
 })
@@ -181,10 +181,18 @@ app.get('/profile', verifyUser, (req, res) => {
     });
 });
 
-// ----- SESSION FOR CREATING TASK -- WITH TIME, DATE, DURATION, AND SHARING
 
+// ----- SESSION CREATING TASKS
 
+// ----- SESSION SHARING TASKS
 
+// ----- SESSION UPDATING TASKS
+
+// ----- SESSION DELETING TASKS
+
+// ----- SESSION TASK EXPIRATION AND CHANGING STATUS
+
+// ----- SESSION FETCHING TASKS
 
 
 
@@ -197,6 +205,8 @@ app.get('/profile', verifyUser, (req, res) => {
 
 // ----- SESSION SCHDULE PRIORITIZING
 
+
+// ----- PROFILE SESSION (check mo gab verification)
 
 
 
