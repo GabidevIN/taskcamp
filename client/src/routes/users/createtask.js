@@ -58,11 +58,13 @@ return (
       auth ?
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-        <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
-        <Link to ="/Schedule" >SCHEDULE</Link>
-        <Link to ="/Notes" >NOTES</Link>
-        <Link to ="/Profile" >PROFILE</Link>
-        <Link to ="/Main" >MAIN</Link>
+          <div className="flex gap-2 mb-4">
+            <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
+            <Link to="/Schedule" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
+            <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
+            <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
+            <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">MAIN</Link>
+          </div>
 
       </>
         

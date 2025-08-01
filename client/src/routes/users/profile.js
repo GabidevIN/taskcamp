@@ -71,18 +71,19 @@ return (
       auth ?
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-        <Link to ="/" onClick={logout} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGOUT</Link>
+        <div className="flex gap-2 mb-4">
+          <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
+          <Link to="/Schedule" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
+          <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
+          <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">MAIN</Link>
+          <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
+        </div>
+
+
         <h1>Delayed: {delay} </h1>
         <h1>Completed: {completed} </h1>
         <h1>Late: {late} </h1>
         <h1>Shared: {shared} </h1>
-        
-        
-        
-        <Link to ="/schedule" >SCHEDULE</Link>
-        <Link to ="/notes" >NOTES</Link>
-        <Link to ="/main" >MAIN</Link>
-        <Link to ="/createTask" >CREATE TASK</Link>  
       </>
         
         
