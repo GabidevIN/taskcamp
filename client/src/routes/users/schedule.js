@@ -76,8 +76,9 @@ function Main() {
         key={day}
         className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
         ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
-        onClick={() => alert(`Selected: ${day}/${month + 1}/${year}`)} // Alert for selected day -- WHEN CLICK CAN ADD A NOTE
-      >
+        onClick={() => alert(`Selected: ${day}/${month + 1}/${year}`)}>        {/* Alert for selected day -- WHEN CLICK CAN ADD A NOTE*/}
+
+        
         {day}
       </div>
     );

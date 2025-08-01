@@ -137,11 +137,14 @@ const handleDelete = async (id) => {
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
             </form>
 
-            {notes.length > 0 ? ( // Display notes
+            {notes.length > 0 ? (
               [...notes]
                 .sort((a, b) => b.id - a.id)
                 .map(note => (
-                  <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded">
+                  <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer" 
+                  onClick={() => alert(`Note ID: ${note.id}`)}> {/*make this when clicked will be able to preview or EDIT*/}
+
+
                     <h3 className="font-bold">{note.title}</h3>
                     <p>{note.content}</p>
                     <button onClick={() => handleDelete(note.id)}>Delete</button>
