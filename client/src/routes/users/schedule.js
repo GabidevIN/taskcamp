@@ -10,7 +10,6 @@ function Main() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
 
-
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
@@ -43,7 +42,51 @@ function Main() {
     }).catch(err => console.log(err));
   }
 
-// ----- System displays
+// ----- SCHEDULE SYSTEM
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const [date, setDate] = useState(new Date());
+
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const today = new Date();
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  const prevMonth = () => setDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setDate(new Date(year, month + 1, 1));
+  
+  const generateDays = () => {
+    const days = [];
+  
+// ----- DAYS
+  for (let i = 0; i < firstDay; i++) {
+      days.push(<div key={`empty-${i}`} className="h-12"></div>);
+    }
+
+// ----- MONTHS
+  for (let day = 1; day <= lastDate; day++) {
+    const isToday =
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear();
+
+      days.push(
+      <div
+        key={day}
+        className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
+        ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
+        onClick={() => alert(`Selected: ${day}/${month + 1}/${year}`)} // Alert for selected day -- WHEN CLICK CAN ADD A NOTE
+      >
+        {day}
+      </div>
+    );
+  }
+  return days;
+};
+
+
+
 
 
 
@@ -66,22 +109,26 @@ return (
           <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
         </div>
 
-        <div> SCHEDULE SYSTEM
-        
-        
-        
-        
-        
-        
-        
-        </div>
 
 
+{/*SCHEDULE SYSTEM*/}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+        <button onClick={prevMonth}>PREVIOUS</button>
+        <h2 className="text-xl font-semibold">
+          {date.toLocaleString("default", { month: "long" })} {year}
+        </h2>
+        <button onClick={nextMonth}>NEXT</button>
+      </div>
 
+      <div className="grid grid-cols-7 text-center mb-2 font-bold">
+        {dayNames.map((day) => (
+          <div key={day}>{day}</div>
+        ))}
+      </div>
 
-
-
-
+      <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
+    </div>
 
       </>
         /* USER IS NOT*/
