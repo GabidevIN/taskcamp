@@ -58,26 +58,32 @@ return (
       auth ?
       <>
         <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-          <div className="flex gap-2 mb-4">
-            <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
-            <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
-            <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
-            <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
-            <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
-          </div>
+        <div className="flex gap-2 mb-4">
+          <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
+          <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
+          <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
+          <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
+          <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
+        </div>
+
+        <div> SCHEDULE SYSTEM
+        
+        
+        
+        
+        
+        
+        
+        </div>
+
+
+
+
+
+
+
+
       </>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         /* USER IS NOT*/
         :
       <>
