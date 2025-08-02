@@ -57,7 +57,7 @@ function Main() {
   const nextMonth = () => setDate(new Date(year, month + 1, 1));
   
   const generateDays = () => {
-    const days = [];
+  const days = [];
   
 // ----- DAYS
   for (let i = 0; i < firstDay; i++) {

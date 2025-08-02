@@ -21,9 +21,6 @@ const closebtn = () => {
 };
 
 
-
-
-
 return (
   <>
   <title>TASKCAMP</title>

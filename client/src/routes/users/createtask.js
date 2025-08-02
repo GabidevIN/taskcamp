@@ -65,6 +65,22 @@ return (
             <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
             <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">MAIN</Link>
           </div>
+      
+          <div className="mt-6">
+            <h2 className="text-xl mb-2">CREATE TASK</h2>
+            <form className="mb-4">
+              <input
+                className="block w-full mb-2 p-2 text-black rounded"
+                placeholder="Title" />
+              <textarea
+                className="block w-full mb-2 p-2 text-black rounded"
+                placeholder="Objective"/>
+
+              <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
+            </form>
+            
+          </div>
+      
 
       </>
         
