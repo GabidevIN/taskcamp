@@ -1,8 +1,6 @@
 // IMPORTED IDE
 import Home from './routes/home'
-import Register from './routes/register'
 import UserMain from './routes/users/main'
-import Login from './routes/login'
 import AdminMain from './routes/admin/adminMain';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Schedule from './routes/users/schedule';
@@ -19,8 +17,7 @@ function App() {
     {/* APPLICATION ROUTES */}
     <Routes>
       <Route path='/' element={<Home/>}/> 
-      <Route path='/Register' element={<Register/>}/>
-      <Route path='/Login' element={<Login/>}/>
+
     </Routes>
 
     {/* ADMIN ROUTES */}
