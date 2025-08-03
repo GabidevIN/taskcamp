@@ -44,6 +44,7 @@ const verifyUser = (req, res, next) => {
                 req.shared = decoded.shared;
                 req.admin = decoded.admin;
                 req.login = decoded;
+                req.created = decoded.created;
                 next();
             }
         })
@@ -52,7 +53,15 @@ const verifyUser = (req, res, next) => {
 
 // ----- SESSION VERIFICATIONS
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", id: req.user.id, name: req.name, admin: req.admin, delay: req.delay, completed: req.completed, late: req.late, shared: req.shared});
+    return res.json({Status: "Success", 
+        id: req.user.id,
+        name: req.name,
+        admin: req.admin,
+        delay: req.delay,
+        completed: req.completed,
+        late: req.late,
+        shared: req.shared ,
+        created: req.created});
 })
 
 // ----- SESSION LOGOUT
@@ -100,8 +109,8 @@ app.post('/login', (req, res) => {
                 if(err) return res.json({Error: "Password Error"});
                 
                 if (result) {
-                    const { id, name, admin, delay, completed, late, shared } = data[0];
-                    const token = jwt.sign({id,name,admin,delay,completed,late,shared}, "jwt-secret-key", {expiresIn: '1d'});
+                    const { id, name, admin, delay, completed, late, shared,created } = data[0];
+                    const token = jwt.sign({id,name,admin,delay,completed,late,shared,created}, "jwt-secret-key", {expiresIn: '1d'});
 
                     res.cookie("token", token);
 
@@ -186,6 +195,7 @@ app.get('/profile', verifyUser, (req, res) => {
 app.post('/createtask', verifyUser, (req, res) => {
     const { title, objective } = req.body;
     const login_id = req.user.id;
+    const added = 'SELECT * FROM login WHERE name = ?';
 
 
     db.query(
@@ -193,7 +203,17 @@ app.post('/createtask', verifyUser, (req, res) => {
         [login_id, title, objective],
         (err, result) => {
             if (err) return res.json({ Error: err });
-            res.json({ id: result.insertId, title, content, login_id });
+
+            // After successful task insertion, update the created count
+            db.query(
+                'UPDATE login SET created = created + 1 WHERE id = ?',
+                [login_id],
+                (updateErr) => {
+                    if (updateErr) return res.json({ Error: updateErr });
+
+                    res.json({ id: result.insertId, title, objective, login_id, message: 'Task created and count updated' });
+                }
+            );
         }
     );
 });

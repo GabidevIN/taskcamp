@@ -13,7 +13,7 @@ function Main() {
   const [late, setlate] = useState('');
   const [shared, setShared] = useState('');
   const [id, setId] = useState('');
-
+  const [created, setCreated] = useState('');
 
 
 
@@ -31,21 +31,24 @@ function Main() {
         setlate(res.data.late);
         setShared(res.data.shared);
         setId(res.data.id);
+        setCreated(res.data.created);
 
         if (Number(res.data.admin) === 1) {
           setMessage('You are logged in as an Admin');
           setAuth(false);
         } else {
           setAuth(true);
-        } 
-        
+        }
       } else {
         setAuth(false);
-        setMessage(res.data.Error);
+        setMessage(res.data.Error || 'Session expired, please log in.');
       }
     })
-  .then(err => console.log(err));
-  }, [])
+    .catch(() => {
+      setAuth(false);
+      setMessage('Failed to verify session. Please log in.');
+    });
+}, []);
 
 
   const logout = () => {
@@ -83,6 +86,7 @@ return (
         <h1>Completed: {completed} </h1>
         <h1>Late: {late} </h1>
         <h1>Shared: {shared} </h1>
+        <h1>created: {created}</h1>
       </>
         
         
