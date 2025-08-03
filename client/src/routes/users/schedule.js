@@ -54,7 +54,10 @@ function Main() {
 
   const prevMonth = () => setDate(new Date(year, month - 1, 1));
   const nextMonth = () => setDate(new Date(year, month + 1, 1));
-  
+  const [selectedDay, setSelectedDay] = useState(null); // track selected day
+
+
+
   const generateDays = () => {
   const days = [];
   
@@ -64,32 +67,46 @@ function Main() {
     }
 
 // ----- MONTHS
-  for (let day = 1; day <= lastDate; day++) {
+for (let day = 1; day <= lastDate; day++) {
     const isToday =
       day === today.getDate() &&
       month === today.getMonth() &&
       year === today.getFullYear();
 
-      days.push(
-      <div
-        key={day}
-        className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
-        ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
-        onClick={() => alert(`Selected: ${day}/${month + 1}/${year}`)}>        {/* Alert for selected day -- WHEN CLICK CAN ADD A NOTE*/}
+    days.push(
+      <div key={day} className="relative">
+        <div
+          className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
+          ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
+          onClick={() => setSelectedDay(day)} // Show note div for clicked day
+        >
+          {day}
+        </div>
 
-        
-        {day}
+        {/* Show note input when this day is clicked */}
+        {selectedDay === day && (
+          <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48">
+            <p className="text-sm font-bold mb-1">
+              Add note for {day}/{month + 1}/{year}
+            </p>
+            <input
+              type="text"
+              placeholder="Write a note..."
+              className="w-full p-1 border rounded mb-2"
+            />
+            <button
+              className="bg-blue-500 text-white px-2 py-1 rounded w-full"
+              onClick={() => setSelectedDay(null)} // close div after adding note (no database logic pa dine)
+            >
+              Save
+            </button>
+          </div>
+        )}
       </div>
     );
   }
   return days;
 };
-
-
-
-
-
-
 
 
 // ----- function button

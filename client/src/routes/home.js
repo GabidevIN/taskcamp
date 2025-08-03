@@ -96,7 +96,6 @@ return (
       <button onClick={closebtn}>Close</button>
       <h2 className='text-center font-bold '>LOGIN</h2>
       <form onSubmit={loginSub} className="space-y-3 max-w-md mx-auto mt-10">
-          <h1 className='text-center'>LOGIN SYSTEM</h1>
           <input className="border px-4 py-2 w-full rounded" required type='email'  placeholder='Enter Email' onChange={e => loginvalue({...login, email: e.target.value})}/>
           <input className="border px-4 py-2 w-full rounded" type='password' placeholder='Enter Password' onChange={e => loginvalue({...login, pass: e.target.value})}/>
           <button type="submit" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
@@ -112,7 +111,7 @@ return (
   <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
     <div>
       <button onClick={closebtn}>Close</button>
-      <h1 className='text-center'>REGISTER</h1>
+      <h1 className='text-center font-bold '>REGISTER</h1>
       <form onSubmit={regisSub} className="space-y-3 max-w-md mx-auto mt-10"> 
         <input placeholder='Enter Name' 
         onChange={e => regvalue({...regis, name: e.target.value})} 

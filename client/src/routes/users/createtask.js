@@ -80,20 +80,28 @@ return (
             
           </div>
       
+          <div> {/*DISPLAY OF TASK*/}
 
+
+          </div>
+
+          <div> {/*DISPLAY OF LATE TASK*/}
+
+
+          </div>
+
+          <div> {/*DISPLAY OF COMPLETED*/}
+
+
+          </div>
+
+          <div> {/*DISPLAY OF SHARED*/}
+
+
+          </div>
       </>
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         /* USER IS NOT*/
         :
       <>

@@ -182,7 +182,7 @@ app.get('/profile', verifyUser, (req, res) => {
 });
 
 
-// ----- SESSION CREATING TASKS
+// ----- SESSION CREATING TASKS  --- simple logic ay When click will +1 sa db(login) then task go to db(task)
 
 // ----- SESSION SHARING TASKS
 
