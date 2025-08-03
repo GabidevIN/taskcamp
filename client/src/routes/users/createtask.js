@@ -9,7 +9,7 @@ function Main() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');  
+  const [objective, setObj] = useState('');  
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [task, setTask] = useState([]);
 
@@ -53,15 +53,15 @@ function Main() {
 // ----- Tasking System
   const handleTask = async (e) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) return;
+    if (!title.trim() || !objective.trim()) return;
 
     try {
-      const res = await axios.post('http://localhost:8081/createtask', { title, content }, {
+      const res = await axios.post('http://localhost:8081/createtask', { title, objective }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTask(prev => [...prev, res.data]);
       setTitle('');
-      setContent('');
+      setObj('');
     } catch (err) {
       console.error("Error adding note:", err);
     }
@@ -89,10 +89,16 @@ return (
             <form onSubmit={handleTask} className="mb-4">
               <input
                 className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Title" />
+                placeholder="Title" 
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                />
               <textarea
                 className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Objective"/>
+                placeholder="Objective"
+                value={objective}
+                onChange={e => setObj(e.target.value)}
+                />
 
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
             </form>
