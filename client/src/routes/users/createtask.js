@@ -8,8 +8,16 @@ function Main() {
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');  
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [task, setTask] = useState([]);
 
 
+
+
+
+// ----- SESSION SYSTEM
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
@@ -42,11 +50,22 @@ function Main() {
     }).catch(err => console.log(err));
   }
 
-// ----- System displays
+// ----- Tasking System
+  const handleTask = async (e) => {
+    e.preventDefault();
+    if (!title.trim() || !content.trim()) return;
 
-
-
-
+    try {
+      const res = await axios.post('http://localhost:8081/createtask', { title, content }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTask(prev => [...prev, res.data]);
+      setTitle('');
+      setContent('');
+    } catch (err) {
+      console.error("Error adding note:", err);
+    }
+  };
 
 // ----- function button
 
@@ -67,7 +86,7 @@ return (
       
           <div className="mt-6">
             <h2 className="text-xl mb-2">CREATE TASK</h2>
-            <form className="mb-4">
+            <form onSubmit={handleTask} className="mb-4">
               <input
                 className="block w-full mb-2 p-2 text-black rounded"
                 placeholder="Title" />
@@ -81,6 +100,7 @@ return (
           </div>
       
           <div> {/*DISPLAY OF TASK*/}
+
 
 
           </div>
