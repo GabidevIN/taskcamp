@@ -187,15 +187,22 @@ app.post('/createtask', verifyUser, (req, res) => {
     const { title, objective } = req.body;
     const login_id = req.user.id;
 
+
     db.query(
         'INSERT INTO task (login_id, title, objective) VALUES (?, ?, ?)',
         [login_id, title, objective],
         (err, result) => {
             if (err) return res.json({ Error: err });
-            res.json({ id: result.insertId, title, objective, login_id });
+            res.json({ id: result.insertId, title, content, login_id });
         }
     );
 });
+
+
+
+
+
+
 
 // ----- SESSION SHARING TASKS
 

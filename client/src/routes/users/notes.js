@@ -13,9 +13,8 @@ function Main() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const fetched = useRef(false)
 
-  axios.defaults.withCredentials = true;
-
 // ----- SESSION SYSTEM
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
       .then(res => {

@@ -9,7 +9,7 @@ function Main() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
   const [title, setTitle] = useState('');
-  const [objective, setObj] = useState('');  
+  const [objective, setObjective] = useState('');  
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [task, setTask] = useState([]);
 
@@ -21,28 +21,28 @@ function Main() {
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
-    .then(res => {
-      console.log(res.data);
-      if (res.data.Status === "Success") {
-        setName(res.data.name);
-        setStatus(res.data.admin);
-
-        if (Number(res.data.admin) === 1) {
-          setMessage('You are logged in as an Admin');
-          setAuth(false);
+      .then(res => {
+        if (res.data.Status === "Success") {
+          setName(res.data.name);
+          setStatus(res.data.admin);
+          if (Number(res.data.admin) === 1) {
+            setMessage('You are logged in as an Admin');
+            setAuth(false);
+          } else {
+            setAuth(true);
+          }
         } else {
-          setAuth(true);
-        } 
-        
-      } else {
+          setAuth(false);
+          setMessage(res.data.Error || 'Session expired, please log in.');
+        }
+      })
+      .catch(() => {
         setAuth(false);
-        setMessage(res.data.Error);
-      }
-    })
-  .then(err => console.log(err));
-  }, [])
+        setMessage('Failed to verify session. Please log in.');
+      });
+  }, []);
 
-
+// ----- LOGOUT SESSION
   const logout = () => {
     axios.get('http://localhost:8081/logout')
     .then(res => {
@@ -51,7 +51,7 @@ function Main() {
   }
 
 // ----- Tasking System
-  const handleTask = async (e) => {
+  const handleCreateTask = async (e) => {
     e.preventDefault();
     if (!title.trim() || !objective.trim()) return;
 
@@ -61,9 +61,9 @@ function Main() {
       });
       setTask(prev => [...prev, res.data]);
       setTitle('');
-      setObj('');
+      setObjective('');
     } catch (err) {
-      console.error("Error adding note:", err);
+      console.error("Error adding Task:", err);
     }
   };
 
@@ -85,21 +85,20 @@ return (
           </div>
       
           <div className="mt-6">
-            <h2 className="text-xl mb-2">CREATE TASK</h2>
-            <form onSubmit={handleTask} className="mb-4">
+            <h2 className="text-xl mb-2">Your Notes</h2>
+            <form onSubmit={handleCreateTask} className="mb-4">
               <input
                 className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Title" 
+                placeholder="Title"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
-                />
+              />
               <textarea
                 className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Objective"
+                placeholder="objective"
                 value={objective}
-                onChange={e => setObj(e.target.value)}
-                />
-
+                onChange={e => setObjective(e.target.value)}
+              />
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
             </form>
             
