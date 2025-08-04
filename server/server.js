@@ -199,12 +199,13 @@ app.post('/createtask', verifyUser, (req, res) => {
 
 
     db.query(
-        'INSERT INTO task (login_id, title, objective, time, date) VALUES (?, ?, ?)',
+        'INSERT INTO task (login_id, title, objective, time, date) VALUES (?, ?, ?, ?, ?)',
         [login_id, title, objective, time, date],
         (err, result) => {
-            if (err) return res.json({ Error: err });
-
-            // After successful task insertion, update the created count
+        if (err) {
+            console.error('Insert Task Error:', err);
+            return res.json({ Error: 'Failed to create task' });
+        }
             db.query(
                 'UPDATE login SET created = created + 1 WHERE id = ?',
                 [login_id],
