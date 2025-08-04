@@ -9,6 +9,8 @@ function Main() {
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
   const [title, setTitle] = useState('');
+  const [time, setTime] = useState('');
+  const [date, setDate] = useState('');
   const [objective, setObjective] = useState('');  
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [task, setTask] = useState([]);
@@ -56,16 +58,23 @@ function Main() {
     if (!title.trim() || !objective.trim()) return;
 
     try {
-      const res = await axios.post('http://localhost:8081/createtask', { title, objective }, {
+      const res = await axios.post('http://localhost:8081/createtask', { title, objective, time, date }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTask(prev => [...prev, res.data]);
       setTitle('');
       setObjective('');
+      setTime('');
+      setDate('');
+
     } catch (err) {
       console.error("Error adding Task:", err);
     }
   };
+
+// ----- Deleting Task
+
+
 
 // ----- function button
 
@@ -85,7 +94,7 @@ return (
           </div>
       
           <div className="mt-6">
-            <h2 className="text-xl mb-2">Your Notes</h2>
+            <h2 className="text-xl mb-2">Your TASK</h2>
             <form onSubmit={handleCreateTask} className="mb-4">
               <input
                 className="block w-full mb-2 p-2 text-black rounded"
@@ -93,6 +102,19 @@ return (
                 value={title}
                 onChange={e => setTitle(e.target.value)}
               />
+              <input
+                type="time"
+                value={time}
+                onChange={e => setTime(e.target.value)}
+                className="p-2 rounded text-black"
+              />
+              <input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="p-2 rounded text-black"
+              />
+
               <textarea
                 className="block w-full mb-2 p-2 text-black rounded"
                 placeholder="objective"

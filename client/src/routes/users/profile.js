@@ -50,7 +50,7 @@ function Main() {
     });
 }, []);
 
-
+// ----- LOGOUT SESSION
   const logout = () => {
     axios.get('http://localhost:8081/logout')
     .then(res => {

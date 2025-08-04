@@ -193,14 +193,14 @@ app.get('/profile', verifyUser, (req, res) => {
 
 // ----- SESSION CREATING TASKS  --- simple logic ay When click will +1 sa db(login) then task go to db(task)
 app.post('/createtask', verifyUser, (req, res) => {
-    const { title, objective } = req.body;
+    const { title, objective, time, date } = req.body;
     const login_id = req.user.id;
     const added = 'SELECT * FROM login WHERE name = ?';
 
 
     db.query(
-        'INSERT INTO task (login_id, title, objective) VALUES (?, ?, ?)',
-        [login_id, title, objective],
+        'INSERT INTO task (login_id, title, objective, time, date) VALUES (?, ?, ?)',
+        [login_id, title, objective, time, date],
         (err, result) => {
             if (err) return res.json({ Error: err });
 
@@ -211,7 +211,7 @@ app.post('/createtask', verifyUser, (req, res) => {
                 (updateErr) => {
                     if (updateErr) return res.json({ Error: updateErr });
 
-                    res.json({ id: result.insertId, title, objective, login_id, message: 'Task created and count updated' });
+                    res.json({ id: result.insertId, title, objective, time, date, login_id, message: 'Task created and count updated' });
                 }
             );
         }

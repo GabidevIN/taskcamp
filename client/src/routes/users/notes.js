@@ -79,7 +79,7 @@ useEffect(() => {
   };
 
 // ----- Deleting Notes
-const handleDelete = async (id) => {
+const deleteNotes = async (id) => {
   try {
     const res = await axios.delete(`http://localhost:8081/notes/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -146,7 +146,7 @@ const handleDelete = async (id) => {
 
                     <h3 className="font-bold">{note.title}</h3>
                     <p>{note.content}</p>
-                    <button onClick={() => handleDelete(note.id)}>Delete</button>
+                    <button onClick={() => deleteNotes(note.id)}>Delete</button>
                   </div>
                 ))
 
