@@ -1,6 +1,9 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+
+
+
 
 function Main() {
 // ----- SESSION SYSTEM
@@ -14,6 +17,8 @@ function Main() {
   const [objective, setObjective] = useState('');  
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [task, setTask] = useState([]);
+  const fetched = useRef(false);
+
 
 
 
@@ -51,6 +56,33 @@ function Main() {
       window.location.reload(true);
     }).catch(err => console.log(err));
   }
+
+// ----- FETCH NOTES
+useEffect(() => {
+    if (fetched.current) return;
+    fetched.current = true;
+
+    const fetchNotes = async () => {
+      try {
+        const res = await axios.get('http://localhost:8081/createtask', { withCredentials: true });
+        console.log("📥 Notes fetched:", res.data);
+        if (Array.isArray(res.data)) {
+          setTask(res.data);
+        } else {
+          console.warn("Unexpected response:", res.data);
+          setTask([]);
+        }
+      } catch (err) {
+        console.error("Error fetching notes:", err);
+      }
+    };
+
+    fetchNotes();
+  }, []);
+
+
+
+
 
 // ----- Tasking System
   const handleCreateTask = async (e) => {
@@ -105,15 +137,20 @@ return (
               <input
                 type="time"
                 value={time}
-                onChange={e => setTime(e.target.value)}
+                onChange={(e) => setTime(e.target.value)}
                 className="p-2 rounded text-black"
               />
               <input
                 type="date"
                 value={date}
-                onChange={e => setDate(e.target.value)}
-                className="p-2 rounded text-black"
+                onChange={(e) => setDate(e.target.value)}
+                className="p-2 rounded text-black ml-2"
               />
+
+              <div className="mt-4 text-white">
+                <p>Selected Time: {time || "None"}</p>
+                <p>Selected Date: {date || "None"}</p>
+              </div>
 
               <textarea
                 className="block w-full mb-2 p-2 text-black rounded"
@@ -121,13 +158,37 @@ return (
                 value={objective}
                 onChange={e => setObjective(e.target.value)}
               />
-              <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
+              <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Task</button>
             </form>
             
           </div>
       
           <div> {/*DISPLAY OF TASK*/}
+            {task.length > 0 ? (
+              [...task]
+                .sort((a, b) => b.id - a.id)
+                .map(task => {
+                  const formattedDate = task.date ? task.date.split('T')[0] : '';
+                  const formattedTime = task.time ? task.time.slice(0, 5) : '';
 
+                  return (
+                    <div 
+                      key={task.id} 
+                      className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
+                      onClick={() => alert(`Note ID: ${task.id}`)}
+                    >
+                      <h3 className="font-bold">{task.title}</h3>
+                      <p>{task.objective}</p>
+                      <p>{formattedTime}</p>
+                      <p>{formattedDate}</p>
+                    </div>
+                  );
+                })
+
+            ) : (
+              <p>No notes found. Create one above!</p>
+
+            )}
 
 
           </div>

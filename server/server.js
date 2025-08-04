@@ -144,7 +144,7 @@ app.post('/notes', verifyUser, (req, res) => {
     );
 });
 
-// ----- SESSION FOR NOTES PROTECTION 
+// ----- SESSION FOR NOTES PROTECTION AND FETCHING
 app.get('/notes', verifyUser, (req, res) => {
     const login_id = req.user.id;
     console.log("Fetching notes for user:", login_id);
@@ -217,6 +217,17 @@ app.post('/createtask', verifyUser, (req, res) => {
             );
         }
     );
+});
+
+// ----- SESSION FOR TASK PROTECTION AND FETCHING
+app.get('/createtask', verifyUser, (req, res) => {
+    const login_id = req.user.id;
+    console.log("Fetching task for user:", login_id);
+    db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (err, result) => {
+        if (err) return res.json({ Error: err });
+        console.log("Task result: Fetched");
+        res.json(result);
+    });
 });
 
 

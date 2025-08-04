@@ -136,6 +136,7 @@ const deleteNotes = async (id) => {
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
             </form>
 
+{/*FETCHING DISPLAY*/}
             {notes.length > 0 ? (
               [...notes]
                 .sort((a, b) => b.id - a.id)
