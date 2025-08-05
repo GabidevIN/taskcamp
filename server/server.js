@@ -199,7 +199,7 @@ app.post('/createtask', verifyUser, (req, res) => {
 
 
     db.query(
-        'INSERT INTO task (login_id, title, objective, time, date) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO task (login_id, title, objective, time, date, ongoing) VALUES (?, ?, ?, ?, ?, 1)',
         [login_id, title, objective, time, date],
         (err, result) => {
         if (err) {
@@ -223,12 +223,21 @@ app.post('/createtask', verifyUser, (req, res) => {
 app.get('/createtask', verifyUser, (req, res) => {
     const login_id = req.user.id;
     console.log("Fetching task for user:", login_id);
-    db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (err, result) => {
-        if (err) return res.json({ Error: err });
-        console.log("Task result: Fetched");
-        res.json(result);
+
+    const updateQuery = `UPDATE task SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND CONCAT(date, ' ', time) < NOW()`;
+
+    db.query(updateQuery, [login_id], (updateErr) => {
+        if (updateErr) return res.json({ Error: updateErr });
+
+        // Step 2: Fetch the updated tasks
+        db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
+            if (fetchErr) return res.json({ Error: fetchErr });
+            console.log("Task result: Fetched and updated");
+            res.json(result);
+        });
     });
 });
+
 
 // ----- SESSION FOR TASK (Deleting task) // ADD KA NG MULTIPLE DELETE
 app.delete('/createtask/:id', verifyUser, (req, res) => {
@@ -261,13 +270,14 @@ app.delete('/createtask/:id', verifyUser, (req, res) => {
 
 // ----- SESSION SHARING TASKS
 
+
+
+
+// ----- SESSION SHARING TASKS
+
 // ----- SESSION UPDATING TASKS
 
-// ----- SESSION DELETING TASKS
-
 // ----- SESSION TASK EXPIRATION AND CHANGING STATUS
-
-// ----- SESSION FETCHING TASKS
 
 
 

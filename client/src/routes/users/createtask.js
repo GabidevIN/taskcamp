@@ -84,6 +84,7 @@ useEffect(() => {
 
 
 
+
 // ----- Tasking System
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -179,23 +180,26 @@ return (
           </div>
       
           <div> {/*DISPLAY OF TASK*/}
+            ON GOING TASK
             {task.length > 0 ? (
               [...task]
                 .sort((a, b) => b.id - a.id)
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
+                  const detection = task.ongoing === 1 || task.ongoing === true || task.ongoing === null 
+                    ? "Ongoing" 
+                    : "Delayed";
 
                   return (
-                    <div 
-                      key={task.id} 
-                      className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
+                    <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
                       onClick={() => alert(`Note ID: ${task.id}`)}
                     >
                       <h3 className="font-bold">{task.title}</h3>
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
+                      <p>{detection}</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );
@@ -203,14 +207,11 @@ return (
 
             ) : (
               <p>No notes found. Create one above!</p>
-
             )}
-
-
           </div>
 
           <div> {/*DISPLAY OF LATE TASK*/}
-
+            LATE
 
           </div>
 
