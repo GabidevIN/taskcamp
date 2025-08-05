@@ -230,11 +230,27 @@ app.get('/createtask', verifyUser, (req, res) => {
     });
 });
 
+// ----- SESSION FOR TASK (Deleting task) // ADD KA NG MULTIPLE DELETE
+app.delete('/createtask/:id', verifyUser, (req, res) => {
+    const taskId = req.params.id;
+    const login_id = req.user.id;
 
+    db.query(
+        'DELETE FROM task WHERE id = ? AND login_id = ?',
+        [taskId, login_id],
+        (err, result) => {
+            if (err) return res.status(500).json({ Error: "Database error", Details: err });
 
-
-
-
+            if (result.affectedRows > 0) {
+                console.log("Task deleted successfully");
+                return res.status(200).json({ Status: "DeletedTask" });
+                
+            } else {
+                return res.status(404).json({ Status: "Task not found or not authorized" });
+            }
+        }
+    );
+});
 
 // ----- SESSION SHARING TASKS
 

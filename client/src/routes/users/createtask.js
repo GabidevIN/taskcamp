@@ -104,7 +104,22 @@ useEffect(() => {
     }
   };
 
-// ----- Deleting Task
+// ----- Deleting Notes
+const deleteTask = async (id) => {
+  try {
+    const res = await axios.delete(`http://localhost:8081/createtask/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (res.data.Status === "DeletedTask") {
+      setTask(prev => prev.filter(task => task.id !== id));      
+    } else {
+      console.warn(res.data.Status);
+    }
+  } catch (err) {
+    console.error("Error deleting Task:", err);
+  }
+};
 
 
 
@@ -181,6 +196,7 @@ return (
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
+                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );
                 })
