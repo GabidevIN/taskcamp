@@ -242,6 +242,13 @@ app.delete('/createtask/:id', verifyUser, (req, res) => {
             if (err) return res.status(500).json({ Error: "Database error", Details: err });
 
             if (result.affectedRows > 0) {
+                db.query(
+                    'UPDATE login SET created = created - 1 WHERE id = ?',
+                    [login_id],
+                    (updateErr) => {
+                        if (updateErr) return res.status(500).json({ Error: "Failed to update task count", Details: updateErr });
+                    }
+                )
                 console.log("Task deleted successfully");
                 return res.status(200).json({ Status: "DeletedTask" });
                 
