@@ -48,6 +48,12 @@
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     title VARCHAR(255),
-    content TEXT,
+    objective TEXT,
+    date DATE,
+    time TIME,
+    ongoing BOOLEAN,
+    completed BOOLEAN,
     FOREIGN KEY (user_id) REFERENCES login(id) ON DELETE CASCADE
+
+
 );

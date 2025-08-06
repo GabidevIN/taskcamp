@@ -199,7 +199,7 @@ app.post('/createtask', verifyUser, (req, res) => {
 
 
     db.query(
-        'INSERT INTO task (login_id, title, objective, time, date, ongoing) VALUES (?, ?, ?, ?, ?, 1)',
+        'INSERT INTO task (login_id, title, objective, time, date, ongoing, completed) VALUES (?, ?, ?, ?, ?, 1, 0)',
         [login_id, title, objective, time, date],
         (err, result) => {
         if (err) {

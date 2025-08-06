@@ -179,22 +179,24 @@ return (
             
           </div>
       
-          <div> {/*DISPLAY OF TASK*/}
-            ON GOING TASK
+          <div> {/*DISPLAY OF TASK*/} 
+            <h2>ON GOING TASK</h2>
             {task.length > 0 ? (
               [...task]
+                .filter(task => task.ongoing === 1 && task.completed === 0)
+
+
                 .sort((a, b) => b.id - a.id)
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
-                  const detection = task.ongoing === 1 || task.ongoing === true || task.ongoing === null 
-                    ? "Ongoing" 
-                    : "Delayed";
+                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
+                  const now = new Date();
+                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
                   return (
                     <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
-                      onClick={() => alert(`Note ID: ${task.id}`)}
-                    >
+                      onClick={() => alert(`Note ID: ${task.id}`)}>
                       <h3 className="font-bold">{task.title}</h3>
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
@@ -206,23 +208,100 @@ return (
                 })
 
             ) : (
-              <p>No notes found. Create one above!</p>
+              <p>No Task found. Create one above!</p>
             )}
           </div>
 
           <div> {/*DISPLAY OF LATE TASK*/}
-            LATE
+            <h2>LATE TASK</h2>
+            {task.length > 0 ? (
+              [...task]
+                .filter(task => task.ongoing === 0 && task.completed === 0)
 
+
+                .sort((a, b) => b.id - a.id)
+                .map(task => {
+                  const formattedDate = task.date ? task.date.split('T')[0] : '';
+                  const formattedTime = task.time ? task.time.slice(0, 5) : '';
+                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
+                  const now = new Date();
+                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
+
+                  return (
+                    <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
+                      onClick={() => alert(`Note ID: ${task.id}`)}>
+                      <h3 className="font-bold">{task.title}</h3>
+                      <p>{task.objective}</p>
+                      <p>{formattedTime}</p>
+                      <p>{formattedDate}</p>
+                      <p>{detection}</p>
+                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                    </div>
+                  );
+                })
+            ) : (
+              <p>No Task found. Create one above!</p>
+            )}
           </div>
 
           <div> {/*DISPLAY OF COMPLETED*/}
+            <h2>Completed Task</h2>
+            {task.length > 0 ? (
+              [...task]
+                .filter(task => task.ongoing === 1 && task.completed === 1)
+                .sort((a, b) => b.id - a.id)
+                .map(task => {
+                  const formattedDate = task.date ? task.date.split('T')[0] : '';
+                  const formattedTime = task.time ? task.time.slice(0, 5) : '';
+                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
+                  const now = new Date();
+                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
-
+                  return (
+                    <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
+                      onClick={() => alert(`Note ID: ${task.id}`)}>
+                      <h3 className="font-bold">{task.title}</h3>
+                      <p>{task.objective}</p>
+                      <p>{formattedTime}</p>
+                      <p>{formattedDate}</p>
+                      <p>{detection}</p>
+                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                    </div>
+                  );
+                })
+            ) : (
+              <p>No Task found. Create one above!</p>
+            )}
           </div>
 
-          <div> {/*DISPLAY OF SHARED*/}
+          <div> {/*Late Completed*/}
+            <h2>delayed Completed Task</h2>
+            {task.length > 0 ? (
+              [...task]
+                .filter(task => task.ongoing === 0 && task.completed === 1)
+                .sort((a, b) => b.id - a.id)
+                .map(task => {
+                  const formattedDate = task.date ? task.date.split('T')[0] : '';
+                  const formattedTime = task.time ? task.time.slice(0, 5) : '';
+                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
+                  const now = new Date();
+                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
-
+                  return (
+                    <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
+                      onClick={() => alert(`Note ID: ${task.id}`)}>
+                      <h3 className="font-bold">{task.title}</h3>
+                      <p>{task.objective}</p>
+                      <p>{formattedTime}</p>
+                      <p>{formattedDate}</p>
+                      <p>{detection}</p>
+                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                    </div>
+                  );
+                })
+            ) : (
+              <p>No Task found. Create one above!</p>
+            )}
           </div>
       </>
         
