@@ -58,52 +58,46 @@ function Main() {
   }
 
 // ----- FETCH NOTES
+const fetchNotes = async () => {
+  try {
+    const res = await axios.get('http://localhost:8081/createtask', { withCredentials: true });
+    console.log("📥 Notes fetched:", res.data);
+    if (Array.isArray(res.data)) {
+      setTask(res.data);
+    } else {
+      console.warn("Unexpected response:", res.data);
+      setTask([]);
+    }
+  } catch (err) {
+    console.error("Error fetching notes:", err);
+  }
+};
 useEffect(() => {
-    if (fetched.current) return;
-    fetched.current = true;
-
-    const fetchNotes = async () => {
-      try {
-        const res = await axios.get('http://localhost:8081/createtask', { withCredentials: true });
-        console.log("📥 Notes fetched:", res.data);
-        if (Array.isArray(res.data)) {
-          setTask(res.data);
-        } else {
-          console.warn("Unexpected response:", res.data);
-          setTask([]);
-        }
-      } catch (err) {
-        console.error("Error fetching notes:", err);
-      }
-    };
-
-    fetchNotes();
-  }, []);
-
-
-
-
-
+  if (fetched.current) return;
+  fetched.current = true;
+  fetchNotes();
+}, []);
 
 // ----- Tasking System
-  const handleCreateTask = async (e) => {
-    e.preventDefault();
-    if (!title.trim() || !objective.trim()) return;
+const handleCreateTask = async (e) => {
+  e.preventDefault();
+  if (!title.trim() || !objective.trim()) return;
 
-    try {
-      const res = await axios.post('http://localhost:8081/createtask', { title, objective, time, date }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setTask(prev => [...prev, res.data]);
-      setTitle('');
-      setObjective('');
-      setTime('');
-      setDate('');
+  try {
+    await axios.post('http://localhost:8081/createtask', 
+      { title, objective, time, date }, 
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    } catch (err) {
-      console.error("Error adding Task:", err);
-    }
-  };
+    fetchNotes();
+    setTitle('');
+    setObjective('');
+    setTime('');
+    setDate('');
+  } catch (err) {
+    console.error("Error adding Task:", err);
+  }
+};
 
 // ----- Deleting Notes
 const deleteTask = async (id) => {
@@ -121,10 +115,6 @@ const deleteTask = async (id) => {
     console.error("Error deleting Task:", err);
   }
 };
-
-
-
-// ----- function button
 
 return (
   <>   
@@ -190,9 +180,6 @@ return (
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
-                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
-                  const now = new Date();
-                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
                   return (
                     <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
@@ -201,7 +188,7 @@ return (
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
-                      <p>{detection}</p>
+                      <p>Ongoing</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );
@@ -223,9 +210,6 @@ return (
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
-                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
-                  const now = new Date();
-                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
                   return (
                     <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
@@ -234,7 +218,7 @@ return (
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
-                      <p>{detection}</p>
+                      <p>Delayed</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );
@@ -248,14 +232,11 @@ return (
             <h2>Completed Task</h2>
             {task.length > 0 ? (
               [...task]
-                .filter(task => task.ongoing === 1 && task.completed === 1)
+                .filter(task => task.completed === 1 && task.ongoing === 1)
                 .sort((a, b) => b.id - a.id)
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
-                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
-                  const now = new Date();
-                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
 
                   return (
                     <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
@@ -264,7 +245,7 @@ return (
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
-                      <p>{detection}</p>
+                      <p>Completed</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );
@@ -278,14 +259,12 @@ return (
             <h2>delayed Completed Task</h2>
             {task.length > 0 ? (
               [...task]
-                .filter(task => task.ongoing === 0 && task.completed === 1)
+                .filter(task => task.completed === 1 && task.ongoing === 0)
                 .sort((a, b) => b.id - a.id)
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
                   const formattedTime = task.time ? task.time.slice(0, 5) : '';
-                  const taskDateTime = new Date(`${formattedDate}T${formattedTime}`);
-                  const now = new Date();
-                  const detection = now > taskDateTime ? "Delayed" : "Ongoing";
+
 
                   return (
                     <div key={task.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer"
@@ -294,7 +273,7 @@ return (
                       <p>{task.objective}</p>
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
-                      <p>{detection}</p>
+                      <p>Delayed</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
                     </div>
                   );

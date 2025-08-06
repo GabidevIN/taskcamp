@@ -224,12 +224,10 @@ app.get('/createtask', verifyUser, (req, res) => {
     const login_id = req.user.id;
     console.log("Fetching task for user:", login_id);
 
-    const updateQuery = `UPDATE task SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND CONCAT(date, ' ', time) < NOW()`;
-
+    const updateQuery = `UPDATE task SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND completed = 0 AND TIMESTAMP(date, time) < (NOW() - INTERVAL 1 MINUTE);`;
     db.query(updateQuery, [login_id], (updateErr) => {
         if (updateErr) return res.json({ Error: updateErr });
 
-        // Step 2: Fetch the updated tasks
         db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
             if (fetchErr) return res.json({ Error: fetchErr });
             console.log("Task result: Fetched and updated");
