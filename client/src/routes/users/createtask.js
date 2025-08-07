@@ -99,7 +99,7 @@ const handleCreateTask = async (e) => {
   }
 };
 
-// ----- Deleting Notes
+// ----- Deleting task
 const deleteTask = async (id) => {
   try {
     const res = await axios.delete(`http://localhost:8081/createtask/${id}`, {
@@ -113,6 +113,28 @@ const deleteTask = async (id) => {
     }
   } catch (err) {
     console.error("Error deleting Task:", err);
+  }
+};
+
+// ----- Complete Task
+const CompleteTask = async (id) => {
+  try {
+    const res = await axios.patch(`http://localhost:8081/createtask/${id}`, 
+      {}, // optional body (not used in backend, so can be empty)
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (res.data.Status === "CompletedTask") {
+      setTask(prev => 
+        prev.map(task => 
+          task.id === id ? { ...task, completed: 1, ongoing: 0 } : task
+        )
+      );
+    } else {
+      console.warn(res.data.Status);
+    }
+  } catch (err) {
+    console.error("Error completing Task:", err);
   }
 };
 
@@ -134,8 +156,7 @@ return (
           <div className="mt-6">
             <h2 className="text-xl mb-2">Your TASK</h2>
             <form onSubmit={handleCreateTask} className="mb-4">
-              <input
-                className="block w-full mb-2 p-2 text-black rounded"
+              <input className="block w-full mb-2 p-2 text-black rounded"
                 placeholder="Title"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -190,6 +211,7 @@ return (
                       <p>{formattedDate}</p>
                       <p>Ongoing</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                      <button onClick={() => CompleteTask(task.id)}>Complete Task</button>
                     </div>
                   );
                 })
@@ -220,6 +242,7 @@ return (
                       <p>{formattedDate}</p>
                       <p>Delayed</p>
                       <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                      <button onClick={() => CompleteTask(task.id)}>Complete Task</button>
                     </div>
                   );
                 })
@@ -246,7 +269,7 @@ return (
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
                       <p>Completed</p>
-                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                      <button onClick={() => deleteTask(task.id)}>Hide Task</button>
                     </div>
                   );
                 })
@@ -259,7 +282,7 @@ return (
             <h2>delayed Completed Task</h2>
             {task.length > 0 ? (
               [...task]
-                .filter(task => task.completed === 1 && task.ongoing === 0)
+                .filter(task => task.ongoing === 0 &&task.completed === 1)
                 .sort((a, b) => b.id - a.id)
                 .map(task => {
                   const formattedDate = task.date ? task.date.split('T')[0] : '';
@@ -274,7 +297,7 @@ return (
                       <p>{formattedTime}</p>
                       <p>{formattedDate}</p>
                       <p>Delayed</p>
-                      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+                      <button onClick={() => deleteTask(task.id)}>Hide Task</button>
                     </div>
                   );
                 })

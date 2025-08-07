@@ -242,33 +242,78 @@ app.delete('/createtask/:id', verifyUser, (req, res) => {
     const taskId = req.params.id;
     const login_id = req.user.id;
 
+    // Step 1: Check if the task exists and get its completed status
     db.query(
-        'DELETE FROM task WHERE id = ? AND login_id = ?',
+        'SELECT completed FROM task WHERE id = ? AND login_id = ?',
+        [taskId, login_id],
+        (selectErr, selectResult) => {
+            if (selectErr) return res.status(500).json({ Error: "Database error", Details: selectErr });
+
+            if (selectResult.length === 0) {
+                return res.status(404).json({ Status: "Task not found or not authorized" });
+            }
+
+            const isCompleted = selectResult[0].completed === 1;
+
+            db.query(
+                'DELETE FROM task WHERE id = ? AND login_id = ?',
+                [taskId, login_id],
+                (deleteErr, deleteResult) => {
+                    if (deleteErr) return res.status(500).json({ Error: "Delete error", Details: deleteErr });
+
+                    if (deleteResult.affectedRows > 0) {
+                        if (!isCompleted) {
+                            db.query(
+                                'UPDATE login SET created = created - 1 WHERE id = ?',
+                                [login_id],
+                                (updateErr) => {
+                                    if (updateErr) return res.status(500).json({ Error: "Failed to update task count", Details: updateErr });
+
+                                    console.log("Task deleted and count updated");
+                                    return res.status(200).json({ Status: "DeletedTask" });
+                                }
+                            );
+                        } else {
+                            console.log("Completed task deleted (no change to count)");
+                            return res.status(200).json({ Status: "DeletedTask" });
+                        }
+                    } else {
+                        return res.status(404).json({ Status: "Task not found or not authorized" });
+                    }
+                }
+            );
+        }
+    );
+});
+
+// ----- SESSION FOR TASK COMPLETION
+app.patch('/createtask/:id', verifyUser, (req, res) => {
+    const taskId = req.params.id;
+    const login_id = req.user.id;
+
+    db.query(
+        'UPDATE task SET completed = 1 WHERE id = ? AND login_id = ?',
         [taskId, login_id],
         (err, result) => {
             if (err) return res.status(500).json({ Error: "Database error", Details: err });
 
             if (result.affectedRows > 0) {
                 db.query(
-                    'UPDATE login SET created = created - 1 WHERE id = ?',
+                    'UPDATE login SET completed = completed + 1 WHERE id = ?',
                     [login_id],
                     (updateErr) => {
-                        if (updateErr) return res.status(500).json({ Error: "Failed to update task count", Details: updateErr });
+                        if (updateErr) return res.status(500).json({ Error: "Failed to update completed count", Details: updateErr });
+
+                        console.log("Task marked as completed and count updated successfully");
+                        return res.status(200).json({ Status: "CompletedTask" });
                     }
-                )
-                console.log("Task deleted successfully");
-                return res.status(200).json({ Status: "DeletedTask" });
-                
+                );
             } else {
                 return res.status(404).json({ Status: "Task not found or not authorized" });
             }
         }
     );
 });
-
-// ----- SESSION SHARING TASKS
-
-
 
 
 // ----- SESSION SHARING TASKS
