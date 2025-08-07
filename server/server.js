@@ -292,28 +292,45 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
     const login_id = req.user.id;
 
     db.query(
-        'UPDATE task SET completed = 1 WHERE id = ? AND login_id = ?',
+        'SELECT ongoing FROM task WHERE id = ? AND login_id = ?',
         [taskId, login_id],
-        (err, result) => {
-            if (err) return res.status(500).json({ Error: "Database error", Details: err });
+        (selectErr, selectResult) => {
+            if (selectErr) return res.status(500).json({ Error: "Database error", Details: selectErr });
 
-            if (result.affectedRows > 0) {
-                db.query(
-                    'UPDATE login SET completed = completed + 1 WHERE id = ?',
-                    [login_id],
-                    (updateErr) => {
-                        if (updateErr) return res.status(500).json({ Error: "Failed to update completed count", Details: updateErr });
-
-                        console.log("Task marked as completed and count updated successfully");
-                        return res.status(200).json({ Status: "CompletedTask" });
-                    }
-                );
-            } else {
+            if (selectResult.length === 0) {
                 return res.status(404).json({ Status: "Task not found or not authorized" });
             }
+
+            const isOngoing = selectResult[0].ongoing === 1;
+
+            db.query(
+                'UPDATE task SET completed = 1 WHERE id = ? AND login_id = ?',
+                [taskId, login_id],
+                (updateErr, updateResult) => {
+                    if (updateErr) return res.status(500).json({ Error: "Failed to mark task as completed", Details: updateErr });
+
+                    if (updateResult.affectedRows === 0) {
+                        return res.status(404).json({ Status: "Task not found or not authorized" });
+                    }
+
+                    const columnToUpdate = isOngoing ? 'completed' : 'delay';
+
+                    db.query(
+                        `UPDATE login SET ${columnToUpdate} = ${columnToUpdate} + 1 WHERE id = ?`,
+                        [login_id],
+                        (finalErr) => {
+                            if (finalErr) return res.status(500).json({ Error: `Failed to update ${columnToUpdate} count`, Details: finalErr });
+
+                            console.log(`Task marked as completed and ${columnToUpdate} count updated successfully`);
+                            return res.status(200).json({ Status: "CompletedTask" });
+                        }
+                    );
+                }
+            );
         }
     );
 });
+
 
 
 // ----- SESSION SHARING TASKS
