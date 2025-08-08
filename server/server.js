@@ -333,7 +333,7 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 
 
 
-// ----- SESSION SHARING TASKS
+// ----- SESSION SHARING TASKS (LOW PRIOR AT MEDJO MAHIRAP)
 
 // ----- SESSION UPDATING TASKS
 
@@ -342,7 +342,7 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 
 
 
-// ----- SESSION FOR SCHEDULING
+// ----- SESSION FOR SCHEDULING (TARGET PRIOR)
 
 // ----- SESSION SCHDULE FETCHING
 
@@ -353,6 +353,7 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 
 // ----- PROFILE SESSION (check mo gab verification)
 
+// ----- MAIN OR STARTING APPLICATION FETCHING
 
 
 

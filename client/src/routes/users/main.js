@@ -65,15 +65,9 @@ return (
             <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
             <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
           </div>
+
+          {/* DISPLAYING USER INPUTS // FETCHING USER DATA OR LATEST DATA THEN ANALYSIS NILA */}
       </>
-
-
-
-
-
-
-
-
 
         /* USER IS NOT AUTHENTICATED*/
         :
