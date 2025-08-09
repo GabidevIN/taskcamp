@@ -78,28 +78,19 @@ for (let day = 1; day <= lastDate; day++) {
         <div
           className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
           ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
-          onClick={() => setSelectedDay(day)} // Show note div for clicked day
-        >
+          onClick={() => setSelectedDay(day)}>
           {day}
         </div>
 
-        {/* Show note input when this day is clicked */}
+        {/*Will show when user clicked */}
         {selectedDay === day && (
           <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48">
-            <p className="text-sm font-bold mb-1">
-              Add note for {day}/{month + 1}/{year}
-            </p>
-            <input
-              type="text"
-              placeholder="Write a note..."
-              className="w-full p-1 border rounded mb-2"
-            />
-            <button
-              className="bg-blue-500 text-white px-2 py-1 rounded w-full"
-              onClick={() => setSelectedDay(null)} // close div after adding note (no database logic pa dine)
-            >
-              Save
-            </button>
+            <p className="text-sm font-bold mb-1"> Add note for {day}/{month + 1}/{year} </p>
+            <input type="text" placeholder="Write a note..." className="w-full p-1 border rounded mb-2" /> {/*Input here gabo*/}
+            <button className="bg-blue-500 text-white px-2 py-1 rounded w-full"
+              onClick={() => setSelectedDay(null)} >Save </button> 
+              {/*On click will save dito*/}
+
           </div>
         )}
       </div>
