@@ -197,7 +197,6 @@ app.post('/createtask', verifyUser, (req, res) => {
     const login_id = req.user.id;
     const added = 'SELECT * FROM login WHERE name = ?';
 
-
     db.query(
         'INSERT INTO task (login_id, title, objective, time, date, ongoing, completed) VALUES (?, ?, ?, ?, ?, 1, 0)',
         [login_id, title, objective, time, date],
@@ -331,8 +330,6 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
     );
 });
 
-
-
 // ----- SESSION SHARING TASKS (LOW PRIOR AT MEDJO MAHIRAP)
 
 // ----- SESSION UPDATING TASKS
@@ -343,6 +340,37 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 
 
 // ----- SESSION FOR SCHEDULING (TARGET PRIOR)
+app.post('/schedule', verifyUser, (req, res) => {
+  const { title, content, date } = req.body;
+  const login_id = req.user.id;
+
+  if (!title || !content || !date) {
+    return res.status(400).json({ Error: 'Missing fields' });
+  }
+  const formattedDate = new Date(date).toISOString().split('T')[0];
+
+  db.query(
+    'INSERT INTO sched (login_id, title, content, date) VALUES (?, ?, ?, ?)',
+    [login_id, title, content, formattedDate],
+    (err, result) => {
+      if (err) {
+        console.error('Database Error:', err);
+        return res.status(500).json({ Error: err });
+      }
+      res.json({ 
+        id: result.insertId, 
+        login_id, 
+        title, 
+        content, 
+        date: formattedDate
+      });
+    }
+  );
+});
+
+
+
+
 
 // ----- SESSION SCHDULE FETCHING
 
@@ -353,7 +381,7 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 
 // ----- PROFILE SESSION (check mo gab verification)
 
-// ----- MAIN OR STARTING APPLICATION FETCHING
+// ----- MAIN OR STARTING APPLICATION FETCHING  
 
 
 

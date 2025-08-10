@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function Main() {
-// ----- SESSION SYSTEM
+// ----- SESSION SYSTEM -----
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
@@ -33,7 +33,7 @@ function Main() {
   .then(err => console.log(err));
   }, [])
 
-
+// ----- LOGOUT SESSION
   const logout = () => {
     axios.get('http://localhost:8081/logout')
     .then(res => {
@@ -41,12 +41,13 @@ function Main() {
     }).catch(err => console.log(err));
   }
 
-// ----- SCHEDULE SYSTEM
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [date, setDate] = useState(new Date());
 
-  const year = date.getFullYear();
-  const month = date.getMonth();
+// ----- SCHEDULE SYSTEM -----
+ const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const [date, setDate] = useState(new Date());
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth();
   const today = new Date();
 
   const firstDay = new Date(year, month, 1).getDay();
@@ -54,53 +55,82 @@ function Main() {
 
   const prevMonth = () => setDate(new Date(year, month - 1, 1));
   const nextMonth = () => setDate(new Date(year, month + 1, 1));
-  const [selectedDay, setSelectedDay] = useState(null); // track selected day
-
-
 
   const generateDays = () => {
-  const days = [];
-  
-// ----- DAYS
-  for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-12"></div>);
-    }
+    const days = [];
 
-// ----- MONTHS
-for (let day = 1; day <= lastDate; day++) {
+  for (let i = 0; i < firstDay; i++) {
+    days.push(<div key={`empty-${i}`} className="h-12"></div>);
+  }
+
+// ----- DATES GENERATION
+  for (let day = 1; day <= lastDate; day++) {
     const isToday =
       day === today.getDate() &&
       month === today.getMonth() &&
       year === today.getFullYear();
 
-    days.push(
-      <div key={day} className="relative">
-        <div
-          className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
-          ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
-          onClick={() => setSelectedDay(day)}>
-          {day}
-        </div>
-
-        {/*Will show when user clicked */}
-        {selectedDay === day && (
-          <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48">
-            <p className="text-sm font-bold mb-1"> Add note for {day}/{month + 1}/{year} </p>
-            <input type="text" placeholder="Write a note..." className="w-full p-1 border rounded mb-2" /> {/*Input here gabo*/}
-            <button className="bg-blue-500 text-white px-2 py-1 rounded w-full"
-              onClick={() => setSelectedDay(null)} >Save </button> 
-              {/*On click will save dito*/}
-
+      days.push(
+        <div key={day} className="relative">
+          <div
+            className={`flex items-center justify-center h-12 rounded-lg cursor-pointer transition 
+              ${isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"}`}
+            onClick={() => setSelectedDay(day)}
+          >
+            {day}
           </div>
-        )}
-      </div>
-    );
+
+          {selectedDay === day && (
+            <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48">
+{/* ----- MAKING SCHEDULED NOTES */}
+              <form onSubmit={(e) => handleSchedule(e, day)}>
+                <p className="text-sm font-bold mb-1">
+                  Add note for {day}/{month + 1}/{year} </p>
+                <input placeholder="Title"
+                  value={title} onChange={(e) => setTitle(e.target.value)}
+                  className="w-full mb-1"/>
+                <input placeholder="Content"
+                  value={content}onChange={(e) => setContent(e.target.value)}
+                  className="w-full mb-1"/>
+                <button type="submit"
+                  className="bg-blue-500 text-white px-2 py-1 rounded w-full" > Save </button>
+              </form>
+            </div>
+          )}
+        </div>
+      );
+    }
+    return days;
+  };
+
+// ----- SCHEDULE SAVING SYSTEM
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [time, setTime] = useState('');
+  const [token] = useState(localStorage.getItem('token') || '');
+
+  const handleSchedule = async (e, chosenDay) => {
+    e.preventDefault();
+    if (!title.trim() || !content.trim()) return;
+
+    const chosenDate = new Date(year, month, chosenDay);
+
+    try {
+      await axios.post(
+        "http://localhost:8081/schedule",
+        { title, content, time, date: chosenDate.toISOString() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setTitle('');
+      setContent('');
+      setSelectedDay(null);
+    } catch (err) 
+    {
+    console.error("Error adding Schedule:", err);
   }
-  return days;
 };
 
-
-// ----- function button
 
 return (
   <>   
