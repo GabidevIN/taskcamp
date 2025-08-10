@@ -347,7 +347,10 @@ app.post('/schedule', verifyUser, (req, res) => {
   if (!title || !content || !date) {
     return res.status(400).json({ Error: 'Missing fields' });
   }
-  const formattedDate = new Date(date).toISOString().split('T')[0];
+  
+  let inputDate = new Date(date);
+  inputDate.setDate(inputDate.getDate() + 1);
+  const formattedDate = inputDate.toISOString().split('T')[0];
 
   db.query(
     'INSERT INTO sched (login_id, title, content, date) VALUES (?, ?, ?, ?)',
@@ -357,22 +360,22 @@ app.post('/schedule', verifyUser, (req, res) => {
         console.error('Database Error:', err);
         return res.status(500).json({ Error: err });
       }
-      res.json({ 
-        id: result.insertId, 
-        login_id, 
-        title, 
-        content, 
-        date: formattedDate
-      });
+      res.json({ id: result.insertId, login_id, title, content, date: formattedDate });
     }
   );
 });
 
 
-
-
-
 // ----- SESSION SCHDULE FETCHING
+app.get('/schedule', verifyUser, (req, res) => {
+    const login_id = req.user.id;
+    console.log("Fetching scheules for user:", login_id);
+    db.query('SELECT * FROM sched WHERE login_id = ?', [login_id], (err, result) => {
+        if (err) return res.json({ Error: err });
+        console.log("Notes result: Fetched");
+        res.json(result);
+    });
+});
 
 // ----- SESSION SCHDULE DELETING
 
