@@ -79,7 +79,7 @@ app.post('/register', (req, res) => {
         return res.json({ Status: "Duplicate" });
         }
 
-    const sql = "INSERT INTO login (name,`email`,`pass`) VALUES (?)";
+    const sql = `INSERT INTO login (name, email, pass, admin, completed, delay, late, created, shared) VALUES (?, 0, 0, 0, 0, 0, 0)`;
     bcrypt.hash(req.body.pass.toString(), salt, (err, hash) => {
         if(err) return res.json({Error: "Error for hashing password"});
         const values = [
@@ -337,8 +337,6 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
 // ----- SESSION TASK EXPIRATION AND CHANGING STATUS
 
 
-
-
 // ----- SESSION FOR SCHEDULING (TARGET PRIOR)
 app.post('/schedule', verifyUser, (req, res) => {
   const { title, content, date } = req.body;
@@ -365,7 +363,6 @@ app.post('/schedule', verifyUser, (req, res) => {
   );
 });
 
-
 // ----- SESSION SCHDULE FETCHING
 app.get('/schedule', verifyUser, (req, res) => {
     const login_id = req.user.id;
@@ -379,7 +376,6 @@ app.get('/schedule', verifyUser, (req, res) => {
 
 // ----- SESSION SCHDULE DELETING
 
-// ----- SESSION SCHDULE PRIORITIZING
 
 
 // ----- PROFILE SESSION (check mo gab verification)
