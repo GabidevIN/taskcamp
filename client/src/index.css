@@ -2,3 +2,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities; 
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+html, body {
+  @apply no-scrollbar;
+  background-color: #383D38;
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import '../index.css'; 
 
 function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -81,18 +81,25 @@ const closebtn = () => {
 
 
 return (
-  <>
-  <title>TASKCAMP</title>
+<div className="h-[2624px] overflow-hidden bg-[#383D38]">
+    <title>TASKCAMP</title>
 
-  <div className='bg-[#383D38] h-[2614px] w-full"'>
-
-
-        <nav className='flex justify-center gap-1'>
-          <a href="#" className='text-black bg-white rounded-tl-[25px] rounded-bl-[25px] border border-black p-1' 
+    <section className="bg-white h-[25px] w-[25px] ">
+      <div>
+        <nav className="flex flex-col md:flex-row justify-center gap-1 w-max mx-auto border border-black rounded-[25px] overflow-hidden">
+          
+          <a href="#" className='text-black bg-white rounded-tl-[25px] rounded-bl-[25px] p-2 text-center' 
           onClick={handleAuthClick("login") }>Login</a>
-          <a href="#" className='text-black bg-white rounded-tr-[25px] rounded-br-[25px] border border-black p-1' 
+
+          <a href="#" className="text-black bg-white rounded-tr-[25px] rounded-br-[25px] p-2 text-center" 
           onClick={handleAuthClick("register")}>Register</a>
+
+
+
+
         </nav>
+      </div>
+    </section>
 
 
 
@@ -147,7 +154,6 @@ return (
      </div>
      )}
   </div>
-  </>
   )
 }
 
