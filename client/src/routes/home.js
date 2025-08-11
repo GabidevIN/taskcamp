@@ -83,58 +83,71 @@ const closebtn = () => {
 return (
   <>
   <title>TASKCAMP</title>
-    <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
-      <nav className='flex justify-center gap-4'>
-        <a href="#" className='text-black bg-white rounded-e-md border border-black p-2' onClick={handleAuthClick("login") }>Login</a>
-        <a href="#" className='text-black bg-white rounded-e-md border border-black p-2' onClick={handleAuthClick("register")}>Register</a>
-      </nav>
 
-{/*----- LOGIN FORM // HIDDEN -----*/}
-{showLogin && (
-  <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
-    <div>
-      <button onClick={closebtn}>Close</button>
-      <h2 className='text-center font-bold '>LOGIN</h2>
-      <form onSubmit={loginSub} className="space-y-3 max-w-md mx-auto mt-10">
-          <input className="border px-4 py-2 w-full rounded" required type='email'  placeholder='Enter Email' onChange={e => loginvalue({...login, email: e.target.value})}/>
-          <input className="border px-4 py-2 w-full rounded" type='password' placeholder='Enter Password' onChange={e => loginvalue({...login, pass: e.target.value})}/>
-          <button type="submit" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
-          <h1 className='text-center'>NO ACCOUNT?</h1>
-          <button onClick={showreg} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700" >Register</button>
-      </form>
-    </div>
-  </div>      
-)}
+  <div className='bg-[#383D38] h-[2614px] w-full"'>
 
-{/*----- REGISTRATION FORM // HIDDEN -----*/}
-{showReg && (
-  <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
-    <div>
-      <button onClick={closebtn}>Close</button>
-      <h1 className='text-center font-bold '>REGISTER</h1>
-      <form onSubmit={regisSub} className="space-y-3 max-w-md mx-auto mt-10"> 
-        <input placeholder='Enter Name' 
-        onChange={e => regvalue({...regis, name: e.target.value})} 
-        className="border px-4 py-2 w-full rounded"/>
 
-        <input placeholder='Enter Email' 
-        required type="email"
-        onChange={e => regvalue({...regis, email: e.target.value})} 
-        className="border px-4 py-2 w-full rounded"/>
+        <nav className='flex justify-center gap-1'>
+          <a href="#" className='text-black bg-white rounded-tl-[25px] rounded-bl-[25px] border border-black p-1' 
+          onClick={handleAuthClick("login") }>Login</a>
+          <a href="#" className='text-black bg-white rounded-tr-[25px] rounded-br-[25px] border border-black p-1' 
+          onClick={handleAuthClick("register")}>Register</a>
+        </nav>
 
-        <input placeholder='Enter Password' 
-        onChange={e => regvalue({...regis, pass: e.target.value})} 
-        className="border px-4 py-2 w-full rounded"/>
-        
-        <button type="submit" className="bg-green-600 text-white px-4 py-2 w-full rounded-none hover:bg-green-700">SIGN UP</button>
-        <h1 className='text-center'>ALREADY HAVE ACCOUNT</h1>
-        <button onClick={showlog} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
-      </form>
-    </div>
-  </div>
-)}
+
+
+
+
+
+
+
+
+  {/*----- LOGIN FORM // HIDDEN -----*/}
+  {showLogin && (
+    <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
+      <div>
+        <button onClick={closebtn}>Close</button>
+        <h2 className='text-center font-bold '>LOGIN</h2>
+        <form onSubmit={loginSub} className="space-y-3 max-w-md mx-auto mt-10">
+            <input className="border px-4 py-2 w-full rounded" required type='email'  placeholder='Enter Email' onChange={e => loginvalue({...login, email: e.target.value})}/>
+            <input className="border px-4 py-2 w-full rounded" type='password' placeholder='Enter Password' onChange={e => loginvalue({...login, pass: e.target.value})}/>
+            <button type="submit" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
+            <h1 className='text-center'>NO ACCOUNT?</h1>
+            <button onClick={showreg} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700" >Register</button>
+        </form>
       </div>
-    </>
+    </div>      
+  )}
+
+  {/*----- REGISTRATION FORM // HIDDEN -----*/}
+  {showReg && (
+    <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
+      <div>
+        <button onClick={closebtn}>Close</button>
+        <h1 className='text-center font-bold '>REGISTER</h1>
+        <form onSubmit={regisSub} className="space-y-3 max-w-md mx-auto mt-10"> 
+          <input placeholder='Enter Name' 
+          onChange={e => regvalue({...regis, name: e.target.value})} 
+          className="border px-4 py-2 w-full rounded"/>
+
+          <input placeholder='Enter Email' 
+          required type="email"
+          onChange={e => regvalue({...regis, email: e.target.value})} 
+          className="border px-4 py-2 w-full rounded"/>
+
+          <input placeholder='Enter Password' 
+          onChange={e => regvalue({...regis, pass: e.target.value})} 
+          className="border px-4 py-2 w-full rounded"/>
+          
+          <button type="submit" className="bg-green-600 text-white px-4 py-2 w-full rounded-none hover:bg-green-700">SIGN UP</button>
+          <h1 className='text-center'>ALREADY HAVE ACCOUNT</h1>
+          <button onClick={showlog} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
+        </form>
+      </div>
+     </div>
+     )}
+  </div>
+  </>
   )
 }
 
