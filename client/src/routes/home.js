@@ -81,11 +81,9 @@ const closebtn = () => {
 
 
 return (
-<div className="h-[2624px] overflow-hidden bg-[#383D38]">
+<div className="h-[2240px] overflow-hidden bg-[#383D38]">
     <title>TASKCAMP</title>
 
-    <section className="bg-white h-[25px] w-[25px] ">
-      <div>
         <nav className="flex flex-col md:flex-row justify-center gap-1 w-max mx-auto border border-black rounded-[25px] overflow-hidden">
           
           <a href="#" className='text-black bg-white rounded-tl-[25px] rounded-bl-[25px] p-2 text-center' 
@@ -93,21 +91,7 @@ return (
 
           <a href="#" className="text-black bg-white rounded-tr-[25px] rounded-br-[25px] p-2 text-center" 
           onClick={handleAuthClick("register")}>Register</a>
-
-
-
-
         </nav>
-      </div>
-    </section>
-
-
-
-
-
-
-
-
 
   {/*----- LOGIN FORM // HIDDEN -----*/}
   {showLogin && (
