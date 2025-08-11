@@ -376,8 +376,6 @@ app.get('/schedule', verifyUser, (req, res) => {
 
 // ----- SESSION SCHDULE DELETING
 
-
-
 // ----- PROFILE SESSION (check mo gab verification)
 
 // ----- MAIN OR STARTING APPLICATION FETCHING  
