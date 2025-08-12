@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../index.css'; 
+import { motion } from 'framer-motion';
 
 function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -79,64 +80,105 @@ const closebtn = () => {
     });
 }
 
+// ----- SNAP FADE IN
+  const heroRef = useRef();
+  const aboutRef = useRef();
+  const contactRef = useRef();
+
+  const [visible, setVisible] = useState({
+    hero: false,
+    about: false,
+    contact: false,
+  });
+
+  useEffect(() => {
+    const observerOptions = { threshold: 0.5 };
+
+    const heroObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible((v) => ({ ...v, hero: true }));
+    }, observerOptions);
+    const aboutObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible((v) => ({ ...v, about: true, }));
+    }, observerOptions);
+    const contactObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible((v) => ({ ...v, contact: true }));
+    }, observerOptions);
+
+    if (heroRef.current) heroObserver.observe(heroRef.current);
+    if (aboutRef.current) aboutObserver.observe(aboutRef.current);
+    if (contactRef.current) contactObserver.observe(contactRef.current);
+
+    return () => {
+      heroObserver.disconnect();
+      aboutObserver.disconnect();
+      contactObserver.disconnect();
+    };
+  }, []);
+
+  const fadeClass = (isVisible) =>
+    isVisible
+      ? "opacity-100 transition-opacity duration-1000 ease-in-out"
+      : "opacity-0";
 
 return (
-<div className="h-[2240px] overflow-hidden bg-[#383D38]">
+<div className="bg-[#3E3F29] ">
     <title>TASKCAMP</title>
 
-        <nav className="flex flex-col md:flex-row justify-center gap-1 w-max mx-auto border border-black rounded-[25px] overflow-hidden">
-          
-          <a href="#" className='text-black bg-white rounded-tl-[25px] rounded-bl-[25px] p-2 text-center' 
-          onClick={handleAuthClick("login") }>Login</a>
+    {/*----- NAVBAR -----*/}
+    <div className=" fixed inset-0 flex justify-between items-center h-[55px] w-[1250px] mx-auto mt-[25px] z-10">
+      <header className="flex justify-between items-center h-[55px] w-[1250px] bg-[#3E3F29] shadow-2xl mx-auto rounded-[25px] mt-[25px] px-6">
+        <h1 className="text-[#BCA88D] text-lg font-bold px-6">TASKUP</h1>
 
-          <a href="#" className="text-black bg-white rounded-tr-[25px] rounded-br-[25px] p-2 text-center" 
-          onClick={handleAuthClick("register")}>Register</a>
+        <nav className="flex">
+          <a className="text-[#BCA88D] font-heebo text-lg font-bold cursor-pointer p-2 m-1"
+            onClick={null}>ABOUT US</a>
+
+          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] border-black border p-2 m-1 text-center"
+            onClick={handleAuthClick("login")}>LOGIN</a>
+
+          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] border-black border p-2 m-1 text-center"
+            onClick={handleAuthClick("register")}>REGISTER</a>
         </nav>
+      </header>
+    </div>
 
-  {/*----- LOGIN FORM // HIDDEN -----*/}
-  {showLogin && (
-    <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
-      <div>
-        <button onClick={closebtn}>Close</button>
-        <h2 className='text-center font-bold '>LOGIN</h2>
-        <form onSubmit={loginSub} className="space-y-3 max-w-md mx-auto mt-10">
-            <input className="border px-4 py-2 w-full rounded" required type='email'  placeholder='Enter Email' onChange={e => loginvalue({...login, email: e.target.value})}/>
-            <input className="border px-4 py-2 w-full rounded" type='password' placeholder='Enter Password' onChange={e => loginvalue({...login, pass: e.target.value})}/>
-            <button type="submit" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
-            <h1 className='text-center'>NO ACCOUNT?</h1>
-            <button onClick={showreg} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700" >Register</button>
-        </form>
-      </div>
-    </div>      
-  )}
+{/*----- PAGES -----*/}
+    <div className="h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory relative scrollbar-hide">
 
-  {/*----- REGISTRATION FORM // HIDDEN -----*/}
-  {showReg && (
-    <div className='bg-white text-black p-4 rounded w-fit max-w-md mx-auto my-4'>
-      <div>
-        <button onClick={closebtn}>Close</button>
-        <h1 className='text-center font-bold '>REGISTER</h1>
-        <form onSubmit={regisSub} className="space-y-3 max-w-md mx-auto mt-10"> 
-          <input placeholder='Enter Name' 
-          onChange={e => regvalue({...regis, name: e.target.value})} 
-          className="border px-4 py-2 w-full rounded"/>
+{/*----- HERO PAGE-----*/}
+      <section className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      ${fadeClass( visible.hero )}`} ref={heroRef}>
 
-          <input placeholder='Enter Email' 
-          required type="email"
-          onChange={e => regvalue({...regis, email: e.target.value})} 
-          className="border px-4 py-2 w-full rounded"/>
+        <h1 className="text-[125px] font-bold font-heptoslab text-[#BCA88D]">TASKUP</h1>
+        <h2 className="text-[20px] font-bold font-heptoslab text-[#BCA88D] mt-10 max-w-2xl px-4">
+          Your all in one app for scheduling, note taking, and task management designed to keep your life organized and on track.
+        </h2>
 
-          <input placeholder='Enter Password' 
-          onChange={e => regvalue({...regis, pass: e.target.value})} 
-          className="border px-4 py-2 w-full rounded"/>
-          
-          <button type="submit" className="bg-green-600 text-white px-4 py-2 w-full rounded-none hover:bg-green-700">SIGN UP</button>
-          <h1 className='text-center'>ALREADY HAVE ACCOUNT</h1>
-          <button onClick={showlog} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
-        </form>
-      </div>
-     </div>
-     )}
+      </section>
+
+{/*----- BODY//ABOUT PAGE-----*/}
+      <section ref={aboutRef} className={`h-screen bg-[#BCA88D] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      ${fadeClass(visible.about )}`}>
+
+        <motion.h1
+          className="font-bold font-heptoslab text-[#3E3F29] mb-[50px] text-[125px]"
+          initial={{ scale: 1, x: 0, y: 0 }}
+          animate={visible.about ? { scale: 0.4, x: 0, y: [-100, -100, -300] } : { scale: 1, x: 0, y: 0 }}
+          transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
+          ABOUT US
+        </motion.h1>
+
+      </section>
+
+{/*----- FOOTER//CONTACTS PAGE-----*/}
+      <section ref={contactRef}className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      ${fadeClass( visible.contact)}`}>
+
+        <h1 className="text-[125px] font-bold font-heptoslab text-[#BCA88D]">CONTACTS</h1>
+
+      </section>
+    </div>
+
   </div>
   )
 }

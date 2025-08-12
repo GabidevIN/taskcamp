@@ -2,8 +2,13 @@
 module.exports = {
   content: ["./src/**/*.js",], // REQUIRED ILAGAY GABO {js,jsx,ts,tsx} if needed
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        heebo: ['Heebo', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        heptoslab: ['Heptoslab', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
-
