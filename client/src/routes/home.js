@@ -125,18 +125,21 @@ return (
     <title>TASKCAMP</title>
 
     {/*----- NAVBAR -----*/}
-    <div className=" fixed inset-0 flex justify-between items-center h-[55px] w-[1250px] mx-auto mt-[25px] z-10">
-      <header className="flex justify-between items-center h-[55px] w-[1250px] bg-[#3E3F29] shadow-2xl mx-auto rounded-[25px] mt-[25px] px-6">
+    <div className="fixed inset-0 flex justify-between items-center h-[55px] w-[1250px] mx-auto mt-[25px] z-10">
+      <header className="from-purple-500 via-pink-500 to-red-500 flex justify-between items-center h-[55px] w-[1250px] bg-[#3E3F29] shadow-2xl mx-auto rounded-[25px] mt-[25px] px-6">
         <h1 className="text-[#BCA88D] text-lg font-bold px-6">TASKUP</h1>
 
         <nav className="flex">
-          <a className="text-[#BCA88D] font-heebo text-lg font-bold cursor-pointer p-2 m-1"
+          <a className="text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
             onClick={null}>ABOUT US</a>
 
-          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] border-black border p-2 m-1 text-center"
+          <a className="text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+            onClick={null}>CONTACTS</a>
+
+          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("login")}>LOGIN</a>
 
-          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] border-black border p-2 m-1 text-center"
+          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("register")}>REGISTER</a>
         </nav>
       </header>
@@ -146,7 +149,7 @@ return (
     <div className="h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory relative scrollbar-hide">
 
 {/*----- HERO PAGE-----*/}
-      <section className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      <section className={`h-screen bg-gradient-to-r from-[#3E3F29] via-[#3E3F29] to-[#BCA88D] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
       ${fadeClass( visible.hero )}`} ref={heroRef}>
 
         <h1 className="text-[125px] font-bold font-heptoslab text-[#BCA88D]">TASKUP</h1>
@@ -174,8 +177,13 @@ return (
       <section ref={contactRef}className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
       ${fadeClass( visible.contact)}`}>
 
-        <h1 className="text-[125px] font-bold font-heptoslab text-[#BCA88D]">CONTACTS</h1>
-
+        <motion.h1
+          className="font-bold font-heptoslab text-[#BCA88D] mb-[50px] text-[125px]"
+          initial={{ scale: 1, x: 0, y: 0 }}
+          animate={visible.contact ? { scale: 0.4, x: 0, y: [-100, -100, -300] } : { scale: 1, x: 0, y: 0 }}
+          transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
+          CONTACTS
+        </motion.h1>
       </section>
     </div>
 
