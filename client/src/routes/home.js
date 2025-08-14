@@ -120,6 +120,24 @@ const closebtn = () => {
       ? "opacity-100 transition-opacity duration-1000 ease-in-out"
       : "opacity-0";
 
+// ----- ABOUT US/CONTACTS SCROLL
+  const about = useRef(null);
+  const contact = useRef(null);
+  const hero = useRef(null);
+
+  const scrollto = (section) => {
+    if (section === "about" && about.current) {
+      about.current.scrollIntoView({ behavior: "smooth" });
+    }
+    if (section === "contact" && contact.current) {
+      contact.current.scrollIntoView({ behavior: "smooth" });
+    }
+    if (section === "return" && contact.current) {
+      hero.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
 return (
 <div className="bg-[#3E3F29] ">
     <title>TASKCAMP</title>
@@ -127,14 +145,14 @@ return (
     {/*----- NAVBAR -----*/}
     <div className="fixed inset-0 flex justify-between items-center h-[55px] w-[1250px] mx-auto mt-[25px] z-10">
       <header className="from-purple-500 via-pink-500 to-red-500 flex justify-between items-center h-[55px] w-[1250px] bg-[#3E3F29] shadow-2xl mx-auto rounded-[25px] mt-[25px] px-6">
-        <h1 className="text-[#BCA88D] text-lg font-bold px-6">TASKUP</h1>
+        <button onClick={() => scrollto("return")} className="text-[#BCA88D] text-lg font-bold px-6">TASKUP</button>
 
         <nav className="flex">
-          <a className="text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
-            onClick={null}>ABOUT US</a>
+          <button className="hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+            onClick={() => scrollto("about")}>ABOUT US</button>
 
           <a className="text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
-            onClick={null}>CONTACTS</a>
+            onClick={() => scrollto("contact")}>CONTACTS</a>
 
           <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("login")}>LOGIN</a>
@@ -150,7 +168,7 @@ return (
 
 {/*----- HERO PAGE-----*/}
       <section className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
-      ${fadeClass( visible.hero )}`} ref={heroRef}>
+      ${fadeClass( visible.hero )}`} ref={(el) => {heroRef.current = el;hero.current = el;}}>
 
 
         <motion.h1
@@ -169,7 +187,7 @@ return (
       </section>
 
 {/*----- BODY//ABOUT PAGE-----*/}
-      <section ref={aboutRef} className={`h-screen bg-[#BCA88D] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      <section ref={(el) => {aboutRef.current = el;about.current = el;}} className={`h-screen bg-[#BCA88D] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
       ${fadeClass(visible.about )}`}>
 
         <motion.h1
@@ -183,7 +201,7 @@ return (
       </section>
 
 {/*----- FOOTER//CONTACTS PAGE-----*/}
-      <section ref={contactRef}className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      <section ref={(el) => {contactRef.current = el;contact.current = el;}} className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
       ${fadeClass( visible.contact)}`}>
 
         <motion.h1
