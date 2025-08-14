@@ -170,7 +170,6 @@ return (
       <section className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
       ${fadeClass( visible.hero )}`} ref={(el) => {heroRef.current = el;hero.current = el;}}>
 
-
         <motion.h1
           className="font-bold font-text-[125px] font-bold font-heptoslab text-[#BCA88D] text-[125px]"
           initial={{ scale: 1.4, x: 0, y: 0}}
@@ -213,6 +212,65 @@ return (
         </motion.h1>
       </section>
     </div>
+
+    {/*----- LOGIN FORM // HIDDEN -----*/}
+    {showLogin && (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem]">
+          <button onClick={closebtn} className="mb-2">Close</button>
+          <h2 className="text-center font-bold mb-4">LOGIN</h2>
+
+          <form onSubmit={loginSub} className="space-y-3">
+            
+            <input className="border px-4 py-2 w-full rounded" required type="email" placeholder="Enter Email"
+              onChange={e => loginvalue({ ...login, email: e.target.value })}/>
+
+            <input className="border px-4 py-2 w-full rounded" type="password" placeholder="Enter Password"
+              onChange={e => loginvalue({ ...login, pass: e.target.value })}/>
+
+            <button type="submit" className="bg-green-600 text-white px-6 py-2 w-full hover:bg-green-700">
+              LOGIN</button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <p>NO ACCOUNT?</p>
+            <button onClick={showreg}
+              className="bg-green-600 text-white px-6 py-2 w-full hover:bg-green-700"> 
+              Register </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+{/*----- REGISTRATION FORM // HIDDEN -----*/}
+    {showReg && (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem]">
+          <div>
+            <button onClick={closebtn}>Close</button>
+            <h1 className='text-center font-bold '>REGISTER</h1>
+            <form onSubmit={regisSub} className="space-y-3 max-w-md mx-auto mt-10"> 
+              <input placeholder='Enter Name' 
+              onChange={e => regvalue({...regis, name: e.target.value})} 
+              className="border px-4 py-2 w-full rounded"/>
+
+              <input placeholder='Enter Email' 
+              required type="email"
+              onChange={e => regvalue({...regis, email: e.target.value})} 
+              className="border px-4 py-2 w-full rounded"/>
+
+              <input placeholder='Enter Password' 
+              onChange={e => regvalue({...regis, pass: e.target.value})} 
+              className="border px-4 py-2 w-full rounded"/>
+              
+              <button type="submit" className="bg-green-600 text-white px-4 py-2 w-full rounded-none hover:bg-green-700">SIGN UP</button>
+              <h1 className='text-center'>ALREADY HAVE ACCOUNT</h1>
+              <button onClick={showlog} className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    )}
 
   </div>
   )
