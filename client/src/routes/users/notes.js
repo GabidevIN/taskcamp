@@ -106,58 +106,81 @@ const deleteNotes = async (id) => {
   };
 
   return (
-    <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
+    <div>
       {auth ? (
         <>
-          <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-          <div className="flex gap-2 mb-4">
-            <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
-            <Link to="/Schedule" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
-            <Link to="/Main" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">MAIN</Link>
-            <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
-            <Link to="/CreateTask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
+{/*----- NAVBAR -----*/}
+        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10 drop-shadow-lg">
+          <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
+            <Link to="/main" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            HOME</Link>
+            
+            <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            SCHEDULE</Link>
+            
+            <Link to="/Notes" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            NOTE</Link>
+
+            <Link to="/Profile" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            PROFILE</Link>
+
+            <Link to="/Createtask" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            CREATE TASK</Link>
+          </nav>
+        </div>
+
+{/*----- WELCOME SECTION -----*/}
+        <div className="w-screen bg-gray-800 h-14 z-5 fixed flex justify-center items-center shadow-md">
+            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
+            LOGOUT</Link>
+        </div>
+{/* ----- NOTING CONTAINER ----- */}
+<div className="flex items-center justify-center h-screen gap-20 w-[1500px] mx-auto p-6 mr-20">
+  
+  {/* ----- NOTING SECTION ----- */}
+
+  <div className="bg-gray-800 h-[800px] w-[500px] p-4 rounded shadow-lg rounded-[25px]">
+
+    <h2 className="text-xl mb-2 text-center text-white">Your Notes</h2>
+    <form onSubmit={handleAddNote} className="mb-4">
+      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
+        className="block w-full mb-2 p-2 text-black rounded"/>
+
+      <textarea placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
+        className="block w-full  mb-2 p-2 text-black rounded resize-none h-[600px]"/>
+
+      <button type="submit"
+        className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
+        Add Note </button>
+  
+    </form>
+  </div>
+
+
+{/* ----- FETCH SECTION ----- */}
+  <div className="flex flex-col bg-gray-800 items-center overflow-y-auto h-[800px] w-[700px] rounded-[25px] scrollbar-hide">
+    {notes.length > 0 ? (
+      [...notes]
+        .sort((a, b) => b.id - a.id)
+        .map((note) => (
+          <div
+            key={note.id}
+            className="mb-4 p-3 bg-white-800 rounded w-full text-white shadow cursor-pointer"
+            onClick={() => alert(`Note ID: ${note.id}`)}
+          >
+            <h3 className="font-bold">{note.title}</h3>
+            <p>{note.content}</p>
+            <button onClick={(e) => { e.stopPropagation(); deleteNotes(note.id); }}
+              className="mt-2 bg-red-600 px-3 py-1 rounded hover:bg-red-700" >
+              Delete </button>
           </div>
+        ))
+    ) : (
+      <p className="text-gray-500">No notes found. Create one above!</p>
+    )}
+  </div>
+</div>
 
-          <div className="mt-6">
-            <h2 className="text-xl mb-2">Your Notes</h2>
-            <form onSubmit={handleAddNote} className="mb-4">
-              <input
-                className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Title"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
-              <textarea
-                className="block w-full mb-2 p-2 text-black rounded"
-                placeholder="Content"
-                value={content}
-                onChange={e => setContent(e.target.value)}
-              />
-              <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Note</button>
-            </form>
-
-{/*FETCHING DISPLAY*/}
-            {notes.length > 0 ? (
-              [...notes]
-                .sort((a, b) => b.id - a.id)
-                .map(note => (
-                  <div key={note.id} className="mb-4 p-3 bg-gray-800 rounded cursor-pointer" 
-                  onClick={() => alert(`Note ID: ${note.id}`)}> {/*make this when clicked will be able to preview or EDIT*/}
-
-
-                    <h3 className="font-bold">{note.title}</h3>
-                    <p>{note.content}</p>
-                    <button onClick={() => deleteNotes(note.id)}>Delete</button>
-                  </div>
-                ))
-
-            ) : (
-              <p>No notes found. Create one above!</p>
-
-            )}
-
-
-          </div>
         </>
       ) : (
         <>

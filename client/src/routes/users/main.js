@@ -58,9 +58,8 @@ return (
     {    
       auth ?
       <>
-        
-        {/*----- NAVBAR -----*/}
-        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10">
+{/*----- NAVBAR -----*/}
+        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10 drop-shadow-lg">
           <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
             <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             SCHEDULE</Link>
@@ -73,13 +72,20 @@ return (
 
             <Link to="/Createtask" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             CREATE TASK</Link>
-
-            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
-            LOGOUT</Link>
           </nav>
         </div>
 
-                  <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
+{/*----- WELCOME SECTION -----*/}
+        <div className="w-screen bg-gray-800 h-14 z-5 fixed flex justify-center items-center shadow-md">
+            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
+            LOGOUT</Link>
+        </div>
+
+{/*----- HERO SECTION -----*/}
+<h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-20">
+  Welcome, {name}!
+</h3>
+
 
       </>
 
