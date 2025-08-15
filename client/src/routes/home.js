@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from 'react';
+import { useState, useEffect,useRef, use } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../index.css'; 
@@ -120,6 +120,7 @@ const closebtn = () => {
       ? "opacity-100 transition-opacity duration-1000 ease-in-out"
       : "opacity-0";
 
+
 // ----- ABOUT US/CONTACTS SCROLL
   const about = useRef(null);
   const contact = useRef(null);
@@ -137,9 +138,8 @@ const closebtn = () => {
     }
   };
 
-
 return (
-<div className="bg-[#3E3F29] ">
+<div className="bg-[#3E3F29]">
     <title>TASKCAMP</title>
 
     {/*----- NAVBAR -----*/}
@@ -215,8 +215,8 @@ return (
 
     {/*----- LOGIN FORM // HIDDEN -----*/}
     {showLogin && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem]">
+      <div className={"fixed inset-0 flex items-center justify-center z-50 backdrop-blur"}>
+        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem] rounded-[15px]">
           <button onClick={closebtn} className="mb-2">Close</button>
           <h2 className="text-center font-bold mb-4">LOGIN</h2>
 
@@ -244,8 +244,8 @@ return (
 
 {/*----- REGISTRATION FORM // HIDDEN -----*/}
     {showReg && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem]">
+      <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur ">
+        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem] rounded-[15px]">
           <div>
             <button onClick={closebtn}>Close</button>
             <h1 className='text-center font-bold '>REGISTER</h1>

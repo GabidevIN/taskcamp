@@ -53,20 +53,34 @@ function Main() {
 
 return (
   <>   
-    <div className="w-screen h-screen bg-gradient-to-r from-[#948997] to-[#393e3e] text-white p-4 rounded">
+    <div className="bg-[#3E3F29] ">
+    <title>MAIN</title>
     {    
       auth ?
       <>
-        <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-          <div className="flex gap-2 mb-4">
-            <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
-            <Link to="/Schedule" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
-            <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
-            <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
-            <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
-          </div>
+        
+        {/*----- NAVBAR -----*/}
+        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10">
+          <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
+            <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            SCHEDULE</Link>
+            
+            <Link to="/Notes" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            NOTE</Link>
 
-          {/* DISPLAYING USER INPUTS // FETCHING USER DATA OR LATEST DATA THEN ANALYSIS NILA */}
+            <Link to="/Profile" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            PROFILE</Link>
+
+            <Link to="/Createtask" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            CREATE TASK</Link>
+
+            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
+            LOGOUT</Link>
+          </nav>
+        </div>
+
+                  <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
+
       </>
 
         /* USER IS NOT AUTHENTICATED*/
@@ -74,7 +88,7 @@ return (
       <>
         <h3>{message}</h3>
         <h3>Login Now</h3>
-        <Link to = "/login" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</Link>
+        <Link to = "/" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</Link>
       </>
     }
     </div>
