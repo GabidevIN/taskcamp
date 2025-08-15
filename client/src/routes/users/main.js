@@ -53,13 +53,13 @@ function Main() {
 
 return (
   <>   
-    <div className="bg-[#3E3F29] ">
+    <div className="bg-[#BCA88D] h-screen w-screen">
     <title>MAIN</title>
     {    
       auth ?
       <>
 {/*----- NAVBAR -----*/}
-        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10 drop-shadow-lg">
+        <div className="bg-[#3E3F29] p-4 h-screen w-[350px] fixed left-0 top-0 z-10 drop-shadow-lg">
           <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
             <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             SCHEDULE</Link>
@@ -76,15 +76,26 @@ return (
         </div>
 
 {/*----- WELCOME SECTION -----*/}
-        <div className="w-screen bg-gray-800 h-14 z-5 fixed flex justify-center items-center shadow-md">
-            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
+        <div className="w-screen bg-[#3E3F29] h-14 z-5 fixed flex justify-start pl-[23rem] items-center shadow-md gap-4">
+            <Link to="/" onClick={logout} className="bg-red-400 text-center w-[10rem] text-white px-4 py-2 rounded hover:bg-green-400 transition">
             LOGOUT</Link>
         </div>
 
-{/*----- HERO SECTION -----*/}
+{/*----- USER STATS -----*/}
+
+<div>
+
+<div/>
+
+
 <h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-20">
   Welcome, {name}!
 </h3>
+
+
+
+
+
 
 
       </>

@@ -110,11 +110,11 @@ const deleteNotes = async (id) => {
       {auth ? (
         <>
 {/*----- NAVBAR -----*/}
-        <div className="bg-gray-800 p-4 h-screen w-64 fixed left-0 top-0 z-10 drop-shadow-lg">
+        <div className="bg-gray-800 p-4 h-screen w-[350px] fixed left-0 top-0 z-10 drop-shadow-lg">
           <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
             <Link to="/main" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             HOME</Link>
-            
+
             <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             SCHEDULE</Link>
             
