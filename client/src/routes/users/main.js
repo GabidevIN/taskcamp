@@ -81,12 +81,7 @@ return (
             LOGOUT</Link>
         </div>
 
-{/*----- USER STATS -----*/}
-
-<div>
-
-<div/>
-
+{/*----- HERO SECTION -----*/}
 
 <h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-20">
   Welcome, {name}!

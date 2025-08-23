@@ -143,21 +143,26 @@ return (
     <title>TASKCAMP</title>
 
     {/*----- NAVBAR -----*/}
-    <div className="fixed inset-0 flex justify-between items-center h-[55px] w-[1250px] mx-auto mt-[25px] z-10">
-      <header className="from-purple-500 via-pink-500 to-red-500 flex justify-between items-center h-[55px] w-[1250px] bg-[#3E3F29] shadow-2xl mx-auto rounded-[25px] mt-[25px] px-6">
-        <button onClick={() => scrollto("return")} className="text-[#BCA88D] text-lg font-bold px-6">TASKUP</button>
+    <div className="fixed inset-0 flex justify-between items-center mx-auto mt-[25px]  z-10
+    h-[55px] w-[75px] sm:w-[50px]  md:w-[750px] lg:w-[1050px]">
+
+      <header className="flex justify-between items-center h-[55px] w-full bg-[#3E3F29] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
+      mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6">
+
+        <button onClick={() => scrollto("return")} className="hidden sm:block text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto">TASKUP</button>
+        <button onClick={() => scrollto("null")} className="text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto cursor-pointer"> </button>
 
         <nav className="flex">
-          <button className="hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+          <button className="sm:block hidden hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
             onClick={() => scrollto("about")}>ABOUT US</button>
 
-          <a className="text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+          <a className="sm:block hidden text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
             onClick={() => scrollto("contact")}>CONTACTS</a>
 
-          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
+          <a className="sm:block hidden text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("login")}>LOGIN</a>
 
-          <a className="text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] p-2 m-1 text-center"
+          <a className="sm:block hidden text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("register")}>REGISTER</a>
         </nav>
       </header>
