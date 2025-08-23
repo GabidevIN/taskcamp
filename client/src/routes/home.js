@@ -138,6 +138,8 @@ const closebtn = () => {
     }
   };
 
+  const [Menu, OpenMenu] = useState(false);
+
 return (
 <div className="bg-[#3E3F29]">
     <title>TASKCAMP</title>
@@ -150,7 +152,7 @@ return (
       mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6">
 
         <button onClick={() => scrollto("return")} className="hidden sm:block text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto">TASKUP</button>
-        <button onClick={() => scrollto("null")} className="text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto cursor-pointer"> </button>
+        <button onClick={() => OpenMenu(!Menu)} className="lg:hidden md:hidden block text-[#BCA88D]text-lg font-bold sm:mx-0 mx-auto cursor-pointer">img </button>
 
         <nav className="flex">
           <button className="sm:block hidden hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
@@ -167,6 +169,31 @@ return (
         </nav>
       </header>
     </div>
+
+      {Menu && (
+        <div
+          onClick={() => OpenMenu(false)}
+          className="fixed inset-0 bg-black bg-opacity-0 z-10 lg:hidden md:hidden block "
+        ></div>
+      )}
+
+    {/* Drawer */}
+      <div
+        className={`fixed top-0 left-0 h-full w-full bg-gray-700 text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen opacity-75
+          lg:hidden md:hidden block 
+        ${Menu ? 
+          "translate-y-0 lg:translate-x-0 lg:translate-y-0 opacity-75" 
+          : 
+          "-translate-y-full lg:-translate-x-full lg:translate-y-0 opacity-0"}`}>
+
+        <ul className="space-y-4 text-center">
+          <li className="hover:bg-gray-600 p-2 rounded">Home</li>
+          <li className="hover:bg-gray-600 p-2 rounded">About</li>
+          <li className="hover:bg-gray-600 p-2 rounded">Services</li>
+          <li className="hover:bg-gray-600 p-2 rounded">Contact</li>
+          <li className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenMenu(false)}>Close</li>
+        </ul>
+      </div>
 
 {/*----- PAGES -----*/}
     <div className="h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory relative scrollbar-hide">
