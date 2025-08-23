@@ -172,17 +172,16 @@ return (
     <div className="h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory relative scrollbar-hide">
 
 {/*----- HERO PAGE-----*/}
-      <section className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
+      <section className={`h-screen flex flex-col items-center justify-center text-white text-center snap-center gap-2
       ${fadeClass( visible.hero )}`} ref={(el) => {heroRef.current = el;hero.current = el;}}>
 
         <motion.h1
-          className="font-bold font-text-[125px] font-bold font-heptoslab text-[#BCA88D] text-[125px]"
+          className="font-bold font-bold font-heptoslab text-[#BCA88D] text-[65px] sm:text-[65px] md:text-[100px] lg:text-[125px]"
           initial={{ scale: 1.4, x: 0, y: 0}}
           animate={visible.hero ? { scale: 1.25, x: 0, y: 0 } : { scale: 1, x: 0, y: 0 }}
           transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
           TASKUP
         </motion.h1>
-
 
         <h2 className="text-[20px] font-bold font-heptoslab text-[#BCA88D] mt-10 max-w-2xl px-4">
           Your all in one app for scheduling, note taking, and task management designed to keep your life organized and on track.
