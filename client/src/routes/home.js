@@ -144,7 +144,7 @@ return (
 
     {/*----- NAVBAR -----*/}
     <div className="fixed inset-0 flex justify-between items-center mx-auto mt-[25px]  z-10
-    h-[55px] w-[75px] sm:w-[50px]  md:w-[750px] lg:w-[1050px]">
+    h-[55px] w-[75px] sm:w-[50px] md:w-[750px] lg:max-xl:w-[1050px]">
 
       <header className="flex justify-between items-center h-[55px] w-full bg-[#3E3F29] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
       mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6">
@@ -183,37 +183,43 @@ return (
           TASKUP
         </motion.h1>
 
-        <h2 className="text-[20px] font-bold font-heptoslab text-[#BCA88D] mt-10 max-w-2xl px-4">
+        <h2 className="text-[20px] font-bold font-heptoslab text-[#BCA88D] max-w-2xl">
           Your all in one app for scheduling, note taking, and task management designed to keep your life organized and on track.
         </h2>
 
       </section>
 
 {/*----- BODY//ABOUT PAGE-----*/}
-      <section ref={(el) => {aboutRef.current = el;about.current = el;}} className={`h-screen bg-[#BCA88D] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
-      ${fadeClass(visible.about )}`}>
+      <section ref={(el) => { aboutRef.current = el; about.current = el; }}className={`h-screen bg-[#BCA88D] flex flex-col items-center 
+        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}`}>
 
-        <motion.h1
-          className="font-bold font-heptoslab text-[#3E3F29] mb-[50px] text-[125px]"
-          initial={{ scale: 1, x: 0, y: 0 }}
-          animate={visible.about ? { scale: 0.4, x: 0, y: [-100, -100, -300] } : { scale: 1, x: 0, y: 0 }}
-          transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
-          ABOUT US
-        </motion.h1>
+      <h1
+        className={`font-bold font-heptoslab text-[#3E3F29] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
+          mt-[80px] sm:mt-[100px] md:mt-[150px] lg:mt-[200px]
+          ${visible.about 
+            ? "opacity-100 scale-[0.4] -translate-y-[5px] md:-translate-y-[55px] lg:-translate-y-[125px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
+            : "opacity-0 scale-0 translate-y-0"
+          }`}
+      >
+        ABOUT
+      </h1>
 
-      </section>
+    </section>
 
 {/*----- FOOTER//CONTACTS PAGE-----*/}
-      <section ref={(el) => {contactRef.current = el;contact.current = el;}} className={`h-screen bg-[#3E3F29] flex flex-col items-center justify-center text-white text-4xl text-center snap-center 
-      ${fadeClass( visible.contact)}`}>
-
-        <motion.h1
-          className="font-bold font-heptoslab text-[#BCA88D] mb-[50px] text-[125px]"
-          initial={{ scale: 1, x: 0, y: 0 }}
-          animate={visible.contact ? { scale: 0.4, x: 0, y: [-100, -100, -300] } : { scale: 1, x: 0, y: 0 }}
-          transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
+      <section ref={(el) => {contactRef.current = el;contact.current = el;}}className={`h-screen bg-[#3E3F29] flex flex-col items-center 
+        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}`}>
+        <h1
+          className={`font-bold font-heptoslab text-[#BCA88D] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
+            mt-[80px] sm:mt-[100px] md:mt-[150px] lg:mt-[200px]
+            ${visible.contact 
+            ? "opacity-100 scale-[0.4] -translate-y-[5px] md:-translate-y-[55px] lg:-translate-y-[125px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
+            : "opacity-0 scale-0 translate-y-0"
+            }`}
+        >
           CONTACTS
-        </motion.h1>
+        </h1>
+
       </section>
     </div>
 
