@@ -177,23 +177,23 @@ return (
         ></div>
       )}
 
-    {/* Drawer */}
-      <div
-        className={`fixed top-0 left-0 h-full w-full bg-black text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen opacity-75
-          lg:hidden md:hidden block 
-        ${Menu ? 
-          "translate-y-0 lg:translate-x-0 lg:translate-y-0 bg-opacity-50" 
-          : 
-          "-translate-y-full lg:-translate-x-full lg:translate-y-0 opacity-0"}`}>
+{/* Drawer */}
+    <div
+      className={`fixed top-0 left-0 h-full w-full bg-black text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen opacity-75
+        bg-opacity-0 lg:hidden md:hidden block 
+      ${Menu ? 
+        "translate-y-0 bg-opacity-50" 
+        : 
+        "-translate-y-full bg-opacity-50"}`}>
 
-        <ul className="space-y-4 text-center">
-          <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("about")}>ABOUT US</li>
-          <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("contact")}>CONTACTS</li>
-          <li className="hover:bg-gray-600 p-2 rounded">LOGIN</li>
-          <li className="hover:bg-gray-600 p-2 rounded">REGISTER</li>
-          <li className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenMenu(false)}>Close</li>
-        </ul>
-      </div>
+      <ul className="space-y-4 text-center">
+        <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("about")}>ABOUT US</li>
+        <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("contact")}>CONTACTS</li>
+        <li className="hover:bg-gray-600 p-2 rounded" onClick={handleAuthClick("login")}>LOGIN</li>
+        <li className="hover:bg-gray-600 p-2 rounded" onClick={handleAuthClick("register")}>REGISTER</li>
+        <li className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenMenu(false)}>Close</li>
+      </ul>
+    </div>
 
 {/*----- PAGES -----*/}
     <div className="h-screen overflow-y-scroll scroll-smooth snap-y snap-mandatory relative scrollbar-hide">
@@ -210,7 +210,7 @@ return (
           TASKUP
         </motion.h1>
 
-        <h2 className="text-[20px] font-bold font-heptoslab text-[#BCA88D] max-w-2xl">
+        <h2 className="text-[15px] pr-4 pl-4 lg:text-[20px] font-bold font-heptoslab text-[#BCA88D] max-w-2xl">
           Your all in one app for scheduling, note taking, and task management designed to keep your life organized and on track.
         </h2>
 
@@ -253,7 +253,7 @@ return (
     {/*----- LOGIN FORM // HIDDEN -----*/}
     {showLogin && (
       <div className={"fixed inset-0 flex items-center justify-center z-50 backdrop-blur"}>
-        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem] rounded-[15px]">
+        <div className="bg-white text-black p-5 rounded w-[30rem] lg:w-[35rem] h-[30rem] rounded-[15px]">
           <button onClick={closebtn} className="mb-2">Close</button>
           <h2 className="text-center font-bold mb-4">LOGIN</h2>
 
@@ -282,7 +282,7 @@ return (
 {/*----- REGISTRATION FORM // HIDDEN -----*/}
     {showReg && (
       <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur ">
-        <div className="bg-white text-black p-5 rounded w-[50rem] h-[30rem] rounded-[15px]">
+        <div className="bg-white text-black p-5 rounded w-[30rem] lg:w-[35rem] h-[30rem] rounded-[15px]">
           <div>
             <button onClick={closebtn}>Close</button>
             <h1 className='text-center font-bold '>REGISTER</h1>
