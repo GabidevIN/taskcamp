@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { menu } from 'framer-motion/client';
 
 
 function Main() {
@@ -50,6 +51,7 @@ function Main() {
 
 
 // ----- function button
+  const [Menu, OpenMenu] = useState(false);
 
 return (
   <>   
@@ -58,32 +60,52 @@ return (
     {    
       auth ?
       <>
-{/*----- NAVBAR -----*/}
-        <div className="bg-[#3E3F29] p-4 h-screen w-[350px] fixed left-0 top-0 z-10 drop-shadow-lg">
-          <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
-            <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+      {Menu && (
+        <div
+          onClick={() => OpenMenu(false)}
+          className="fixed inset-0 bg-black bg-opacity-0 z-100"
+        ></div>
+      )}
+
+{/* NAV */}
+      <div className={`fixed top-0 left-0 bg-gray-700 text-white p-5 transform transition-all duration-300 z-30 gap-5
+        ${Menu ?  "translate-y-0 lg:translate-x-0 lg:translate-y-0 lg:bg-opacity-100 bg-opacity-75" 
+                  : 
+                  "-translate-y-full lg:-translate-x-full lg:translate-y-0 bg-opacity-0"}
+        h-full w-full items-center justify-center flex flex-col
+
+        lg:h-full lg:w-[25rem]`}>
+
+        <h2 className="text-xl font-bold mb-5">Menu</h2>
+          <ul className="space-y-4 items-center justify-center flex flex-col gap-1">
+            <Link to="/Schedule" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             SCHEDULE</Link>
             
-            <Link to="/Notes" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <Link to="/Notes" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             NOTE</Link>
 
-            <Link to="/Profile" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <Link to="/Profile" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             PROFILE</Link>
 
-            <Link to="/Createtask" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <Link to="/Createtask" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             CREATE TASK</Link>
-          </nav>
-        </div>
+
+            <button className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded" onClick={() => OpenMenu(!Menu)} >{Menu ? "CLOSE" : "OPEN"}</button>
+            
+            <Link to="/" onClick={logout} className="bg-red-400 text-center w-[10rem] p-2 text-white rounded hover:bg-green-400 transition">
+            LOGOUT</Link>
+          </ul>
+      </div>
+
 
 {/*----- WELCOME SECTION -----*/}
         <div className="w-screen bg-[#3E3F29] h-14 z-5 fixed flex justify-start pl-[23rem] items-center shadow-md gap-4">
-            <Link to="/" onClick={logout} className="bg-red-400 text-center w-[10rem] text-white px-4 py-2 rounded hover:bg-green-400 transition">
-            LOGOUT</Link>
+        <button onClick={() => OpenMenu(!Menu)} className="text-[#BCA88D] text-lg font-bold sm:mx-0 mx-auto cursor-pointer">img </button>
         </div>
 
 {/*----- HERO SECTION -----*/}
 
-<h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-20">
+<h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-10">
   Welcome, {name}!
 </h3>
 
