@@ -12,6 +12,7 @@ function Main() {
   const [content, setContent] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const fetched = useRef(false)
+  const [Menu, OpenMenu] = useState(false);
 
 // ----- SESSION SYSTEM
   axios.defaults.withCredentials = true;
@@ -110,30 +111,40 @@ const deleteNotes = async (id) => {
       {auth ? (
         <>
 {/*----- NAVBAR -----*/}
-        <div className="bg-gray-800 p-4 h-screen w-[350px] fixed left-0 top-0 z-10 drop-shadow-lg">
-          <nav className="flex flex-col flex-grow gap-5 justify-center items-center h-full p-4">
-            <Link to="/main" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
-            HOME</Link>
+      <div className={`fixed top-0 left-0 bg-gray-700 text-white p-5 transform transition-all duration-300 z-30 gap-5
+        ${Menu ?  "translate-y-0 lg:translate-x-0 lg:translate-y-0 lg:bg-opacity-100 bg-opacity-75" 
+                  : 
+                  "-translate-y-full lg:-translate-x-full lg:translate-y-0 bg-opacity-0"}
+        h-full w-full items-center justify-center flex flex-col
 
-            <Link to="/Schedule" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+        lg:h-full lg:w-[25rem]`}>
+
+        <h2 className="text-xl font-bold mb-5">Menu</h2>
+          <ul className="space-y-4 items-center justify-center flex flex-col gap-1">
+            <Link to="/Schedule" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             SCHEDULE</Link>
             
-            <Link to="/Notes" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
-            NOTE</Link>
+            <Link to="/main" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
+            MAIN</Link>
 
-            <Link to="/Profile" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <Link to="/Profile" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             PROFILE</Link>
 
-            <Link to="/Createtask" className="bg-gray-700 text-center w-32 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            <Link to="/Createtask" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
             CREATE TASK</Link>
-          </nav>
-        </div>
+
+            <button className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded" onClick={() => OpenMenu(!Menu)} >{Menu ? "CLOSE" : "OPEN"}</button>
+            
+            <Link to="/" onClick={logout} className="bg-red-400 text-center w-[10rem] p-2 text-white rounded hover:bg-green-400 transition">
+            LOGOUT</Link>
+          </ul>
+      </div>
 
 {/*----- WELCOME SECTION -----*/}
-        <div className="w-screen bg-gray-800 h-14 z-5 fixed flex justify-center items-center shadow-md">
-            <Link to="/" onClick={logout} className="bg-green-400 text-center w-32 text-white px-4 py-2 rounded hover:bg-red-400 transition">
-            LOGOUT</Link>
+        <div className="w-screen bg-[#3E3F29] h-14 z-5 fixed flex justify-start pl-[23rem] items-center shadow-md gap-4">
+        <button onClick={() => OpenMenu(!Menu)} className="text-[#BCA88D] text-lg font-bold sm:mx-0 mx-auto cursor-pointer">img </button>
         </div>
+
 {/* ----- NOTING CONTAINER ----- */}
 <div className="flex items-center justify-center h-screen gap-20 w-[1500px] mx-auto p-6 mr-20">
   

@@ -67,7 +67,7 @@ return (
         ></div>
       )}
 
-{/* NAV */}
+{/*----- NAVBAR -----*/}
       <div className={`fixed top-0 left-0 bg-gray-700 text-white p-5 transform transition-all duration-300 z-30 gap-5
         ${Menu ?  "translate-y-0 lg:translate-x-0 lg:translate-y-0 lg:bg-opacity-100 bg-opacity-75" 
                   : 
