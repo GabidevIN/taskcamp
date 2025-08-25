@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../index.css'; 
 import { motion } from 'framer-motion';
+import home from "../assets/HomeINC.png";
 
 function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -149,10 +150,12 @@ return (
     h-[55px] w-[75px] sm:w-[50px] md:w-[750px] lg:max-xl:w-[1050px]">
 
       <header className="flex justify-between items-center h-[55px] w-full bg-[#3E3F29] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
-      mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6">
+      mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6 sm: w-[65px]">
 
         <button onClick={() => scrollto("return")} className="hidden sm:block text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto">TASKUP</button>
-        <button onClick={() => OpenMenu(!Menu)} className="lg:hidden md:hidden block text-[#BCA88D] text-lg font-bold sm:mx-0 mx-auto cursor-pointer">img </button>
+        <button onClick={() => OpenMenu(!Menu)} className=" lg:hidden md:hidden block text-[#BCA88D] sm:mx-0 mx-auto cursor-pointer "> 
+          <img src={home} alt="menu"   className="w-9 h-9 object-contain scale-150"></img>
+        </button>
 
         <nav className="flex">
           <button className="sm:block hidden hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
@@ -217,21 +220,43 @@ return (
       </section>
 
 {/*----- BODY//ABOUT PAGE-----*/}
-      <section ref={(el) => { aboutRef.current = el; about.current = el; }}className={`h-screen bg-[#BCA88D] flex flex-col items-center 
-        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}`}>
+      <section ref={(el) => { aboutRef.current = el; about.current = el; }}className={`bg-[#BCA88D] flex flex-col items-center 
+        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}
+        h-[1250px] md:h-screen
+        `}>
 
-      <h1
-        className={`font-bold font-heptoslab text-[#3E3F29] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
-          mt-[80px] sm:mt-[100px] md:mt-[150px] lg:mt-[200px]
-          ${visible.about 
-            ? "opacity-100 scale-[0.4] -translate-y-[5px] md:-translate-y-[55px] lg:-translate-y-[125px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
-            : "opacity-0 scale-0 translate-y-0"
-          }`}
-      >
-        ABOUT
-      </h1>
+        <h1
+          className={`font-bold font-heptoslab text-[#3E3F29] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
+            mt-[80px] sm:mt-[90px] md:mt-[100px] lg:mt-[110px]
+            ${visible.about 
+              ? "opacity-100 scale-[0.4] -translate-y-[10px] md:-translate-y-[30px] lg:-translate-y-[50px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
+              : "opacity-0 scale-0 translate-y-0"
+            }`}
+        >
+          ABOUT
+        </h1>
 
-    </section>
+
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-5 place-items-center text-center p-2 -mt-0 lg:-mt-20 md:-mt-10
+            transition-all duration-700 ease-in-out delay-500 ${visible.about ? "opacity-100" : "opacity-0"}`}>
+          <div className="bg-gray-700 flex items-center justify-center rounded-3xl
+              h-[25rem] w-[20rem]
+            md:min-h-[35rem] md:min-w-[35rem]
+            lg:min-h-[40rem] lg:min-w-[45rem]
+            ">
+              eto ganto
+            </div>
+
+          <div className="bg-gray-700 flex items-center justify-center rounded-3xl
+              h-[25rem] w-[20rem]
+            md:min-h-[35rem] md:min-w-[35rem]
+            lg:min-h-[40rem] lg:min-w-[45rem]
+            ">
+              about san
+          </div>
+        </div>
+      </section>
 
 {/*----- FOOTER//CONTACTS PAGE-----*/}
       <section ref={(el) => {contactRef.current = el;contact.current = el;}}className={`h-screen bg-[#3E3F29] flex flex-col items-center 
