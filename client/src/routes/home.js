@@ -85,11 +85,15 @@ const closebtn = () => {
   const heroRef = useRef();
   const aboutRef = useRef();
   const contactRef = useRef();
+  const about1Ref = useRef();
+  const about2Ref = useRef();
 
   const [visible, setVisible] = useState({
     hero: false,
     about: false,
     contact: false,
+    about1: false,
+    about2: false,
   });
 
   useEffect(() => {
@@ -98,14 +102,27 @@ const closebtn = () => {
     const heroObserver = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) setVisible((v) => ({ ...v, hero: true }));
     }, observerOptions);
+
     const aboutObserver = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) setVisible((v) => ({ ...v, about: true, }));
     }, observerOptions);
+
     const contactObserver = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) setVisible((v) => ({ ...v, contact: true }));
     }, observerOptions);
 
+    const about1Observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible((v) => ({ ...v, about1: true }));
+    }, observerOptions);
+
+    const about2Observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible((v) => ({ ...v, about2: true }));
+    }, observerOptions);
+    
+
     if (heroRef.current) heroObserver.observe(heroRef.current);
+    if (about1Ref.current) about1Observer.observe(about1Ref.current);
+    if (about2Ref.current) about2Observer.observe(about2Ref.current);
     if (aboutRef.current) aboutObserver.observe(aboutRef.current);
     if (contactRef.current) contactObserver.observe(contactRef.current);
 
@@ -113,6 +130,9 @@ const closebtn = () => {
       heroObserver.disconnect();
       aboutObserver.disconnect();
       contactObserver.disconnect();
+      about1Observer.disconnect();
+      about2Observer.disconnect();
+
     };
   }, []);
 
@@ -127,6 +147,7 @@ const closebtn = () => {
   const contact = useRef(null);
   const hero = useRef(null);
 
+  
   const scrollto = (section) => {
     if (section === "about" && about.current) {
       about.current.scrollIntoView({ behavior: "smooth" });
@@ -221,9 +242,8 @@ return (
 
 {/*----- BODY//ABOUT PAGE-----*/}
       <section ref={(el) => { aboutRef.current = el; about.current = el; }}className={`bg-[#BCA88D] flex flex-col items-center 
-        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}
-        h-[1250px] md:h-screen
-        `}>
+        justify-start snap-start ${fadeClass(visible.about)}
+        h-screen`}>
 
         <h1
           className={`font-bold font-heptoslab text-[#3E3F29] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
@@ -236,41 +256,52 @@ return (
           ABOUT
         </h1>
 
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-5 place-items-center text-center p-2 transition-all duration-700 ease-in-out delay-500
+                      -mt-0 lg:-mt-20 md:-mt-10  max-h-[420px] lg:max-h-screen overflow-y-scroll lg:overflow-hidden md:overflow-hidden snap-y snap-mandatory
+                      ${visible.about ? "opacity-100" : "opacity-0"}`}
+        >
+          <div ref={(el) => {about1Ref.current = el}} 
+            className={`bg-gray-700 flex items-center justify-center rounded-3xl snap-start   h-[25rem] w-[20rem]
+            md:min-h-[35rem] md:min-w-[35rem] lg:min-h-[40rem] lg:min-w-[45rem]  ${fadeClass(visible.about1)}`}>
+            eto ganto
+          </div>
 
-        <div
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-5 place-items-center text-center p-2 -mt-0 lg:-mt-20 md:-mt-10
-            transition-all duration-700 ease-in-out delay-500 ${visible.about ? "opacity-100" : "opacity-0"}`}>
-          <div className="bg-gray-700 flex items-center justify-center rounded-3xl
-              h-[25rem] w-[20rem]
-            md:min-h-[35rem] md:min-w-[35rem]
-            lg:min-h-[40rem] lg:min-w-[45rem]
-            ">
-              eto ganto
-            </div>
-
-          <div className="bg-gray-700 flex items-center justify-center rounded-3xl
-              h-[25rem] w-[20rem]
-            md:min-h-[35rem] md:min-w-[35rem]
-            lg:min-h-[40rem] lg:min-w-[45rem]
-            ">
-              about san
+          <div ref={(el) => { about2Ref.current = el }}
+            className={`bg-gray-700 flex items-center justify-center rounded-3xl h-[25rem] w-[20rem] snap-start
+            md:min-h-[35rem] md:min-w-[35rem] lg:min-h-[40rem] lg:min-w-[45rem]  ${fadeClass(visible.about2)}`}>
+            about san
           </div>
         </div>
+
+
+
       </section>
 
 {/*----- FOOTER//CONTACTS PAGE-----*/}
       <section ref={(el) => {contactRef.current = el;contact.current = el;}}className={`h-screen bg-[#3E3F29] flex flex-col items-center 
-        justify-start text-white text-4xl text-center snap-center ${fadeClass(visible.about)}`}>
+        justify-start snap-start ${fadeClass(visible.contact)}`}>
+
         <h1
           className={`font-bold font-heptoslab text-[#BCA88D] leading-[1.1] tracking-tight whitespace-nowrap transition-all duration-[1500ms] ease-in-out
-            mt-[80px] sm:mt-[100px] md:mt-[150px] lg:mt-[200px]
+            mt-[80px] sm:mt-[90px] md:mt-[100px] lg:mt-[110px]
             ${visible.contact 
-            ? "opacity-100 scale-[0.4] -translate-y-[5px] md:-translate-y-[55px] lg:-translate-y-[125px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
-            : "opacity-0 scale-0 translate-y-0"
+              ? "opacity-100 scale-[0.4] -translate-y-[10px] md:-translate-y-[30px] lg:-translate-y-[50px] text-[100px] sm:text-[100px] md:text-[100px] lg:text-[125px]" 
+              : "opacity-0 scale-0 translate-y-0"
             }`}
         >
           CONTACTS
         </h1>
+
+        
+        <div className={`flex place-items-center text-center p-2 transition-all duration-700 ease-in-out delay-500 -mt-0 lg:-mt-20 md:-mt-10 max-h-[420px] lg:max-h-screen overflow-y-scroll lg:overflow-hidden md:overflow-hidden snap-y snap-mandatory
+          ${visible.contact ? "opacity-100" : "opacity-0"}`}>
+
+          <div className={`bg-gray-700 flex items-center justify-center rounded-3xl snap-start   h-[25rem] w-[20rem]
+            md:min-h-[35rem] md:min-w-[35rem] lg:min-h-[40rem] lg:min-w-[45rem]`}>
+            eto ganto
+          </div>
+
+        </div>
 
       </section>
     </div>
