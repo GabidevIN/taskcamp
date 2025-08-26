@@ -168,7 +168,7 @@ return (
 
     {/*----- NAVBAR -----*/}
     <div className="fixed inset-0 flex justify-between items-center mx-auto mt-[25px]  z-10
-    h-[55px] w-[75px] sm:w-[50px] md:w-[750px] lg:max-xl:w-[1050px]">
+    h-[55px] w-[65px] sm:w-[50px] md:w-[750px] lg:max-xl:w-[1050px]">
 
       <header className="flex justify-between items-center h-[55px] w-full bg-[#3E3F29] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
       mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6 sm: w-[65px]">
@@ -256,7 +256,7 @@ return (
           ABOUT
         </h1>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-5 place-items-center text-center p-2 transition-all duration-700 ease-in-out delay-500
+        <div className={`rounded 2-xl grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-5 place-items-center text-center p-2 transition-all duration-700 ease-in-out delay-500
                       -mt-0 lg:-mt-20 md:-mt-10  max-h-[420px] lg:max-h-screen overflow-y-scroll lg:overflow-hidden md:overflow-hidden snap-y snap-mandatory
                       ${visible.about ? "opacity-100" : "opacity-0"}`}
         >

@@ -5,12 +5,18 @@ import { menu } from 'framer-motion/client';
 
 
 function Main() {
-// ----- SESSION SYSTEM
   const [auth, setAuth] = useState(false);
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
   const [status, setStatus] = useState(false);
+  const [delay, setDelay] = useState('');
+  const [completed, setCompleted] = useState('');
+  const [late, setlate] = useState('');
+  const [shared, setShared] = useState('');
+  const [id, setId] = useState('');
+  const [created, setCreated] = useState('');
 
+// ----- SESSION SYSTEM
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -20,21 +26,29 @@ function Main() {
       if (res.data.Status === "Success") {
         setName(res.data.name);
         setStatus(res.data.admin);
+        setDelay(res.data.delay);
+        setCompleted(res.data.completed);
+        setlate(res.data.late);
+        setShared(res.data.shared);
+        setId(res.data.id);
+        setCreated(res.data.created);
 
         if (Number(res.data.admin) === 1) {
           setMessage('You are logged in as an Admin');
           setAuth(false);
         } else {
           setAuth(true);
-        } 
-        
+        }
       } else {
         setAuth(false);
-        setMessage(res.data.Error);
+        setMessage(res.data.Error || 'Session expired, please log in.');
       }
     })
-  .then(err => console.log(err));
-  }, [])
+    .catch(() => {
+      setAuth(false);
+      setMessage('Failed to verify session. Please log in.');
+    });
+}, []);
 
 
   const logout = () => {
@@ -55,19 +69,37 @@ function Main() {
 
 return (
   <>   
-    <div className="bg-[#BCA88D] h-screen w-screen">
+    <div>
     <title>MAIN</title>
     {    
       auth ?
       <>
+{/*----- NAVBAR -----*/}
+        <div className='flex justify-center items-center m-10 '>
+          <div className="w-[100px] outline outline-[0.5px] shadow-2xl lg:w-[1000px] md:w-[725px] bg-[#3E3F29] h-12 rounded-2xl z-5 fixed flex justify-center items-center shadow-md 
+          gap-[100px] md:gap-[50px] my-2 text-base">
+
+              <Link to="/" onClick={logout} className="bg-[#743636] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
+              block lg:block md:block sm:hidden">LOGOUT</Link>
+              <Link to="/Schedule" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
+              block lg:block md:block sm:hidden">SCHEDULE</Link>
+              <Link to="/Main" className="bg-[#BCA88D] px-6 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
+              block lg:block md:block sm:hidden">MAIN</Link>
+              <Link to="/Notes" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
+              block lg:block md:block sm:hidden">NOTE</Link>
+              <Link to="/Createtask" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px] block 
+              block lg:block md:block sm:hidden">TASK</Link>
+            
+            <button onClick={() => OpenMenu(!Menu)} className="text-[#BCA88D] block lg:hidden md:hidden text-lg  cursor-pointer">MENU </button>
+          </div>
+        </div>
+
       {Menu && (
         <div
           onClick={() => OpenMenu(false)}
           className="fixed inset-0 bg-black bg-opacity-0 z-100"
         ></div>
       )}
-
-{/*----- NAVBAR -----*/}
       <div className={`fixed top-0 left-0 bg-gray-700 text-white p-5 transform transition-all duration-300 z-30 gap-5
         ${Menu ?  "translate-y-0 lg:translate-x-0 lg:translate-y-0 lg:bg-opacity-100 bg-opacity-75" 
                   : 
@@ -97,33 +129,54 @@ return (
           </ul>
       </div>
 
+{/*----- HERO SECTION -----*/}
+  <section>
 
-{/*----- WELCOME SECTION -----*/}
-        <div className="w-screen bg-[#3E3F29] h-14 z-5 fixed flex justify-start pl-[23rem] items-center shadow-md gap-4">
-        <button onClick={() => OpenMenu(!Menu)} className="text-[#BCA88D] text-lg font-bold sm:mx-0 mx-auto cursor-pointer">img </button>
+    <div class="grid grid-cols-2 gap-5 ml-[375px]">
+
+      <div class="flex flex-col gap-y-[60px] items-end">
+
+        <div class="bg-[#BCA88D] h-[7.5rem] w-[50rem] rounded-2xl">
+          <h3 className='items-center flex flex-row gap-10'> 
+            <h1>Delayed: {delay} </h1>
+            <h1>Completed: {completed} </h1>
+            <h1>Late: {late} </h1>
+            <h1>Shared: {shared} </h1>
+            <h1>created: {created}</h1>
+          </h3>
         </div>
 
-{/*----- HERO SECTION -----*/}
+        <div class="bg-[#BCA88D] h-[30rem] w-[50rem] rounded-2xl">USER</div>
+      </div>
 
-<h3 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl z-10">
-  Welcome, {name}!
-</h3>
-
+      <div class="grid grid-cols-1 gap-5 justify-end items-end">
 
 
+        <div class="bg-[#BCA88D] h-[10rem] w-[25rem] rounded-2xl">
+            Welcome, {name}!
+        </div>
 
+        <div class="bg-[#BCA88D] h-[30rem] w-[25rem] rounded-2xl">INBOX
 
+        </div>
 
+      </div>
 
-      </>
+    </div>     
+  
+  
+  
+  
+  </section>
+    </>
 
-        /* USER IS NOT AUTHENTICATED*/
-        :
-      <>
-        <h3>{message}</h3>
-        <h3>Login Now</h3>
-        <Link to = "/" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</Link>
-      </>
+      /* USER IS NOT AUTHENTICATED*/
+       :
+    <>
+      <h3>{message}</h3>
+      <h3>Login Now</h3>
+      <Link to = "/" className="block text-center bg-green-600 text-white px-6 py-2 w-full rounded-none hover:bg-green-700">LOGIN</Link>
+    </>
     }
     </div>
   </>
