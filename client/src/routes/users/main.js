@@ -147,6 +147,8 @@ return (
         </div>
 
         <div class="bg-[#BCA88D] h-[30rem] w-[50rem] rounded-2xl">USER</div>
+        {/*----- HERO SECTION -----*/}
+
       </div>
 
       <div class="grid grid-cols-1 gap-5 justify-end items-end">
@@ -154,9 +156,12 @@ return (
 
         <div class="bg-[#BCA88D] h-[10rem] w-[25rem] rounded-2xl">
             Welcome, {name}!
+            {/*----- HERO SECTION -----*/}
+
         </div>
 
         <div class="bg-[#BCA88D] h-[30rem] w-[25rem] rounded-2xl">INBOX
+{/*----- INPUTING THE USER CREATED STUFF I GUESS -----*/}
 
         </div>
 
