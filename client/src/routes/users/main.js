@@ -162,6 +162,7 @@ return (
 
         <div class="bg-[#BCA88D] h-[30rem] w-[25rem] rounded-2xl">INBOX
 {/*----- INPUTING THE USER CREATED STUFF I GUESS -----*/}
+{/*----- INPUTING THE USER CREATED STUFF I GUESS -----*/}
 
         </div>
 
