@@ -5,7 +5,6 @@ import AdminMain from './routes/admin/adminMain';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Schedule from './routes/users/schedule';
 import Notes from './routes/users/notes';
-import Profile from './routes/users/profile';
 import CreateTask from './routes/users/createtask';
 
 // ROUTE SYSTEM
@@ -30,7 +29,6 @@ function App() {
       <Route path='/Main' element={<UserMain/>}/>
       <Route path='/Schedule' element={<Schedule/>}/>
       <Route path='/Notes' element={<Notes/>}/>
-      <Route path='/Profile' element={<Profile/>}/>
       <Route path='/CreateTask' element={<CreateTask/>}/>
     </Routes>
 

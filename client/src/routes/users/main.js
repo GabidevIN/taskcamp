@@ -2,6 +2,11 @@ import {useState, useEffect} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { menu } from 'framer-motion/client';
+import iconMenu from "../../assets/menuINC.png";
+import iconComp from "../../assets/completedINC.png";
+import iconLate from "../../assets/lateINC.png";
+import iconDelayed from "../../assets/delayedINC.png";
+import iconCreate from "../../assets/createdINC.png";
 
 
 function Main() {
@@ -75,104 +80,79 @@ return (
       auth ?
       <>
 {/*----- NAVBAR -----*/}
-        <div className='flex justify-center items-center m-10 '>
-          <div className="w-[100px] outline outline-[0.5px] shadow-2xl lg:w-[1000px] md:w-[725px] bg-[#3E3F29] h-12 rounded-2xl z-5 fixed flex justify-center items-center shadow-md 
-          gap-[100px] md:gap-[50px] my-2 text-base">
+    <div className='fixed flex justify-center w-screen h-screen pt-[30px]'>
+      <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px]'>
+        <img src={iconMenu} alt="menu" className="w-9 h-9 object-contain scale-75"></img>
+      </button>
+    </div>
 
-              <Link to="/" onClick={logout} className="bg-[#743636] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
-              block lg:block md:block sm:hidden">LOGOUT</Link>
-              <Link to="/Schedule" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
-              block lg:block md:block sm:hidden">SCHEDULE</Link>
-              <Link to="/Main" className="bg-[#BCA88D] px-6 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
-              block lg:block md:block sm:hidden">MAIN</Link>
-              <Link to="/Notes" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px]
-              block lg:block md:block sm:hidden">NOTE</Link>
-              <Link to="/Createtask" className="bg-[#BCA88D] px-4 py-1 rounded-2xl hover:bg-green-700 outline outline-[0.5px] block 
-              block lg:block md:block sm:hidden">TASK</Link>
-            
-            <button onClick={() => OpenMenu(!Menu)} className="text-[#BCA88D] block lg:hidden md:hidden text-lg  cursor-pointer">MENU </button>
-          </div>
-        </div>
 
-      {Menu && (
-        <div
-          onClick={() => OpenMenu(false)}
-          className="fixed inset-0 bg-black bg-opacity-0 z-100"
-        ></div>
-      )}
-      <div className={`fixed top-0 left-0 bg-gray-700 text-white p-5 transform transition-all duration-300 z-30 gap-5
-        ${Menu ?  "translate-y-0 lg:translate-x-0 lg:translate-y-0 lg:bg-opacity-100 bg-opacity-75" 
-                  : 
-                  "-translate-y-full lg:-translate-x-full lg:translate-y-0 bg-opacity-0"}
-        h-full w-full items-center justify-center flex flex-col
 
-        lg:h-full lg:w-[25rem]`}>
 
-        <h2 className="text-xl font-bold mb-5">Menu</h2>
-          <ul className="space-y-4 items-center justify-center flex flex-col gap-1">
-            <Link to="/Schedule" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
-            SCHEDULE</Link>
-            
-            <Link to="/Notes" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
-            NOTE</Link>
-
-            <Link to="/Profile" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
-            PROFILE</Link>
-
-            <Link to="/Createtask" className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded hover:bg-[#3E3F29] transition">
-            CREATE TASK</Link>
-
-            <button className="bg-[#BCA88D] text-center w-[10rem] p-2 rounded" onClick={() => OpenMenu(!Menu)} >{Menu ? "CLOSE" : "OPEN"}</button>
-            
-            <Link to="/" onClick={logout} className="bg-red-400 text-center w-[10rem] p-2 text-white rounded hover:bg-green-400 transition">
-            LOGOUT</Link>
-          </ul>
-      </div>
 
 {/*----- HERO SECTION -----*/}
   <section>
+  <div className="flex items-center justify-center w-screen min-h-screen -space-x-20 ml-[-175px] pt-[30px]">
+    <div class="grid grid-cols-2 gap-5">
 
-    <div class="grid grid-cols-2 gap-5 ml-[375px]">
 
+{/*----- FIRST GRID  -----*/}
       <div class="flex flex-col gap-y-[60px] items-end">
 
-        <div class="bg-[#BCA88D] h-[7.5rem] w-[50rem] rounded-2xl">
-          <h3 className='items-center flex flex-row gap-10'> 
-            <h1>Delayed: {delay} </h1>
-            <h1>Completed: {completed} </h1>
-            <h1>Late: {late} </h1>
-            <h1>Shared: {shared} </h1>
-            <h1>created: {created}</h1>
-          </h3>
+      {/*----- CALENDAR SYSTEM  -----*/}
+        <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl"> calendar
+
         </div>
 
-        <div class="bg-[#BCA88D] h-[30rem] w-[50rem] rounded-2xl">USER</div>
-        {/*----- HERO SECTION -----*/}
+      {/*----- CURRENT EVENT SYSTEM  -----*/}
+        <div class="bg-[#BCA88D] h-[20rem] w-[35rem] rounded-2xl"> event calendar
+
+        </div>
 
       </div>
-
+{/*----- SECOND GRID  -----*/}
       <div class="grid grid-cols-1 gap-5 justify-end items-end">
 
+      {/*----- USER STATS -----*/}
+        <div className="bg-[#BCA88D] h-[10rem] w-[56.5rem] rounded-2xl flex justify-center items-center gap-[65px]">
+          <div className='bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4'> 
+            <img src={iconCreate} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
+            <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Created: {created} </div>
+          </div>
 
-        <div class="bg-[#BCA88D] h-[10rem] w-[25rem] rounded-2xl">
-            Welcome, {name}!
-            {/*----- HERO SECTION -----*/}
+          <div className='bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4'> 
+            <img src={iconComp} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
+            <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Completed: {completed} </div>
+          </div>
 
+          <div className='bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4'> 
+            <img src={iconLate} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
+            <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Late: {late} </div>
+          </div>
+
+          <div className='bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4'> 
+            <img src={iconDelayed} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
+            <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Delayed: {delay} </div>
+          </div>
         </div>
 
-        <div class="bg-[#BCA88D] h-[30rem] w-[25rem] rounded-2xl">INBOX
-{/*----- INPUTING THE USER CREATED STUFF I GUESS -----*/}
-{/*----- INPUTING THE USER CREATED STUFF I GUESS -----*/}
+{/*----- THIRD GRID  -----*/}
+      <div className="grid grid-cols-2 gap-5 w-[56.5rem]">
+        
+        {/*----- TASK -----*/}
+        <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex">
+          TASK
+        </div>
 
+        {/*----- NOTES -----*/}
+        <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex">
+          NOTES
         </div>
 
       </div>
-
+      </div>
     </div>     
-  
-  
-  
-  
+  </div>
   </section>
     </>
 
