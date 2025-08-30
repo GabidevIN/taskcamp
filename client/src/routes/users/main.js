@@ -155,8 +155,8 @@ return (
       <>
 {/*----- NAVBAR -----*/}
     <div className='fixed flex justify-center w-full pt-[30px]'>
-      <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px] outline outline-transparent
-      hover:shadow-lg hover:scale-110 transition duration-500 ease-in-out hover:outline-black'>
+      <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px]
+      hover:shadow-lg hover:scale-110 transition duration-500 ease-in-out ring-0 hover:ring-[3px] hover:ring-black'>
         <img src={iconMenu} onClick={() => OpenMenu(!Menu)} alt="menu" className="w-9 h-9 object-contain scale-75"></img>
       </button>
     </div>
@@ -273,9 +273,7 @@ return (
   {Tasking && (
           <div
             onClick={() => OpenTask(false)}
-            className="fixed inset-0 bg-black bg-opacity-0 z-10"
-          ></div>
-        )}
+            className="fixed inset-0 bg-black bg-opacity-0 z-10" ></div> )}
 
       <div
         className={`fixed top-0 left-0 h-full w-full bg-black text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen opacity-75
@@ -296,30 +294,29 @@ return (
       <div onClick={() => OpenNoting(false)} className="fixed inset-0 bg-black bg-opacity-0 z-10"></div>
       )}
 
-    <div
-      className={`fixed top-0 left-0 h-full w-full bg-black text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen opacity-75
-      bg-opacity-0
-      ${noting ? 
-      "translate-y-0 bg-opacity-50" 
-      : 
-      "-translate-y-full bg-opacity-50"}`}>
-    <div className="bg-gray-800 h-[800px] w-[500px] p-4 rounded shadow-lg rounded-[25px]">
+    <div className={`fixed top-0 left-0 h-full w-full bg-black text-white p-5 transform transition-transform duration-300 z-20 flex items-center justify-center h-screen 
+      opacity-100 bg-opacity-0 backdrop-blur-sm
+      ${noting ?  "translate-y-0 bg-opacity-50"  
+      :  "-translate-y-full opacity-100"}`}>
+      <div className={`bg-gray-800 h-[800px] w-[500px] p-4 rounded-[25px] shadow-lg transition-all duration-500 
+        ${ noting ? "translate-y-0 bg-opacity-100 opacity-100" 
+        : "opacity-0 pointer-events-none" }`} >   
 
-      <h2 className="text-xl mb-2 text-center text-white">Your Notes</h2>
-      <form onSubmit={handleAddNote} className="mb-4">
-        <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
-          className="block w-full mb-2 p-2 text-black rounded"/>
+        <h2 className="text-xl mb-2 text-center text-white">Your Notes</h2>
+        <form onSubmit={handleAddNote} className="mb-4">
+          
+          <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
+            className="block w-full mb-2 p-2 text-black rounded"/>
 
-        <textarea placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
-          className="block w-full  mb-2 p-2 text-black rounded resize-none h-[600px]"/>
+          <textarea placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
+            className="block w-full  mb-2 p-2 text-black rounded resize-none h-[600px]"/>
 
-        <button type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
-          Add Note </button>
-    
-      </form>
+          <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
+            Add Note </button>
+  
+        </form>
+      </div>
     </div>
-  </div>
 
 {/*----- SCHEDULING SYSTEM-----*/}
   {Scheded && (
