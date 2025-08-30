@@ -22,7 +22,6 @@ function Main() {
   const [created, setCreated] = useState('');
 
 // ----- SESSION SYSTEM
-
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios.get('http://localhost:8081')
@@ -115,6 +114,7 @@ return (
 
       {/*----- USER STATS -----*/}
         <div className="bg-[#BCA88D] h-[10rem] w-[56.5rem] rounded-2xl flex justify-center items-center gap-[65px]">
+
           <div className='bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4'> 
             <img src={iconCreate} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
             <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Created: {created} </div>
@@ -134,6 +134,7 @@ return (
             <img src={iconDelayed} alt="menu" className="w-9 h-9 object-contain scale-125 pt-[10px]"></img>
             <div className='text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg'> Delayed: {delay} </div>
           </div>
+
         </div>
 
 {/*----- THIRD GRID  -----*/}
