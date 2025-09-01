@@ -220,21 +220,28 @@ app.post('/createtask', verifyUser, (req, res) => {
 
 // ----- SESSION FOR TASK PROTECTION AND FETCHING
 app.get('/createtask', verifyUser, (req, res) => {
-    const login_id = req.user.id;
-    console.log("Fetching task for user:", login_id);
+  const login_id = req.user.id;
+  console.log("Fetching task for user:", login_id);
 
-    const updateQuery = `UPDATE task SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND completed = 0 AND TIMESTAMP(date, time) < (NOW() - INTERVAL 1 MINUTE);`;
-    db.query(updateQuery, [login_id], (updateErr) => {
-        if (updateErr) return res.json({ Error: updateErr });
+  const updateQuery = ` UPDATE task   SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND completed = 0 AND TIMESTAMP(date, time) < (NOW() - INTERVAL 1 MINUTE) `;
 
-        db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
-            if (fetchErr) return res.json({ Error: fetchErr });
-            console.log("Task result: Fetched and updated");
-            res.json(result);
-        });
+  db.query(updateQuery, [login_id], (updateErr) => {
+    if (updateErr) {
+      console.error("Update error:", updateErr);
+      return res.json({ Error: updateErr });
+    }
+
+    db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
+      if (fetchErr) {
+        console.error("Fetch error:", fetchErr);
+        return res.json({ Error: fetchErr });
+      }
+
+      console.log("Task result: Fetched and updated");
+      res.json(result);
     });
+  });
 });
-
 
 // ----- SESSION FOR TASK (Deleting task) // ADD KA NG MULTIPLE DELETE
 app.delete('/createtask/:id', verifyUser, (req, res) => {

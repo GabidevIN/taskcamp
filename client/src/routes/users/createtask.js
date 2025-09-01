@@ -57,8 +57,8 @@ function Main() {
     }).catch(err => console.log(err));
   }
 
-// ----- FETCH NOTES
-const fetchNotes = async () => {
+// ----- FETCH TASK
+const fetchTasks = async () => {
   try {
     const res = await axios.get('http://localhost:8081/createtask', { withCredentials: true });
     console.log("📥 Notes fetched:", res.data);
@@ -75,7 +75,7 @@ const fetchNotes = async () => {
 useEffect(() => {
   if (fetched.current) return;
   fetched.current = true;
-  fetchNotes();
+  fetchTasks();
 }, []);
 
 // ----- Tasking System
@@ -89,7 +89,7 @@ const handleCreateTask = async (e) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    fetchNotes();
+    fetchTasks();
     setTitle('');
     setObjective('');
     setTime('');

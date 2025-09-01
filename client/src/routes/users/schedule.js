@@ -199,7 +199,6 @@ return (
                 </h2>
                 <button onClick={nextMonth}>NEXT</button>
               </div>
-
               <div className="grid grid-cols-7 text-center mb-2 font-bold">
                 {dayNames.map((day) => (
                   <div key={day}>{day}</div>
@@ -208,7 +207,10 @@ return (
 
               <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
             </div>
+            
       </>
+
+
 
         /* USER IS NOT AUTHENTICATED*/
         :

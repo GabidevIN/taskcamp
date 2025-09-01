@@ -21,6 +21,17 @@ function Main() {
   const [id, setId] = useState('');
   const [created, setCreated] = useState('');
 
+  const [page, setPage] = useState(0);
+  const totalPages = 4;
+
+  const nextPage = () => {
+    setPage(prev => (prev + 1) % totalPages); // loops back to 0
+  };
+
+  const prevPage = () => {
+    setPage(prev => (prev - 1 + totalPages) % totalPages); // loops to last page
+  };
+
 // ----- SESSION SYSTEM
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -90,7 +101,6 @@ const StatBox = ({ icon, label, value }) => (
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const fetched = useRef(false)
 
-  // ----- Noting System
   const handleAddNote = async (e) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
@@ -146,6 +156,223 @@ const StatBox = ({ icon, label, value }) => (
     }
   };
 
+// ----- TASKING SYSTEM
+  const [time, setTime] = useState('');
+  const [date, setDate] = useState('');
+  const [objective, setObjective] = useState(''); 
+  const [task, setTask] = useState([]);
+
+
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
+    if (!title.trim() || !objective.trim()) return;
+
+    try {
+      await axios.post('http://localhost:8081/createtask', 
+        { title, objective, time, date }, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      fetchTask();
+      setTitle('');
+      setObjective('');
+      setTime('');
+      setDate('');
+    } catch (err) {
+      console.error("Error adding Task:", err);
+    }
+  };
+
+ // ----- FETCH TASK
+  const fetchTask = async () => {
+    try {
+      const res = await axios.get('http://localhost:8081/createtask', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (Array.isArray(res.data)) {
+        setTask(res.data);
+      } else {
+        console.warn("Unexpected response:", res.data);
+        setTask([]);
+      }
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTask();
+  }, []);
+
+const deleteTask = async (id) => {
+  try {
+    const res = await axios.delete(`http://localhost:8081/createtask/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (res.data.Status === "DeletedTask") {
+      setTask(prev => prev.filter(task => task.id !== id));      
+    } else {
+      console.warn(res.data.Status);
+    }
+  } catch (err) {
+    console.error("Error deleting Task:", err);
+  }
+};
+
+// ----- Complete Task
+const CompleteTask = async (id) => {
+  try {
+    const res = await axios.patch(`http://localhost:8081/createtask/${id}`, 
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (res.data.Status === "CompletedTask") {
+      setTask(prev => 
+        prev.map(task => 
+          task.id === id ? { ...task, completed: 1, ongoing: 0 } : task
+        )
+      );
+    } else {
+      console.warn(res.data.Status);
+    }
+  } catch (err) {
+    console.error("Error completing Task:", err);
+  }
+};
+
+// ----- SCHEDULE  SYSTEM
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const [dateSched, setdateSched] = useState(new Date());
+  const dateObj = new Date(dateSched);
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth();
+  const today = new Date();
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  const prevMonth = () => setdateSched(new Date(year, month - 1, 1));
+  const nextMonth = () => setdateSched(new Date(year, month + 1, 1));
+
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  const [schedules, setSchedules] = useState([]);
+
+
+  // Handle schedule saving
+  const handleSchedule = async (e, chosenDay) => {
+    e.preventDefault();
+    if (!title.trim() || !content.trim()) return;
+
+    const chosenDate = new Date(year, month, chosenDay);
+
+    try {
+      await axios.post(
+        "http://localhost:8081/schedule",
+        { title, content, time, date: chosenDate.toISOString() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      fetchSchedules();
+      setTitle("");
+      setContent("");
+      setSelectedDay(null);
+    } catch (err) {
+      console.error("Error adding Schedule:", err);
+    }
+  };
+
+const fetchSchedules = async () => {
+  try {
+    const response = await axios.get("http://localhost:8081/schedule", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    console.log("Schedules fetched:", response.dateSched);
+    setSchedules(Array.isArray(response.dateSched) ? response.dateSched : []);
+  } catch (error) {
+    console.error("Error fetching schedules:", error);
+    setSchedules([]);
+  }
+};
+  useEffect(() => {
+    if (!fetched.current) {
+      fetched.current = true;
+      fetchSchedules();
+    }
+  }, []);
+
+  const generateDays = () => {
+    const days = [];
+
+    for (let i = 0; i < firstDay; i++) {
+      days.push(<div key={`empty-${i}`} className="h-12"></div>);
+    }
+
+    for (let day = 1; day <= lastDate; day++) {
+      const isToday =
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear();
+
+        const daySchedules = schedules.filter((sched) => {
+        const schedDate = new Date(sched.date);
+        return (
+          schedDate.getDate() === day &&
+          schedDate.getMonth() === month &&
+          schedDate.getFullYear() === year
+        );
+      });
+
+      days.push(
+        <div key={day} className="relative">
+          <div
+            className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
+              isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
+            }`}
+            onClick={() => setSelectedDay(day)}
+          >
+            {day}
+          </div>
+
+{/* ----- DISPLAY DATES*/}
+      {daySchedules.length > 0 && (
+        <div className="text-xs mt-1 space-y-1 max-h-24 overflow-auto">
+          {daySchedules.map((sched, idx) => (
+            <div
+              key={idx}
+              className="bg-green-500 text-white rounded px-1 py-0.5 truncate"
+              title={`${sched.title}: ${sched.content}`}>
+              <strong>{sched.title}</strong><br />
+              <span className="text-xs">{sched.content}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+{/* ---- ADDING NEW SCHEDULE*/}
+          {selectedDay === day && (
+            <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48 z-10">
+              <form onSubmit={(e) => handleSchedule(e, day)}>
+                <p className="text-sm font-bold mb-1">Add note for {day}/{month}/{year}</p>
+                <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
+                  className="w-full mb-1 p-1 border rounded"/>
+                <input placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
+                  className="w-full mb-1 p-1 border rounded"/>
+                <button type="submit"
+                  className="bg-blue-500 text-white px-2 py-1 rounded w-full"> Save </button>
+              </form>
+            </div>
+            
+          )}
+        </div>
+      );
+    }
+    return days;
+  };
+
 return (
   <>   
     <div>
@@ -171,12 +398,30 @@ return (
         <div class="flex flex-col gap-y-[60px] items-end">
 
         {/*----- CALENDAR SYSTEM  -----*/}
-          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl"> calendar
 
+          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl"> 
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <button onClick={prevMonth}>PREVIOUS</button>
+                <h2 className="text-xl font-semibold">
+                  {dateSched.toLocaleString("default", { month: "long" })} {year}
+                </h2>
+                <button onClick={nextMonth}>NEXT</button>
+              </div>
+
+              <div className="grid grid-cols-7 text-center mb-2 font-bold">
+                {dayNames.map((day) => (
+                  <div key={day}>{day}</div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
+            </div>
           </div>
 
         {/*----- CURRENT EVENT SYSTEM  -----*/}
-          <div class="bg-[#BCA88D] h-[20rem] w-[35rem] rounded-2xl"> event calendar
+          <div class="bg-[#BCA88D] h-[20rem] w-[35rem] rounded-2xl"> 
+            
 
           </div>
 
@@ -199,16 +444,162 @@ return (
         <div className="grid grid-cols-2 gap-5 w-[56.5rem]">
           
           {/*----- TASK -----*/}
-          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex">
-            TASK
-            
+          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out">
+            <div className='flex flex-col items-center w-full '>
+
+              <div className='flex flex-row items-center w-full justify-center gap-[8rem]'>
+                <button onClick={prevPage} className="px-3 py-1 bg-[#A8BBA3] outline outline-[1px] rounded">Prev</button>
+                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-[10px] m-2 hover:bg-white transition-colors duration-300'>
+                  <img src={iconMenu} onClick={() => OpenTask(!Tasking)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
+                </button>
+                <button onClick={nextPage} className="px-3 py-1 bg-[#A8BBA3] outline outline-[1px] rounded">Next</button>
+              </div>
+
+              <div className="overflow-hidden w-full h-full rounded-2xl ">
+                <div className="flex w-[400%] h-full transition-transform duration-500 ease-in-out"  style={{ transform: `translateX(-${page * 25}%)` }} >
+
+                {/*----- ON GOING -----*/}
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                    <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
+                      ON GOING
+                    </div>
+                    {task.length > 0 ? (
+                      [...task]
+                        .filter(task => task.ongoing === 1 && task.completed === 0)
+                        .sort((a, b) => b.id - a.id)
+                        .map(task => {
+                          const formattedDate = task.date ? task.date.split('T')[0] : '';
+                          const formattedTime = task.time ? task.time.slice(0, 5) : '';
+
+                          return (
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                              <h3 className="font-bold">{task.title}</h3>
+                              <p>{task.objective}</p>
+                              <p>{formattedTime}</p>
+                              <p>{formattedDate}</p>
+                              <p>Ongoing</p>
+                                <div className='items-center flex justify-center gap-4'>
+                                  <button onClick={e => {e.stopPropagation(); deleteTask(task.id);}} 
+                                  className=' bg-red-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black'>
+                                    Delete Task</button>
+                                  <button  onClick={e => { e.stopPropagation(); CompleteTask(task.id);}}
+                                  className='bg-green-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black'>
+                                    Complete Task</button>
+                                </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>No Task found. Create one above!</p>
+                      )}
+                    </div>
+                  {/*------ LATE -----*/}
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                    <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
+                      LATE
+                    </div>
+                    {task.length > 0 ? (
+                      [...task]
+                        .filter(task => task.ongoing === 0 && task.completed === 0)
+                        .sort((a, b) => b.id - a.id)
+                        .map(task => {
+                          const formattedDate = task.date ? task.date.split('T')[0] : '';
+                          const formattedTime = task.time ? task.time.slice(0, 5) : '';
+
+                          return (
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                              <h3 className="font-bold">{task.title}</h3>
+                              <p>{task.objective}</p>
+                              <p>{formattedTime}</p>
+                              <p>{formattedDate}</p>
+                              <p>Ongoing</p>
+                                <div className='items-center flex justify-center gap-4'>
+                                  <button onClick={e => {e.stopPropagation(); deleteTask(task.id);}} 
+                                  className=' bg-red-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black'>
+                                    Delete Task</button>
+                                  <button  onClick={e => { e.stopPropagation(); CompleteTask(task.id);}}
+                                  className='bg-green-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black'>
+                                    Complete Task</button>
+                                </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>No Task found. Create one above!</p>
+                      )}
+                    </div>
+
+                  {/*----- COMPLETED -----*/}
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                    <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
+                      COMPLETED
+                    </div>
+                    {task.length > 0 ? (
+                      [...task]
+                        .filter(task => task.completed === 1 && task.ongoing === 1)
+                        .sort((a, b) => b.id - a.id)
+                        .map(task => {
+                          const formattedDate = task.date ? task.date.split('T')[0] : '';
+                          const formattedTime = task.time ? task.time.slice(0, 5) : '';
+
+                          return (
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                              <h3 className="font-bold">{task.title}</h3>
+                              <p>{task.objective}</p>
+                              <p>{formattedTime}</p>
+                              <p>{formattedDate}</p>
+                              <p>Ongoing</p>
+                                <div className='items-center flex justify-center gap-4'>
+                                  <button className=' bg-red-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black' onClick={() => deleteTask(task.id)}>Hide Task</button>
+                                </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>No Task found. Create one above!</p>
+                      )}
+                    </div>
+
+                  {/*----- DELAYED -----*/}
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                    <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
+                      DELAYED
+                    </div>
+                    {task.length > 0 ? (
+                      [...task]
+                        .filter(task => task.ongoing === 0 &&task.completed === 1)
+                        .sort((a, b) => b.id - a.id)
+                        .map(task => {
+                          const formattedDate = task.date ? task.date.split('T')[0] : '';
+                          const formattedTime = task.time ? task.time.slice(0, 5) : '';
+
+                          return (
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                              <h3 className="font-bold">{task.title}</h3>
+                              <p>{task.objective}</p>
+                              <p>{formattedTime}</p>
+                              <p>{formattedDate}</p>
+                              <p>Ongoing</p>
+                                <div className='items-center flex justify-center gap-4'>
+                                  <button className=' bg-red-400 w-full h-full p-2 rounded-2xl outline outline-[1px] outline-black' onClick={() => deleteTask(task.id)}>Hide Task</button>
+                                </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>No Task found. Create one above!</p>
+                      )}
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/*----- NOTES -----*/}
           <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
               
-            <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px]'>
+            <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px] m-[7.5px]'>
               <img src={iconMenu} onClick={() => OpenNoting(!noting)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
             </button>
 
@@ -217,14 +608,14 @@ return (
                   [...notes]
                     .sort((a, b) => b.id - a.id)
                     .map((note) => (
-                      <div key={note.id}  className="mb-4 p-2 bg-[#35361F] outline outline-[#BCA88D] outline-[1px] rounded-2xl w-full text-white shadow cursor-pointe "
+                      <div key={note.id}  className="mb-4 p-2 bg-[#35361F] outline outline-[#BCA88D] outline-[1px] rounded-2xl w-full text-white shadow cursor-pointer "
                         onClick={() => alert(`Note ID: ${note.id}`)}>
                         <h3 className="font-bold">{note.title}</h3>
 
                         <p>{note.content}</p>
 
                         <button onClick={(e) => { e.stopPropagation(); deleteNotes(note.id); }}
-                          className="mt-2 bg-red-600 px-3 py-1 rounded hover:bg-red-700">  Delete </button>
+                          className="mt-2 bg-red-400 px-3 py-1 rounded hover:bg-red-700">  Delete </button>
                       </div>
                     ))
                 ) : (
@@ -283,10 +674,24 @@ return (
           : 
           "-translate-y-full bg-opacity-50"}`}>
 
-        <ul className="space-y-4 text-center">
+          <div className="mt-6">
+            <h2 className="text-xl mb-2">Your TASK</h2>
+            <form onSubmit={handleCreateTask} className="mb-4">
 
-          <li className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenTask(false)}>Close</li>
-        </ul>
+              <input placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} className="block w-full mb-2 p-2 text-black rounded"  />
+              <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="p-2 rounded text-black"/>
+              <input  type="date" value={date} onChange={(e) => setDate(e.target.value)} className="p-2 rounded text-black ml-2" />
+
+              <div className="mt-4 text-white"> 
+                <p>Selected Time: {time || "None"}</p>
+                <p>Selected Date: {date || "None"}</p>
+              </div>
+
+              <textarea className="block w-full mb-2 p-2 text-black rounded" placeholder="objective" value={objective} onChange={e => setObjective(e.target.value)} />
+              
+              <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Task</button>
+            </form>
+          </div>
       </div>
 
 {/*----- NOTING SYSTEM-----*/}
