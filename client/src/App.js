@@ -3,8 +3,6 @@ import Home from './routes/home'
 import UserMain from './routes/users/main'
 import AdminMain from './routes/admin/adminMain';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Schedule from './routes/users/schedule';
-import CreateTask from './routes/users/createtask';
 
 // ROUTE SYSTEM
 function App() {
@@ -26,8 +24,6 @@ function App() {
     {/* USER ROUTES */}
      <Routes>
       <Route path='/Main' element={<UserMain/>}/>
-      <Route path='/Schedule' element={<Schedule/>}/>
-      <Route path='/CreateTask' element={<CreateTask/>}/>
     </Routes>
 
   </BrowserRouter>
