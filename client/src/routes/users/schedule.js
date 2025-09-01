@@ -44,8 +44,8 @@ function Main() {
 
   // ----- SCHEDULE SYSTEM -----
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [date, setDate] = useState(new Date());
-  const dateObj = new Date(date);
+  const [DateSCHD, setDateSCDH] = useState(new Date());
+  const dateObj = new Date(DateSCHD);
   const year = dateObj.getFullYear();
   const month = dateObj.getMonth();
   const today = new Date();
@@ -53,8 +53,8 @@ function Main() {
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  const prevMonth = () => setDate(new Date(year, month - 1, 1));
-  const nextMonth = () => setDate(new Date(year, month + 1, 1));
+  const prevMonth = () => setDateSCDH(new Date(year, month - 1, 1));
+  const nextMonth = () => setDateSCDH(new Date(year, month + 1, 1));
 
   const [selectedDay, setSelectedDay] = useState(null);
   const [title, setTitle] = useState("");
@@ -106,74 +106,63 @@ const fetchSchedules = async () => {
     }
   }, []);
 
-  const generateDays = () => {
-    const days = [];
+const generateDays = () => {
+  const days = [];
 
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-12"></div>);
-    }
+  for (let i = 0; i < firstDay; i++) {
+    days.push(<div key={`empty-${i}`} className="h-12"></div>);
+  }
 
-    for (let day = 1; day <= lastDate; day++) {
-      const isToday =
-        day === today.getDate() &&
-        month === today.getMonth() &&
-        year === today.getFullYear();
+  for (let day = 1; day <= lastDate; day++) {
+    const isToday =
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear();
 
-        const daySchedules = schedules.filter((sched) => {
-        const schedDate = new Date(sched.date);
-        return (
-          schedDate.getDate() === day &&
-          schedDate.getMonth() === month &&
-          schedDate.getFullYear() === year
-        );
-      });
+    days.push(
+      <div key={day} className="relative">
+        <div
+          className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
+            isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
+          }`}
+          onClick={() => setSelectedDay(day)}
+        >
+          {day}
+        </div>
 
-      days.push(
-        <div key={day} className="relative">
-          <div
-            className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
-              isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
-            }`}
-            onClick={() => setSelectedDay(day)}
-          >
-            {day}
+        {/* ---- ADDING NEW SCHEDULE (popup form) */}
+        {selectedDay === day && (
+          <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48 z-10">
+            <form onSubmit={(e) => handleSchedule(e, day)}>
+              <p className="text-sm font-bold mb-1">
+                Add note for {day}/{month + 1}/{year}
+              </p>
+              <input
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full mb-1 p-1 border rounded"
+              />
+              <input
+                placeholder="Content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full mb-1 p-1 border rounded"
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-2 py-1 rounded w-full"
+              >
+                Save
+              </button>
+            </form>
           </div>
-
-{/* ----- DISPLAY DATES*/}
-      {daySchedules.length > 0 && (
-        <div className="text-xs mt-1 space-y-1 max-h-24 overflow-auto">
-          {daySchedules.map((sched, idx) => (
-            <div
-              key={idx}
-              className="bg-green-500 text-white rounded px-1 py-0.5 truncate"
-              title={`${sched.title}: ${sched.content}`}>
-              <strong>{sched.title}</strong><br />
-              <span className="text-xs">{sched.content}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-{/* ---- ADDING NEW SCHEDULE*/}
-          {selectedDay === day && (
-            <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48 z-10">
-              <form onSubmit={(e) => handleSchedule(e, day)}>
-                <p className="text-sm font-bold mb-1">Add note for {day}/{month}/{year}</p>
-                <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
-                  className="w-full mb-1 p-1 border rounded"/>
-                <input placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
-                  className="w-full mb-1 p-1 border rounded"/>
-                <button type="submit"
-                  className="bg-blue-500 text-white px-2 py-1 rounded w-full"> Save </button>
-              </form>
-            </div>
-            
-          )}
-        </div>
-      );
-    }
-    return days;
-  };
+        )}
+      </div>
+    );
+  }
+  return days;
+};
 
 return (
   <>   
@@ -181,33 +170,51 @@ return (
     {    
       auth ?
       <>
-        <h3 className="text-center text-2xl mb-4">Welcome, {name}!</h3>
-          <div className="flex gap-2 mb-4">
-            <Link to="/" onClick={logout} className="bg-green-600 px-4 py-2 rounded hover:bg-green-700">LOGOUT</Link>
-            <Link to="/Schedule" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">SCHEDULE</Link>
-            <Link to="/Notes" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">NOTE</Link>
-            <Link to="/Profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">PROFILE</Link>
-            <Link to="/Createtask" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-800">CREATE TASK</Link>
+
+  {/* Calendar */}
+  <div>
+    <div className="flex justify-between items-center mb-4">
+      <button onClick={prevMonth}>PREVIOUS</button>
+      <h2 className="text-xl font-semibold">
+        {DateSCHD.toLocaleString("default", { month: "long" })} {year}
+      </h2>
+      <button onClick={nextMonth}>NEXT</button>
+    </div>
+
+    <div className="grid grid-cols-7 text-center mb-2 font-bold">
+      {dayNames.map((day) => (
+        <div key={day}>{day}</div>
+      ))}
+    </div>
+
+    <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
+  </div>
+
+  {/* ---- Separate Schedules Section ---- */}
+  <div className="mt-6 p-4 bg-gray-800 rounded-lg max-h-48 overflow-auto">
+    <h3 className="text-lg font-bold mb-2 text-white">Schedules</h3>
+    
+    {schedules.length > 0 ? (
+      [...schedules]
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .map((sched, idx) => (
+          <div
+            key={idx}
+            className="bg-green-500 text-white rounded px-2 py-1 mb-2"
+            title={`${sched.title}: ${sched.content}`}
+          >
+            <strong>{sched.title}</strong><br />
+            <span className="text-sm">{sched.content}</span><br />
+            <span className="text-xs italic">
+              {new Date(sched.date).toDateString()}
+            </span>
           </div>
-
-          {/* Calendar */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <button onClick={prevMonth}>PREVIOUS</button>
-                <h2 className="text-xl font-semibold">
-                  {date.toLocaleString("default", { month: "long" })} {year}
-                </h2>
-                <button onClick={nextMonth}>NEXT</button>
-              </div>
-              <div className="grid grid-cols-7 text-center mb-2 font-bold">
-                {dayNames.map((day) => (
-                  <div key={day}>{day}</div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
-            </div>
-            
+        ))
+    ) : (
+      <p className="text-gray-400 text-sm">No schedules yet</p>
+    )}
+    
+  </div>
       </>
 
 

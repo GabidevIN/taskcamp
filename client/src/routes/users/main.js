@@ -245,8 +245,8 @@ const CompleteTask = async (id) => {
 
 // ----- SCHEDULE  SYSTEM
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [dateSched, setdateSched] = useState(new Date());
-  const dateObj = new Date(dateSched);
+  const [DateSCHD, setDateSCDH] = useState(new Date());
+  const dateObj = new Date(DateSCHD);
   const year = dateObj.getFullYear();
   const month = dateObj.getMonth();
   const today = new Date();
@@ -254,15 +254,13 @@ const CompleteTask = async (id) => {
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  const prevMonth = () => setdateSched(new Date(year, month - 1, 1));
-  const nextMonth = () => setdateSched(new Date(year, month + 1, 1));
+  const prevMonth = () => setDateSCDH(new Date(year, month - 1, 1));
+  const nextMonth = () => setDateSCDH(new Date(year, month + 1, 1));
 
   const [selectedDay, setSelectedDay] = useState(null);
 
   const [schedules, setSchedules] = useState([]);
-
-
-  // Handle schedule saving
+  
   const handleSchedule = async (e, chosenDay) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
@@ -285,13 +283,14 @@ const CompleteTask = async (id) => {
     }
   };
 
+
 const fetchSchedules = async () => {
   try {
     const response = await axios.get("http://localhost:8081/schedule", {
       headers: { Authorization: `Bearer ${token}` }
     });
-    console.log("Schedules fetched:", response.dateSched);
-    setSchedules(Array.isArray(response.dateSched) ? response.dateSched : []);
+    console.log("Schedules fetched:", response.data);
+    setSchedules(Array.isArray(response.data) ? response.data : []);
   } catch (error) {
     console.error("Error fetching schedules:", error);
     setSchedules([]);
@@ -304,74 +303,67 @@ const fetchSchedules = async () => {
     }
   }, []);
 
-  const generateDays = () => {
-    const days = [];
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
 
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-12"></div>);
-    }
+const generateDays = () => {
+  const days = [];
 
-    for (let day = 1; day <= lastDate; day++) {
-      const isToday =
-        day === today.getDate() &&
-        month === today.getMonth() &&
-        year === today.getFullYear();
+  for (let i = 0; i < firstDay; i++) {
+    days.push(<div key={`empty-${i}`} className="h-12"></div>);
+  }
 
-        const daySchedules = schedules.filter((sched) => {
-        const schedDate = new Date(sched.date);
-        return (
-          schedDate.getDate() === day &&
-          schedDate.getMonth() === month &&
-          schedDate.getFullYear() === year
-        );
-      });
+  for (let day = 1; day <= lastDate; day++) {
+    const isToday =
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear();
 
-      days.push(
-        <div key={day} className="relative">
-          <div
-            className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
-              isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
-            }`}
-            onClick={() => setSelectedDay(day)}
-          >
-            {day}
+    days.push(
+      <div key={day} className="relative">
+        <div
+          className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
+            isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
+          }`}
+          onClick={() => setSelectedDay(day)}
+        >
+          {day}
+        </div>
+
+        {/* ---- ADDING NEW SCHEDULE (popup form) */}
+        {selectedDay === day && (
+          <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48 z-10">
+            <form onSubmit={(e) => handleSchedule(e, day)}>
+              <p className="text-sm font-bold mb-1">
+                Add note for {day}/{month + 1}/{year}
+              </p>
+              <input
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full mb-1 p-1 border rounded"
+              />
+              <input
+                placeholder="Content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full mb-1 p-1 border rounded"
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-2 py-1 rounded w-full"
+              >
+                Save
+              </button>
+            </form>
           </div>
-
-{/* ----- DISPLAY DATES*/}
-      {daySchedules.length > 0 && (
-        <div className="text-xs mt-1 space-y-1 max-h-24 overflow-auto">
-          {daySchedules.map((sched, idx) => (
-            <div
-              key={idx}
-              className="bg-green-500 text-white rounded px-1 py-0.5 truncate"
-              title={`${sched.title}: ${sched.content}`}>
-              <strong>{sched.title}</strong><br />
-              <span className="text-xs">{sched.content}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-{/* ---- ADDING NEW SCHEDULE*/}
-          {selectedDay === day && (
-            <div className="absolute top-14 left-0 bg-gray-200 text-black p-2 rounded shadow-md w-48 z-10">
-              <form onSubmit={(e) => handleSchedule(e, day)}>
-                <p className="text-sm font-bold mb-1">Add note for {day}/{month}/{year}</p>
-                <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
-                  className="w-full mb-1 p-1 border rounded"/>
-                <input placeholder="Content" value={content} onChange={(e) => setContent(e.target.value)}
-                  className="w-full mb-1 p-1 border rounded"/>
-                <button type="submit"
-                  className="bg-blue-500 text-white px-2 py-1 rounded w-full"> Save </button>
-              </form>
-            </div>
-            
-          )}
-        </div>
-      );
-    }
-    return days;
-  };
+        )}
+      </div>
+    );
+  }
+  return days;
+};
 
 return (
   <>   
@@ -395,36 +387,53 @@ return (
 
 
   {/*----- FIRST GRID  -----*/}
-        <div class="flex flex-col gap-y-[60px] items-end">
+        <div class="flex flex-col gap-y-[25px] items-end">
 
         {/*----- CALENDAR SYSTEM  -----*/}
 
-          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl"> 
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <button onClick={prevMonth}>PREVIOUS</button>
-                <h2 className="text-xl font-semibold">
-                  {dateSched.toLocaleString("default", { month: "long" })} {year}
-                </h2>
-                <button onClick={nextMonth}>NEXT</button>
-              </div>
-
-              <div className="grid grid-cols-7 text-center mb-2 font-bold">
-                {dayNames.map((day) => (
-                  <div key={day}>{day}</div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
+          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
+            <div className="flex justify-between items-center mb-4">
+              <button onClick={prevMonth}>PREVIOUS</button>
+              <h2 className="text-xl font-semibold">
+                {DateSCHD.toLocaleString("default", { month: "long" })} {year}
+              </h2>
+              <button onClick={nextMonth}>NEXT</button>
             </div>
+
+            <div className="grid grid-cols-7 text-center mb-2 font-bold">
+              {dayNames.map((day) => (
+                <div key={day}>{day}</div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-7 gap-1">{generateDays()}</div>
           </div>
 
         {/*----- CURRENT EVENT SYSTEM  -----*/}
-          <div class="bg-[#BCA88D] h-[20rem] w-[35rem] rounded-2xl"> 
-            
-
+          <div className="bg-[#BCA88D] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
+            <h3 className="text-lg font-bold mb-2 text-white text-center">Schedules</h3>
+            <div className="bg-[#3E3F29] w-full p-2 rounded-2xl h-screen max-h-[292.25px] overflow-y-auto scrollbar-hide">
+              {schedules.length > 0 ? (
+                [...schedules]
+                  .sort((a, b) => new Date(b.date) - new Date(a.date))
+                  .map((sched, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px] rounded outline-[#BCA88D]"
+                      title={`${sched.title}: ${sched.content}`}
+                    >
+                      <strong>{sched.title}</strong><br />
+                      <span className="text-sm">{sched.content}</span><br />
+                      <span className="text-xs italic">
+                        {new Date(sched.date).toDateString()}
+                      </span>
+                    </div>
+                  ))
+              ) : (
+                <p className="text-gray-400 text-sm">No schedules yet</p>
+              )}
+            </div>
           </div>
-
         </div>
 
 
@@ -630,13 +639,6 @@ return (
       </div>     
     </div>
   </section>
-
-
-
-
-
-
-
 
 {/*----- MENU SYSTEM-----*/}
   {Menu && (
