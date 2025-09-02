@@ -391,7 +391,7 @@ return (
 
         {/*----- CALENDAR SYSTEM  -----*/}
 
-          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
+          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
             <div className="flex justify-between items-center mb-4">
               <button onClick={prevMonth} className='px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl'>PREVIOUS</button>
               <h2 className="text-xl font-semibold">
@@ -410,7 +410,7 @@ return (
           </div>
 
         {/*----- CURRENT EVENT SYSTEM  -----*/}
-          <div className="bg-[#BCA88D] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
+          <div className="bg-[#BCA88D] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
             <h3 className="text-lg font-bold mb-2 text-white text-center">Schedules</h3>
             <div className="bg-[#3E3F29] w-full p-2 rounded-2xl h-full max-h-[292.25px] overflow-y-auto scrollbar-hide">
               {schedules.length > 0 ? (
@@ -453,7 +453,7 @@ return (
         <div className="grid grid-cols-2 gap-5 w-[56.5rem]">
           
           {/*----- TASK -----*/}
-          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out">
+          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
 
               <div className='flex flex-row items-center w-full justify-center gap-[8rem]'>
@@ -605,7 +605,7 @@ return (
           </div>
 
           {/*----- NOTES -----*/}
-          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out">
+          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
               
             <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px] m-[7.5px]'>
