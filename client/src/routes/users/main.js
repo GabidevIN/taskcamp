@@ -323,8 +323,8 @@ const generateDays = () => {
     days.push(
       <div key={day} className="relative">
         <div
-          className={`flex flex-col items-center justify-center h-12 rounded-lg cursor-pointer transition ${
-            isToday ? "bg-blue-500 text-white" : "hover:bg-gray-700"
+          className={`flex flex-col text-white items-center justify-center h-12 rounded-lg cursor-pointer bg-[#3E3F29] transition ${
+            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-700"
           }`}
           onClick={() => setSelectedDay(day)}
         >
@@ -393,11 +393,11 @@ return (
 
           <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
             <div className="flex justify-between items-center mb-4">
-              <button onClick={prevMonth}>PREVIOUS</button>
+              <button onClick={prevMonth} className='px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl'>PREVIOUS</button>
               <h2 className="text-xl font-semibold">
                 {DateSCHD.toLocaleString("default", { month: "long" })} {year}
               </h2>
-              <button onClick={nextMonth}>NEXT</button>
+              <button onClick={nextMonth} className='px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl'>NEXT</button>
             </div>
 
             <div className="grid grid-cols-7 text-center mb-2 font-bold">
@@ -412,14 +412,14 @@ return (
         {/*----- CURRENT EVENT SYSTEM  -----*/}
           <div className="bg-[#BCA88D] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[101%] transition duration-500 ease-in-out"> 
             <h3 className="text-lg font-bold mb-2 text-white text-center">Schedules</h3>
-            <div className="bg-[#3E3F29] w-full p-2 rounded-2xl h-screen max-h-[292.25px] overflow-y-auto scrollbar-hide">
+            <div className="bg-[#3E3F29] w-full p-2 rounded-2xl h-full max-h-[292.25px] overflow-y-auto scrollbar-hide">
               {schedules.length > 0 ? (
                 [...schedules]
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
                   .map((sched, idx) => (
                     <div
                       key={idx}
-                      className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px] rounded outline-[#BCA88D]"
+                      className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px] rounded outline-[#BCA88D] cursor-pointer"
                       title={`${sched.title}: ${sched.content}`}
                     >
                       <strong>{sched.title}</strong><br />
@@ -457,11 +457,11 @@ return (
             <div className='flex flex-col items-center w-full '>
 
               <div className='flex flex-row items-center w-full justify-center gap-[8rem]'>
-                <button onClick={prevPage} className="px-3 py-1 bg-[#A8BBA3] outline outline-[1px] rounded">Prev</button>
+                <button onClick={prevPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Prev</button>
                 <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-[10px] m-2 hover:bg-white transition-colors duration-300'>
                   <img src={iconMenu} onClick={() => OpenTask(!Tasking)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
                 </button>
-                <button onClick={nextPage} className="px-3 py-1 bg-[#A8BBA3] outline outline-[1px] rounded">Next</button>
+                <button onClick={nextPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Next</button>
               </div>
 
               <div className="overflow-hidden w-full h-full rounded-2xl ">
