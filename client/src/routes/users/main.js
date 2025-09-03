@@ -324,7 +324,7 @@ const generateDays = () => {
       <div key={day} className="relative">
         <div
           className={`flex flex-col text-white items-center justify-center h-12 rounded-lg cursor-pointer bg-[#3E3F29] transition ${
-            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-700"
+            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-700 hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"
           }`}
           onClick={() => setSelectedDay(day)}
         >
@@ -338,22 +338,9 @@ const generateDays = () => {
               <p className="text-sm font-bold mb-1">
                 Add note for {day}/{month + 1}/{year}
               </p>
-              <input
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full mb-1 p-1 border rounded"
-              />
-              <input
-                placeholder="Content"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full mb-1 p-1 border rounded"
-              />
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-2 py-1 rounded w-full"
-              >
+              <input  placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full mb-1 p-1 border rounded" />
+              <input laceholder="Content" value={content} onChange={(e) => setContent(e.target.value)}  className="w-full mb-1 p-1 border rounded" />
+              <button  type="submit" className="bg-blue-500 text-white px-2 py-1 rounded w-full"  >
                 Save
               </button>
             </form>
@@ -417,11 +404,9 @@ return (
                 [...schedules]
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
                   .map((sched, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px] rounded outline-[#BCA88D] cursor-pointer"
-                      title={`${sched.title}: ${sched.content}`}
-                    >
+                    <div key={idx} title={`${sched.title}: ${sched.content}`}
+                      className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px]
+                      hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer">
                       <strong>{sched.title}</strong><br />
                       <span className="text-sm">{sched.content}</span><br />
                       <span className="text-xs italic">
@@ -481,7 +466,8 @@ return (
                           const formattedTime = task.time ? task.time.slice(0, 5) : '';
 
                           return (
-                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl
+                            hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"  onClick={() => alert(`Note ID: ${task.id}`)} >
                               <h3 className="font-bold">{task.title}</h3>
                               <p>{task.objective}</p>
                               <p>{formattedTime}</p>
@@ -516,7 +502,8 @@ return (
                           const formattedTime = task.time ? task.time.slice(0, 5) : '';
 
                           return (
-                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl
+                            hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"  onClick={() => alert(`Note ID: ${task.id}`)} >
                               <h3 className="font-bold">{task.title}</h3>
                               <p>{task.objective}</p>
                               <p>{formattedTime}</p>
@@ -552,7 +539,8 @@ return (
                           const formattedTime = task.time ? task.time.slice(0, 5) : '';
 
                           return (
-                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl
+                            hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"  onClick={() => alert(`Note ID: ${task.id}`)} >
                               <h3 className="font-bold">{task.title}</h3>
                               <p>{task.objective}</p>
                               <p>{formattedTime}</p>
@@ -583,7 +571,8 @@ return (
                           const formattedTime = task.time ? task.time.slice(0, 5) : '';
 
                           return (
-                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl"  onClick={() => alert(`Note ID: ${task.id}`)} >
+                            <div key={task.id} className="mb-4 p-3 outline outline-[1px] outline-[#BCA88D]  text-white rounded cursor-pointer mt-4 rounded-2xl
+                            hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"  onClick={() => alert(`Note ID: ${task.id}`)} >
                               <h3 className="font-bold">{task.title}</h3>
                               <p>{task.objective}</p>
                               <p>{formattedTime}</p>
@@ -617,7 +606,8 @@ return (
                   [...notes]
                     .sort((a, b) => b.id - a.id)
                     .map((note) => (
-                      <div key={note.id}  className="mb-4 p-2 bg-[#35361F] outline outline-[#BCA88D] outline-[1px] rounded-2xl w-full text-white shadow cursor-pointer "
+                      <div key={note.id}  className="mb-4 p-2 bg-[#35361F] outline outline-[#BCA88D] outline-[1px] rounded-2xl w-full text-white shadow cursor-pointer
+                      hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"
                         onClick={() => alert(`Note ID: ${note.id}`)}>
                         <h3 className="font-bold">{note.title}</h3>
 
