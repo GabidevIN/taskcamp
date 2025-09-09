@@ -307,6 +307,27 @@ const fetchSchedules = async () => {
     fetchSchedules();
   }, []);
 
+  // ----- Deleting Notes
+  const deletesched = async (id) => {
+      try {
+        const res = await axios.delete(`http://localhost:8081/schedule/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (res.data.Status === "Deleted") {
+          setSchedules(prev => prev.filter(sched => sched.id !== id));
+
+        } else {
+          console.warn(res.data.Status);
+        }
+      } catch (err) {
+        console.error("Error deleting note:", err);
+      }
+    };
+
+
+
+  
 const generateDays = () => {
   const days = [];
 
@@ -324,7 +345,7 @@ const generateDays = () => {
       <div key={day} className="relative">
         <div
           className={`flex flex-col text-white items-center justify-center h-12 rounded-lg cursor-pointer bg-[#3E3F29] transition ${
-            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-700 hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"
+            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-70 20 hover:shadow-lg hover:sc@ale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"
           }`}
           onClick={() => setSelectedDay(day)}
         >
@@ -344,6 +365,7 @@ const generateDays = () => {
                 Save
               </button>
             </form>
+                      <button className="hover:bg-gray-600 p-2 rounded" onClick={() => setSelectedDay(null)}>Close</button>
           </div>
         )}
       </div>
@@ -412,6 +434,8 @@ return (
                       <span className="text-xs italic">
                         {new Date(sched.date).toDateString()}
                       </span>
+                                              <button onClick={(e) => { e.stopPropagation(); deletesched(sched.id); }}
+                          className="mt-2 bg-red-400 px-3 py-1 rounded hover:bg-red-700">  Delete </button>
                     </div>
                   ))
               ) : (
@@ -683,6 +707,8 @@ return (
               
               <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Add Task</button>
             </form>
+              <button className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenTask(false)}>Close</button>
+
           </div>
       </div>
 
@@ -710,8 +736,8 @@ return (
 
           <button type="submit" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
             Add Note </button>
-  
         </form>
+          <button className="hover:bg-gray-600 p-2 rounded" onClick={() => OpenNoting(false)}>Close</button>
       </div>
     </div>
 

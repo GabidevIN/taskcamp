@@ -248,7 +248,6 @@ app.delete('/createtask/:id', verifyUser, (req, res) => {
     const taskId = req.params.id;
     const login_id = req.user.id;
 
-    // Step 1: Check if the task exists and get its completed status
     db.query(
         'SELECT completed FROM task WHERE id = ? AND login_id = ?',
         [taskId, login_id],
@@ -382,6 +381,29 @@ app.get('/schedule', verifyUser, (req, res) => {
 });
 
 // ----- SESSION SCHDULE DELETING
+app.delete('/schedule/:id', verifyUser, (req, res) => {
+    const noteId = req.params.id;
+    const login_id = req.user.id;
+
+    db.query(
+        'DELETE FROM sched WHERE id = ? AND login_id = ?',
+        [noteId, login_id],
+        (err, result) => {
+            if (err) return res.status(500).json({ Error: "Database error", Details: err });
+
+            if (result.affectedRows > 0) {
+                console.log("Schedule deleted successfully");
+                return res.status(200).json({ Status: "Deleted" });
+                
+            } else {
+                return res.status(404).json({ Status: "Schedule not found or not authorized" });
+            }
+        }
+    );
+});
+
+
+
 
 // ----- PROFILE SESSION (check mo gab verification)
 
