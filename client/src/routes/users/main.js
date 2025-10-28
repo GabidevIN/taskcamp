@@ -7,6 +7,9 @@ import iconComp from "../../assets/completedINC.png";
 import iconLate from "../../assets/lateINC.png";
 import iconDelayed from "../../assets/delayedINC.png";
 import iconCreate from "../../assets/createdINC.png";
+import iconTask from "../../assets/newtask.png";
+import iconNote from "../../assets/newnotes.png";
+
 
 
 function Main() {
@@ -467,8 +470,8 @@ return (
 
               <div className='flex flex-row items-center w-full justify-center gap-[8rem]'>
                 <button onClick={prevPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Prev</button>
-                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-[10px] m-2 hover:bg-white transition-colors duration-300'>
-                  <img src={iconMenu} onClick={() => OpenTask(!Tasking)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
+                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
+                  <img src={iconTask} onClick={() => OpenTask(!Tasking)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
                 </button>
                 <button onClick={nextPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Next</button>
               </div>
@@ -621,8 +624,8 @@ return (
           <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
               
-            <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px] m-[7.5px]'>
-              <img src={iconMenu} onClick={() => OpenNoting(!noting)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
+                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
+              <img src={iconNote} onClick={() => OpenNoting(!noting)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
             </button>
 
               <div className='bg-[#3E3F29] w-full p-2 rounded-2xl h-screen overflow-y-auto scrollbar-hide '>
