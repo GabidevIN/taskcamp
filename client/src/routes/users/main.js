@@ -1,10 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
-=======
-import { menu } from 'framer-motion/client';
->>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
 import iconMenu from "../../assets/menuINC.png";
 import iconComp from "../../assets/completedINC.png";
 import iconLate from "../../assets/lateINC.png";
@@ -174,50 +170,35 @@ const StatBox = ({ icon, label, value }) => (
     if (!title.trim() || !objective.trim()) return;
 
     try {
-<<<<<<< HEAD
-      const res = await axios.post('http://localhost:8081/createtask', 
-=======
-      await axios.post('http://localhost:8081/createtask', 
->>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
-        { title, objective, time, date }, 
+      const res = await axios.post(
+        'http://localhost:8081/createtask',
+        { title, objective, time, date },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-<<<<<<< HEAD
-      // Optimistically add the new task for immediate UI feedback
-      const newTask = {
-        id: res.data.id,
+      const created = res && res.data ? res.data : null;
+      const newTask = created && created.id ? created : {
+        id: Date.now(),
         title,
         objective,
         time,
         date,
-        login_id: res.data.login_id || id,
+        login_id: id,
         ongoing: 1,
         completed: 0
       };
 
       setTask(prev => [newTask, ...prev]);
-
-      // Update created count locally so stats update instantly
       setCreated(prev => {
         const num = Number(prev) || 0;
         return num + 1;
       });
-
-      // Clear form fields
-=======
-      fetchTask();
->>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
       setTitle('');
       setObjective('');
       setTime('');
       setDate('');
-<<<<<<< HEAD
-
-      // Reconcile with server data
+      // reconcile with server state
       fetchTask();
-=======
->>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
     } catch (err) {
       console.error("Error adding Task:", err);
     }
