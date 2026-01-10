@@ -1,6 +1,10 @@
 import {useState, useEffect, useRef} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import { menu } from 'framer-motion/client';
+>>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
 import iconMenu from "../../assets/menuINC.png";
 import iconComp from "../../assets/completedINC.png";
 import iconLate from "../../assets/lateINC.png";
@@ -170,11 +174,16 @@ const StatBox = ({ icon, label, value }) => (
     if (!title.trim() || !objective.trim()) return;
 
     try {
+<<<<<<< HEAD
       const res = await axios.post('http://localhost:8081/createtask', 
+=======
+      await axios.post('http://localhost:8081/createtask', 
+>>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
         { title, objective, time, date }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+<<<<<<< HEAD
       // Optimistically add the new task for immediate UI feedback
       const newTask = {
         id: res.data.id,
@@ -196,13 +205,19 @@ const StatBox = ({ icon, label, value }) => (
       });
 
       // Clear form fields
+=======
+      fetchTask();
+>>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
       setTitle('');
       setObjective('');
       setTime('');
       setDate('');
+<<<<<<< HEAD
 
       // Reconcile with server data
       fetchTask();
+=======
+>>>>>>> 642754163987009af91cc06bdbcacba9d91296d3
     } catch (err) {
       console.error("Error adding Task:", err);
     }
