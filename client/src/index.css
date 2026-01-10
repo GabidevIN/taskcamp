@@ -1,0 +1,17 @@
+/*NEEDED TO PER SET UP*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+html, body {
+  background-color: #3E3F29;
+}
+
