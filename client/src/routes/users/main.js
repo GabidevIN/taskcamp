@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, useCallback} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import iconMenu from "../../assets/menuINC.png";
@@ -8,7 +8,6 @@ import iconDelayed from "../../assets/delayedINC.png";
 import iconCreate from "../../assets/createdINC.png";
 import iconTask from "../../assets/newtask.png";
 import iconNote from "../../assets/newnotes.png";
-
 
 
 function Main() {
@@ -189,42 +188,91 @@ const StatBox = ({ icon, label, value }) => (
       };
 
       setTask(prev => [newTask, ...prev]);
-      setCreated(prev => {
-        const num = Number(prev) || 0;
-        return num + 1;
-      });
+
+      // If server returned updated stats, apply them immediately
+      if (created && created.stats) {
+        const s = created.stats;
+        setDelay(s.delay);
+        setCompleted(s.completed);
+        setlate(s.late);
+        setCreated(s.created);
+      } else {
+        setCreated(prev => {
+          const num = Number(prev) || 0;
+          return num + 1;
+        });
+      }
+
       setTitle('');
       setObjective('');
       setTime('');
       setDate('');
       // reconcile with server state
-      fetchTask();
+      await fetchTask();
     } catch (err) {
       console.error("Error adding Task:", err);
     }
   };
 
- // ----- FETCH TASK
-  const fetchTask = async () => {
-    try {
-      const res = await axios.get('http://localhost:8081/createtask', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      if (Array.isArray(res.data)) {
-        setTask(res.data);
-      } else {
-        console.warn("Unexpected response:", res.data);
-        setTask([]);
-      }
-    } catch (err) {
-      console.error("Error fetching tasks:", err);
+
+// ----- FETCH TASKS
+const fetchTask = useCallback(async () => {
+  try {
+    const res = await axios.get("http://localhost:8081/createtask", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (Array.isArray(res.data)) {
+      setTask(res.data);
+    } else {
+      console.warn("Unexpected response:", res.data);
+      setTask([]);
     }
-  };
+  } catch (err) {
+    console.error("Error fetching tasks:", err);
+    setTask([]);
+  }
+}, [token]);
 
-  useEffect(() => {
+useEffect(() => {
+  fetchTask();
+}, [fetchTask]);
+
+// ----- Fetch session and poll for near-real-time updates
+const fetchSession = useCallback(async () => {
+  try {
+    const res = await axios.get('http://localhost:8081', { headers: { Authorization: `Bearer ${token}` } });
+    if (res.data.Status === "Success") {
+      setName(res.data.name);
+      setStatus(res.data.admin);
+      setDelay(res.data.delay);
+      setCompleted(res.data.completed);
+      setlate(res.data.late);
+      setShared(res.data.shared);
+      setId(res.data.id);
+      setCreated(res.data.created);
+    }
+  } catch (err) {
+    console.error('Error fetching session:', err);
+  }
+}, [token]);
+
+useEffect(() => {
+  // initial session fetch
+  fetchSession();
+
+  // poll both tasks and session every 5 seconds
+  const interval = setInterval(() => {
     fetchTask();
-  }, []);
+    fetchSession();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [fetchTask, fetchSession]);
+
 
 const deleteTask = async (id) => {
   try {
@@ -233,7 +281,16 @@ const deleteTask = async (id) => {
     });
 
     if (res.data.Status === "DeletedTask") {
-      setTask(prev => prev.filter(task => task.id !== id));      
+      // If server returned updated stats, apply them
+      if (res.data.stats) {
+        const s = res.data.stats;
+        setDelay(s.delay);
+        setCompleted(s.completed);
+        setlate(s.late);
+        setCreated(s.created);
+      }
+      // refresh tasks to keep UI consistent
+      await fetchTask();
     } else {
       console.warn(res.data.Status);
     }
@@ -245,22 +302,31 @@ const deleteTask = async (id) => {
 // ----- Complete Task
 const CompleteTask = async (id) => {
   try {
-    const res = await axios.patch(`http://localhost:8081/createtask/${id}`, 
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    const res = await axios.patch(`http://localhost:8081/createtask/${id}`, {}, { headers: { Authorization: `Bearer ${token}` } });
 
     if (res.data.Status === "CompletedTask") {
-      setTask(prev => 
-        prev.map(task => 
-          task.id === id ? { ...task, completed: 1, ongoing: 0 } : task
-        )
-      );
+      // Prefer fresh server state after mutation
+      await fetchTask();
+
+      if (res.data.stats) {
+        const s = res.data.stats;
+        setDelay(s.delay);
+        setCompleted(s.completed);
+        setlate(s.late);
+        setCreated(s.created);
+      } else {
+        // fallback to refresh session
+        fetchSession();
+      }
+
+      return true;
     } else {
       console.warn(res.data.Status);
+      return false;
     }
   } catch (err) {
     console.error("Error completing Task:", err);
+    return false;
   }
 };
 

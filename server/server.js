@@ -11,11 +11,11 @@ const salt = 10;
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:3000'],
     methods: ["POST", "GET","DELETE", "PUT", "PATCH"],
-    credentials: true
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
 }));
-app.use(cookieParser());
+app.use(cookieParser());    
 
 // ----- DB CONNECTION
 const db = mysql.createConnection({
@@ -53,15 +53,24 @@ const verifyUser = (req, res, next) => {
 
 // ----- SESSION VERIFICATIONS
 app.get('/', verifyUser, (req, res) => {
-    return res.json({Status: "Success", 
-        id: req.user.id,
-        name: req.name,
-        admin: req.admin,
-        delay: req.delay,
-        completed: req.completed,
-        late: req.late,
-        shared: req.shared ,
-        created: req.created});
+    // Fetch latest counts from DB to keep session info in sync with server state
+    db.query('SELECT id, name, admin, delay, completed, late, shared, created FROM login WHERE id = ?', [req.user.id], (err, result) => {
+        if (err) {
+            console.error('Error fetching session from DB:', err);
+            return res.json({ Error: 'Error fetching session' });
+        }
+
+        if (!result || result.length === 0) {
+            return res.json({ Error: 'User not found' });
+        }
+
+        const user = result[0];
+        // Re-issue a fresh token so client-side token remains accurate
+        const token = jwt.sign({ id: user.id, name: user.name, admin: user.admin, delay: user.delay, completed: user.completed, late: user.late, shared: user.shared, created: user.created }, "jwt-secret-key", { expiresIn: '1d' });
+        res.cookie("token", token);
+
+        return res.json({ Status: "Success", id: user.id, name: user.name, admin: user.admin, delay: user.delay, completed: user.completed, late: user.late, shared: user.shared, created: user.created });
+    });
 })
 
 // ----- SESSION LOGOUT
@@ -195,23 +204,31 @@ app.get('/profile', verifyUser, (req, res) => {
 app.post('/createtask', verifyUser, (req, res) => {
     const { title, objective, time, date } = req.body;
     const login_id = req.user.id;
-    const added = 'SELECT * FROM login WHERE name = ?';
 
     db.query(
         'INSERT INTO task (login_id, title, objective, time, date, ongoing, completed) VALUES (?, ?, ?, ?, ?, 1, 0)',
         [login_id, title, objective, time, date],
         (err, result) => {
-        if (err) {
-            console.error('Insert Task Error:', err);
-            return res.json({ Error: 'Failed to create task' });
-        }
+            if (err) {
+                console.error('Insert Task Error:', err);
+                return res.json({ Error: 'Failed to create task' });
+            }
+
             db.query(
                 'UPDATE login SET created = created + 1 WHERE id = ?',
                 [login_id],
                 (updateErr) => {
                     if (updateErr) return res.json({ Error: updateErr });
 
-                    res.json({ id: result.insertId, title, objective, time, date, login_id, message: 'Task created and count updated' });
+                    // Return the created task id and updated user stats
+                    db.query('SELECT delay, completed, late, created, shared FROM login WHERE id = ?', [login_id], (selErr, selRes) => {
+                        if (selErr) {
+                            console.error('Error fetching updated stats:', selErr);
+                            return res.json({ id: result.insertId, title, objective, time, date, login_id, message: 'Task created and count updated' });
+                        }
+
+                        return res.json({ id: result.insertId, title, objective, time, date, login_id, message: 'Task created and count updated', stats: selRes[0] });
+                    });
                 }
             );
         }
@@ -223,23 +240,42 @@ app.get('/createtask', verifyUser, (req, res) => {
   const login_id = req.user.id;
   console.log("Fetching task for user:", login_id);
 
-  const updateQuery = ` UPDATE task   SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND completed = 0 AND TIMESTAMP(date, time) < (NOW() - INTERVAL 1 MINUTE) `;
+  const updateQuery = `UPDATE task SET ongoing = 0 WHERE login_id = ? AND ongoing = 1 AND completed = 0 AND TIMESTAMP(date, time) < (NOW() - INTERVAL 1 MINUTE)`;
 
-  db.query(updateQuery, [login_id], (updateErr) => {
+  db.query(updateQuery, [login_id], (updateErr, updateResult) => {
     if (updateErr) {
       console.error("Update error:", updateErr);
       return res.json({ Error: updateErr });
     }
 
-    db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
-      if (fetchErr) {
-        console.error("Fetch error:", fetchErr);
-        return res.json({ Error: fetchErr });
-      }
+    const moved = updateResult && updateResult.affectedRows ? updateResult.affectedRows : 0;
 
-      console.log("Task result: Fetched and updated");
-      res.json(result);
-    });
+    // If we moved tasks from ongoing to 0 (they are now late), increment the user's late count
+    if (moved > 0) {
+      db.query('UPDATE login SET late = late + ? WHERE id = ?', [moved, login_id], (lateErr) => {
+        if (lateErr) console.error('Failed to increment late count:', lateErr);
+        // continue to fetch tasks regardless of late update result
+        db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
+          if (fetchErr) {
+            console.error("Fetch error:", fetchErr);
+            return res.json({ Error: fetchErr });
+          }
+
+          console.log(`Task result: Fetched and updated (${moved} moved to late)`);
+          return res.json(result);
+        });
+      });
+    } else {
+      db.query('SELECT * FROM task WHERE login_id = ?', [login_id], (fetchErr, result) => {
+        if (fetchErr) {
+          console.error("Fetch error:", fetchErr);
+          return res.json({ Error: fetchErr });
+        }
+
+        console.log("Task result: Fetched and updated");
+        return res.json(result);
+      });
+    }
   });
 });
 
@@ -274,13 +310,29 @@ app.delete('/createtask/:id', verifyUser, (req, res) => {
                                 (updateErr) => {
                                     if (updateErr) return res.status(500).json({ Error: "Failed to update task count", Details: updateErr });
 
-                                    console.log("Task deleted and count updated");
-                                    return res.status(200).json({ Status: "DeletedTask" });
+                                    // return updated stats
+                                    db.query('SELECT delay, completed, late, created, shared FROM login WHERE id = ?', [login_id], (selErr, selRes) => {
+                                        if (selErr) {
+                                            console.error('Error fetching updated stats:', selErr);
+                                            return res.status(200).json({ Status: "DeletedTask" });
+                                        }
+
+                                        console.log("Task deleted and count updated");
+                                        return res.status(200).json({ Status: "DeletedTask", stats: selRes[0] });
+                                    });
                                 }
                             );
                         } else {
-                            console.log("Completed task deleted (no change to count)");
-                            return res.status(200).json({ Status: "DeletedTask" });
+                            // return updated stats (no change expected)
+                            db.query('SELECT delay, completed, late, created, shared FROM login WHERE id = ?', [login_id], (selErr, selRes) => {
+                                if (selErr) {
+                                    console.error('Error fetching updated stats:', selErr);
+                                    return res.status(200).json({ Status: "DeletedTask" });
+                                }
+
+                                console.log("Completed task deleted (no change to count)");
+                                return res.status(200).json({ Status: "DeletedTask", stats: selRes[0] });
+                            });
                         }
                     } else {
                         return res.status(404).json({ Status: "Task not found or not authorized" });
@@ -326,8 +378,16 @@ app.patch('/createtask/:id', verifyUser, (req, res) => {
                         (finalErr) => {
                             if (finalErr) return res.status(500).json({ Error: `Failed to update ${columnToUpdate} count`, Details: finalErr });
 
-                            console.log(`Task marked as completed and ${columnToUpdate} count updated successfully`);
-                            return res.status(200).json({ Status: "CompletedTask" });
+                            // Return updated stats
+                            db.query('SELECT delay, completed, late, created, shared FROM login WHERE id = ?', [login_id], (selErr, selRes) => {
+                                if (selErr) {
+                                    console.error('Error fetching updated stats:', selErr);
+                                    return res.status(200).json({ Status: "CompletedTask" });
+                                }
+
+                                console.log(`Task marked as completed and ${columnToUpdate} count updated successfully`);
+                                return res.status(200).json({ Status: "CompletedTask", stats: selRes[0] });
+                            });
                         }
                     );
                 }
