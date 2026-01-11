@@ -75,11 +75,11 @@ function Main() {
 
 // ----- STATS DISPLAY
 const StatBox = ({ icon, label, value }) => (
-  <div className="bg-[#3E3F29] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4 
-  hover:bg-[#A8BBA3] hover:shadow-lg hover:scale-[103%] transition duration-500 ease-in-out">
+  <div className="bg-[#64748B] h-[100px] w-[150px] rounded-2xl flex flex-col items-center justify-center gap-y-4 
+  hover:bg-[#3B82F6] hover:shadow-lg hover:scale-[103%] transition duration-500 ease-in-out">
     <img src={icon} alt={label} className="w-9 h-9 object-contain scale-125 pt-[10px]" />
 
-    <div className="text-black bg-[#BCA88D] w-[125px] text-center rounded-[15px] text-lg">
+    <div className="text-black bg-[#F8FAFC] w-[125px] text-center rounded-[15px] text-lg">
 
       {label}: {value}
       
@@ -431,8 +431,8 @@ const generateDays = () => {
     days.push(
       <div key={day} className="relative">
         <div
-          className={`flex flex-col text-white items-center justify-center h-12 rounded-lg cursor-pointer bg-[#3E3F29] transition ${
-            isToday ? "bg-[#BCA88D] outline outline-black text-white outline-[2px]" : "hover:bg-gray-70 20 hover:shadow-lg hover:sc@ale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer"
+          className={`flex flex-col text-white items-center justify-center h-12 rounded-lg cursor-pointer bg-[#64748B] transition ${
+            isToday ? "bg-[#1E293B] outline outline-black text-white outline-[2px]" : "hover:bg-gray-70 20 hover:shadow-lg hover:sc@ale-[95%] transition duration-500 ease-in-out rounded outline-[#1E293B] cursor-pointer"
           }`}
           onClick={() => setSelectedDay(day)}
         >
@@ -463,14 +463,17 @@ const generateDays = () => {
 
 return (
   <>   
-    <div>
+{/*----- BACKGROUND COLOR -----*/}
+
+    <div className="bg-[#1E293B] min-h-screen">
     <title>MAIN</title>
     {    
       auth ?
       <>
 {/*----- NAVBAR -----*/}
+
     <div className='fixed flex justify-center w-full pt-[30px]'>
-      <button className='bg-[#BCA88D] w-[50px] h-[50px] flex items-center justify-center rounded-[20px]
+      <button className='bg-[#3B82F6] w-[50px] h-[50px] flex items-center justify-center rounded-[20px]
       hover:shadow-lg hover:scale-110 transition duration-500 ease-in-out ring-0 hover:ring-[3px] hover:ring-black'>
         <img src={iconMenu} onClick={() => OpenMenu(!Menu)} alt="menu" className="w-9 h-9 object-contain scale-75"></img>
       </button>
@@ -487,13 +490,13 @@ return (
 
         {/*----- CALENDAR SYSTEM  -----*/}
 
-          <div class="bg-[#BCA88D] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
+          <div class="bg-[#F8FAFC] h-[25rem] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
             <div className="flex justify-between items-center mb-4">
-              <button onClick={prevMonth} className='px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl'>PREVIOUS</button>
+              <button onClick={prevMonth} className='px-3 py-1 bg-[#F1F5F9] outline outline-[2px] outline-black text-black rounded-xl'>PREVIOUS</button>
               <h2 className="text-xl font-semibold">
                 {DateSCHD.toLocaleString("default", { month: "long" })} {year}
               </h2>
-              <button onClick={nextMonth} className='px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl'>NEXT</button>
+              <button onClick={nextMonth} className='px-3 py-1 bg-[#F1F5F9] outline outline-[2px] outline-black text-black rounded-xl'>NEXT</button>
             </div>
 
             <div className="grid grid-cols-7 text-center mb-2 font-bold">
@@ -506,16 +509,16 @@ return (
           </div>
 
         {/*----- CURRENT EVENT SYSTEM  -----*/}
-          <div className="bg-[#BCA88D] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
+          <div className="bg-[#F8FAFC] h-[357.5px] w-[35rem] rounded-2xl p-4 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out"> 
             <h3 className="text-lg font-bold mb-2 text-white text-center">Schedules</h3>
-            <div className="bg-[#3E3F29] w-full p-2 rounded-2xl h-full max-h-[292.25px] overflow-y-auto scrollbar-hide">
+            <div className="bg-[#64748B] w-full p-2 rounded-2xl h-full max-h-[292.25px] overflow-y-auto scrollbar-hide">
               {schedules.length > 0 ? (
                 [...schedules]
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
                   .map((sched, idx) => (
                     <div key={idx} title={`${sched.title}: ${sched.content}`}
                       className="bg-transparent text-white rounded-2xl px-2 py-1 mb-2 outline outline-[1px]
-                      hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-[#BCA88D] cursor-pointer">
+                      hover:shadow-lg hover:scale-[95%] transition duration-500 ease-in-out rounded outline-black cursor-pointer">
                       <strong>{sched.title}</strong><br />
                       <span className="text-sm">{sched.content}</span><br />
                       <span className="text-xs italic">
@@ -537,7 +540,7 @@ return (
         <div class="grid grid-cols-1 gap-5 justify-end items-end ">
 
         {/*----- USER STATS -----*/}
-          <div className="bg-[#BCA88D] h-[10rem] w-[56.5rem] rounded-2xl flex justify-center items-center gap-[65px]
+          <div className="bg-[#F8FAFC] h-[10rem] w-[56.5rem] rounded-2xl flex justify-center items-center gap-[65px]
           hover:scale-[101%] transition duration-500 ease-in-out">
             <StatBox icon={iconCreate} label="Created" value={created} />
             <StatBox icon={iconComp} label="Completed" value={completed} />
@@ -549,22 +552,22 @@ return (
         <div className="grid grid-cols-2 gap-5 w-[56.5rem]">
           
           {/*----- TASK -----*/}
-          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
+          <div className="bg-[#F8FAFC] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
 
               <div className='flex flex-row items-center w-full justify-center gap-[8rem]'>
-                <button onClick={prevPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Prev</button>
-                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
+                <button onClick={prevPage} className="px-3 py-1 bg-[#F1F5F9] outline outline-[2px] outline-black text-black rounded-xl">Prev</button>
+                <button className='bg-[#3B82F6] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
                   <img src={iconTask} onClick={() => OpenTask(!Tasking)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
                 </button>
-                <button onClick={nextPage} className="px-3 py-1 bg-[#3E3F29] outline outline-[2px] outline-black text-white rounded-xl">Next</button>
+                <button onClick={nextPage} className="px-3 py-1 bg-[#F1F5F9] outline outline-[2px] outline-black text-black rounded-xl">Next</button>
               </div>
 
               <div className="overflow-hidden w-full h-full rounded-2xl ">
                 <div className="flex w-[400%] h-full transition-transform duration-500 ease-in-out"  style={{ transform: `translateX(-${page * 25}%)` }} >
 
                 {/*----- ON GOING -----*/}
-                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#64748B] h-full overflow-y-auto scrollbar-hide rounded-2xl">
                     <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
                       ON GOING
                     </div>
@@ -596,11 +599,11 @@ return (
                           );
                         })
                       ) : (
-                        <p>No Task found. Create one above!</p>
+                        <p className="text-white">No Task found. Create one above!</p>
                       )}
                     </div>
                   {/*------ LATE -----*/}
-                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#64748B] h-full overflow-y-auto scrollbar-hide rounded-2xl">
                     <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
                       LATE
                     </div>
@@ -632,12 +635,12 @@ return (
                           );
                         })
                       ) : (
-                        <p>No Task found. Create one above!</p>
+                        <p className="text-white">No Task found. Create one above!</p>
                       )}
                     </div>
 
                   {/*----- COMPLETED -----*/}
-                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#64748B] h-full overflow-y-auto scrollbar-hide rounded-2xl">
                     <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
                       COMPLETED
                     </div>
@@ -664,12 +667,12 @@ return (
                           );
                         })
                       ) : (
-                        <p>No Task found. Create one above!</p>
+                        <p className="text-white">No Task found. Create one above!</p>
                       )}
                     </div>
 
                   {/*----- DELAYED -----*/}
-                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#3E3F29] h-full overflow-y-auto scrollbar-hide rounded-2xl">
+                  <div className="w-[25%] flex-shrink-0 p-2 bg-[#64748B] h-full overflow-y-auto scrollbar-hide rounded-2xl">
                     <div className='w-full text-center outline rounded-2xl p-1 text-white mt-1 '>
                       DELAYED
                     </div>
@@ -696,7 +699,7 @@ return (
                           );
                         })
                       ) : (
-                        <p>No Task found. Create one above!</p>
+                        <p className="text-white">No Task found. Create one above!</p>
                       )}
                     </div>
                 </div>
@@ -705,14 +708,14 @@ return (
           </div>
 
           {/*----- NOTES -----*/}
-          <div className="bg-[#BCA88D] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
+          <div className="bg-[#F8FAFC] h-[37.5rem] w-[27.5rem] rounded-2xl flex p-3 hover:shadow-lg hover:scale-[102%] transition duration-500 ease-in-out">
             <div className='flex flex-col items-center w-full '>
               
-                <button className='bg-[#BCA88D] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
+                <button className='bg-[#3B82F6] w-[35px] h-[35px] flex items-center justify-center rounded-2xl m-2 hover:bg-white transition-colors duration-300'>
               <img src={iconNote} onClick={() => OpenNoting(!noting)} alt="menu" className="w-9 h-9 object-contain scale-75 "></img>
             </button>
 
-              <div className='bg-[#3E3F29] w-full p-2 rounded-2xl h-screen overflow-y-auto scrollbar-hide '>
+              <div className='bg-[#64748B] w-full p-2 rounded-2xl h-screen overflow-y-auto scrollbar-hide '>
                 {notes.length > 0 ? (
                   [...notes]
                     .sort((a, b) => b.id - a.id)
@@ -729,7 +732,7 @@ return (
                       </div>
                     ))
                 ) : (
-                  <p className="text-gray-500">No notes found. Create one above!</p>
+                  <p className="text-white">No notes found. Create one above!</p>
                 )}
               </div>
             </div>
