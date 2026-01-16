@@ -163,32 +163,32 @@ const closebtn = () => {
   const [Menu, OpenMenu] = useState(false);
 
 return (
-<div className="bg-[#3E3F29]">
+<div className="bg-[#1E293B]">
     <title>TASKCAMP</title>
 
     {/*----- NAVBAR -----*/}
     <div className="fixed inset-0 flex justify-between items-center mx-auto mt-[25px]  z-10
     h-[55px] w-[65px] sm:w-[50px] md:w-[750px] lg:max-xl:w-[1050px]">
 
-      <header className="flex justify-between items-center h-[55px] w-full bg-[#3E3F29] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
+      <header className="flex justify-between items-center h-[55px] w-full bg-[#1E293B] shadow-[0_25px_70px_-10px_rgba(0,0,0,0.85)] 
       mx-auto rounded-[25px] mt-[25px] sm:mx-0 sm:px-0 px-6 sm: w-[65px]">
 
-        <button onClick={() => scrollto("return")} className="hidden sm:block text-[#BCA88D] text-lg font-bold px-6 sm:mx-0 mx-auto">TASKUP</button>
+        <button onClick={() => scrollto("return")} className="hidden sm:block text-[#F8FAFC] text-lg font-bold px-6 sm:mx-0 mx-auto">TASKUP</button>
         <button onClick={() => OpenMenu(!Menu)} className=" lg:hidden md:hidden block text-[#BCA88D] sm:mx-0 mx-auto cursor-pointer "> 
           <img src={home} alt="menu"   className="w-9 h-9 object-contain scale-150"></img>
         </button>
 
         <nav className="flex">
-          <button className="sm:block hidden hover text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+          <button className="sm:block hidden hover text-[#F8FAFC] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
             onClick={() => scrollto("about")}>ABOUT US</button>
 
-          <a className="sm:block hidden text-[#BCA88D] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
+          <a className="sm:block hidden text-[#F8FAFC] font-heebo text-5 font-bold cursor-pointer p-2 m-1"
             onClick={() => scrollto("contact")}>CONTACTS</a>
 
-          <a className="sm:block hidden text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
+          <a className="sm:block hidden text-[#000000] w-[100px] font-bold bg-[#F8FAFC] cursor-pointer rounded-tl-[15px] rounded-bl-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("login")}>LOGIN</a>
 
-          <a className="sm:block hidden text-white w-[100px] font-bold bg-[#BCA88D] cursor-pointer rounded-tr-[15px] rounded-br-[15px] p-2 m-1 text-center"
+          <a className="sm:block hidden text-[#000000] w-[100px] font-bold bg-[#F8FAFC] cursor-pointer rounded-tr-[15px] rounded-br-[15px] p-2 m-1 text-center"
             onClick={handleAuthClick("register")}>REGISTER</a>
         </nav>
       </header>
@@ -211,7 +211,7 @@ return (
         "-translate-y-full bg-opacity-50"}`}>
 
       <ul className="space-y-4 text-center">
-        <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("about")}>ABOUT US</li>
+        <li className="hover:bg-gray-600 p-2 rounded text-white" onClick={() => scrollto("about")}>ABOUT US</li>
         <li className="hover:bg-gray-600 p-2 rounded" onClick={() => scrollto("contact")}>CONTACTS</li>
         <li className="hover:bg-gray-600 p-2 rounded" onClick={handleAuthClick("login")}>LOGIN</li>
         <li className="hover:bg-gray-600 p-2 rounded" onClick={handleAuthClick("register")}>REGISTER</li>
@@ -227,14 +227,14 @@ return (
       ${fadeClass( visible.hero )}`} ref={(el) => {heroRef.current = el;hero.current = el;}}>
 
         <motion.h1
-          className="font-bold font-bold font-heptoslab text-[#BCA88D] text-[65px] sm:text-[65px] md:text-[100px] lg:text-[125px]"
+          className="font-bold font-bold font-heptoslab text-[#F8FAFC] text-[65px] sm:text-[65px] md:text-[100px] lg:text-[125px]"
           initial={{ scale: 1.4, x: 0, y: 0}}
           animate={visible.hero ? { scale: 1.25, x: 0, y: 0 } : { scale: 1, x: 0, y: 0 }}
           transition={{duration: 1.5, times: [0.5, 0.5, 1],   ease: "easeInOut"}}>
           TASKUP
         </motion.h1>
 
-        <h2 className="text-[15px] pr-4 pl-4 lg:text-[20px] font-bold font-heptoslab text-[#BCA88D] max-w-2xl">
+        <h2 className="text-[15px] pr-4 pl-4 lg:text-[20px] font-bold font-heptoslab text-[#F8FAFC] max-w-2xl">
           Your all in one app for scheduling, note taking, and task management designed to keep your life organized and on track.
         </h2>
 
